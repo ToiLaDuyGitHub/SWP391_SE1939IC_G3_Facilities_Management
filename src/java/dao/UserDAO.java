@@ -18,18 +18,17 @@ import util.PasswordUtil;
 public class UserDAO {
     
     // Kiểm tra thông tin đăng nhập
-    public static boolean validateUser(String usernameOrEmail, String rawPassword) {
+    public static boolean validateUser(String username, String rawPassword) {
         String sql = "SELECT PasswordHash FROM users WHERE username = ?";
         
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
-            stmt.setString(1, usernameOrEmail);
-            stmt.setString(2, usernameOrEmail);
+            stmt.setString(1, username);
             
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    String storedHash = rs.getString("password_hash");
+                    String storedHash = rs.getString("PasswordHash");
                     return PasswordUtil.verifyPassword(storedHash, rawPassword);
                 }
             }

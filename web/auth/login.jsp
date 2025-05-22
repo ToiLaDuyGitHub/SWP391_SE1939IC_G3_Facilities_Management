@@ -20,7 +20,8 @@
     <div id="loginPage">
         <div class="login-container">
             <h2>Đăng nhập</h2>
-            <p>Chào mừng đến với Hệ thống Quản lý Xây dựng</p>
+            <p>Chào mừng đến với Hệ thống<br/>
+                Quản lý Xây dựng</p>
 
             <!-- Hiển thị thông báo lỗi nếu có -->
             <c:if test="${not empty errorMessage}">
@@ -34,8 +35,7 @@
                 <button type="submit">Đăng nhập</button>
             </form>
 
-            <a href="#" onclick="showContent('Quên mật khẩu')">Quên mật khẩu?</a>
-            <a href="#" onclick="showContent('Thay đổi mật khẩu')">Thay đổi mật khẩu</a>
+            <a href="#">Quên mật khẩu?</a>
         </div>
     </div>
 

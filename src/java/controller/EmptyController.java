@@ -4,12 +4,25 @@
  */
 package controller;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 /**
  *
  * @author ToiLaDuyGitHub
  */
-public class EmptyController {
+@WebServlet("/home")
+public class EmptyController extends HttpServlet{
     public static void main(String[] args) {
         System.out.println("Hello World!");
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/home.jsp").forward(request, response);
     }
 }

@@ -269,7 +269,7 @@ function login() {
 function logout() {
     document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('active'));
     document.querySelectorAll('.sidebar ul li a').forEach(a => a.classList.remove('active'));
-    window.location.href = 'login.html';
+    window.location.href = '/swp391-g3-facilities-management/login';
 }
 
 function toggleDropdown(element) {
