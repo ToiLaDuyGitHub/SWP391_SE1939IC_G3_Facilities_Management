@@ -13,17 +13,16 @@ import java.sql.SQLException;
 
 public class DBUtil {
 
-    private static final String JDBC_URL = "jdbc:sqlserver://localhost:1433;databaseName=?;encrypt=true;trustServerCertificate=true;";
-    private static final String JDBC_USERNAME = "sa";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/FacilitiesManagementDB?useSSL=false&serverTimezone=UTC";
+    private static final String JDBC_USERNAME = "root";
     private static final String JDBC_PASSWORD = "123456";
 
     static {
         try {
-            // Đăng ký driver JDBC
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Class.forName("com.mysql.cj.jdbc.Driver"); // Đăng ký MySQL JDBC driver
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            throw new RuntimeException("Không tìm thấy JDBC Driver!");
+            throw new RuntimeException("Không tìm thấy JDBC Driver của MySQL!");
         }
     }
 
@@ -38,6 +37,23 @@ public class DBUtil {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    // === Hàm main để test kết nối ===
+    public static void main(String[] args) {
+        Connection conn = null;
+        try {
+            conn = getConnection();
+            if (conn != null && !conn.isClosed()) {
+                System.out.println("Kết nối MySQL thành công!");
+            } else {
+                System.out.println("Không thể kết nối.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi kết nối: " + e.getMessage());
+        } finally {
+            closeConnection(conn);
         }
     }
 }
