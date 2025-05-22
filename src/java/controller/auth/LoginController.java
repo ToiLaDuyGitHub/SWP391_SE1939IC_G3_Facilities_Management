@@ -48,10 +48,10 @@ public class LoginController extends HttpServlet {
             // 3. Tạo session và chuyển hướng
             HttpSession session = request.getSession();
             session.setAttribute("username", username);
-            response.sendRedirect("home.jsp");
+            response.sendRedirect("./home");
         } else {
             // 4. Thông báo lỗi
-            request.setAttribute("error", "Sai tên đăng nhập hoặc mật khẩu!");
+            request.setAttribute("errorMessage", "Sai tên đăng nhập hoặc mật khẩu!");
             request.getRequestDispatcher("/auth/login.jsp").forward(request, response);
         }
     }
