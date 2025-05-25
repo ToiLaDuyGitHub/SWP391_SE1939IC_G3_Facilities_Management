@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import model.dto.User_Role;
 import util.PasswordUtil;
 
 /**
@@ -46,7 +47,9 @@ public class LoginController extends HttpServlet {
         
         if (isValidUser) {
             // 3. Tạo session và chuyển hướng
+            User_Role userRole = userDAO.getUserWithRole(username);
             HttpSession session = request.getSession();
+            session.setAttribute("userRole", userRole);
             session.setAttribute("username", username);
             response.sendRedirect("./home");
             return;
@@ -56,6 +59,8 @@ public class LoginController extends HttpServlet {
             request.getRequestDispatcher("/auth/login.jsp").forward(request, response);
             return;
         }
+        
+        
     }
 
     @Override

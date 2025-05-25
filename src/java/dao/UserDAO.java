@@ -17,6 +17,7 @@ import java.time.ZoneId;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import model.User;
+import model.dto.User_Role;
 import util.DBUtil;
 import util.PasswordUtil;
 
@@ -31,6 +32,34 @@ public class UserDAO {
         argon2 = Argon2Factory.create();
     }
 
+    // Lấy thông tin người dùng và vai trò
+    public User_Role getUserWithRole(String username) {
+        String sql = "SELECT u.FirstName, u.LastName, u.Username, u.PhoneNum, r.RoleName " +
+                     "FROM users u " +
+                     "LEFT JOIN roles r ON u.RoleID = r.RoleID " +
+                     "WHERE u.Username = ?";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, username);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    String firstName = rs.getString("FirstName");
+                    String lastName = rs.getString("LastName");
+                    String userName = rs.getString("Username");
+                    String phoneNum = rs.getString("PhoneNum");
+                    String roleName = rs.getString("RoleName");
+
+                    return new User_Role(userName, firstName, lastName, phoneNum, roleName);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     // Kiểm tra thông tin đăng nhập
     public static boolean validateUser(String username, String rawPassword) {
         String sql = "SELECT PasswordHash FROM users WHERE username = ?";
