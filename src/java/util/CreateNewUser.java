@@ -27,7 +27,7 @@ public class CreateNewUser {
         String username = "nang@gmail.com";
         String password = "123";
         String passwordHash = PasswordUtil.hashPassword(password);
-        User u = new User(username, passwordHash, "Năng", "Đào Văn", 2, "0123456789", LocalDateTime.now(), true);
+        User u = new User(username, passwordHash, "Duy", "Vũ Đình", 2, "0987654321", LocalDateTime.now(), true, null, null);
         saveUser(u);
     }
 

@@ -31,5 +31,6 @@ public class LogoutController extends HttpServlet {
         
         // 3. Chuyển hướng về trang login
         response.sendRedirect("./login");
+        return;
     }
 }

@@ -21,14 +21,16 @@ public class User {
     private String phoneNum;
     private LocalDateTime registrationDate;
     private boolean isActive;
+    private String resetOTP;
+    private LocalDateTime resetOTPTime;
 
     public User(int userID, String username, int roleID) {
         this.userID = userID;
         this.username = username;
         this.roleID = roleID;
     }
-    
-    public User(String username, String passwordHash, String firstName, String lastName, int roleID, String phoneNum, LocalDateTime registrationDate, boolean isActive) {
+
+    public User(String username, String passwordHash, String firstName, String lastName, int roleID, String phoneNum, LocalDateTime registrationDate, boolean isActive, String resetOTP, LocalDateTime resetOTPTime) {
         this.username = username;
         this.passwordHash = passwordHash;
         this.firstName = firstName;
@@ -37,9 +39,16 @@ public class User {
         this.phoneNum = phoneNum;
         this.registrationDate = registrationDate;
         this.isActive = isActive;
+        this.resetOTP = resetOTP;
+        this.resetOTPTime = resetOTPTime;
     }
-    
-    public User(int userID, String username, String passwordHash, String firstName, String lastName, int roleID, String phoneNum, LocalDateTime registrationDate, boolean isActive) {
+
+    public User(String username, LocalDateTime resetOTPTime) {
+        this.username = username;
+        this.resetOTPTime = resetOTPTime;
+    }
+
+    public User(int userID, String username, String passwordHash, String firstName, String lastName, int roleID, String phoneNum, LocalDateTime registrationDate, boolean isActive, String resetOTP, LocalDateTime resetOTPTime) {
         this.userID = userID;
         this.username = username;
         this.passwordHash = passwordHash;
@@ -49,6 +58,8 @@ public class User {
         this.phoneNum = phoneNum;
         this.registrationDate = registrationDate;
         this.isActive = isActive;
+        this.resetOTP = resetOTP;
+        this.resetOTPTime = resetOTPTime;
     }
 
     public int getUserID() {
@@ -121,5 +132,21 @@ public class User {
 
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
+    }
+
+    public String getResetOTP() {
+        return resetOTP;
+    }
+
+    public void setResetOTP(String resetOTP) {
+        this.resetOTP = resetOTP;
+    }
+
+    public LocalDateTime getResetOTPTime() {
+        return resetOTPTime;
+    }
+
+    public void setResetOTPTime(LocalDateTime resetOTPTime) {
+        this.resetOTPTime = resetOTPTime;
     }
 }
