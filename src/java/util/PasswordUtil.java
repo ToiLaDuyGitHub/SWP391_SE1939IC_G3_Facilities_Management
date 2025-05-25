@@ -49,4 +49,8 @@ public class PasswordUtil {
         boolean isValid = argon2.verify(hash, password.toCharArray());
         System.out.println("Is valid? " + isValid); // true
     }
+    
+    public static boolean isValidPassword(String password){
+        return password.matches("^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!$@%]).{6,32}$");
+    }
 }

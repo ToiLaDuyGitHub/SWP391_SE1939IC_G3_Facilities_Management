@@ -1,6 +1,6 @@
 <%-- 
-    Document   : login
-    Created on : May 22, 2025, 6:43:55 AM
+    Document   : resetpassword
+    Created on : May 23, 2025, 6:52:24 AM
     Author     : ToiLaDuyGitHub
 --%>
 
@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập - Hệ thống Quản lý Xây dựng</title>
+    <title>Reset mật khẩu - Hệ thống quản lý xây dựng</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/styles.css">
@@ -19,31 +19,28 @@
 <body>
     <div id="loginPage">
         <div class="login-container">
-            <h2>Đăng nhập</h2>
-            <p>Chào mừng đến với Hệ thống<br/>
-                Quản lý Xây dựng</p>
+            <h2>Reset mật khẩu</h2>
+            <p>Vui lòng nhập gmail đã được đăng ký<br/>
+                trên hệ thống để nhận mã OTP</p>
 
             <!-- Hiển thị thông báo lỗi nếu có -->
             <c:if test="${not empty errorMessage}">
                 <p style="color: red;">${errorMessage}</p>
             </c:if>
-                
-            <!-- Hiển thị thông báo thành công nếu có -->
-            <c:if test="${not empty successMessage}">
-                <p style="color: green;">${successMessage}</p>
-            </c:if>
 
             <!-- Form gửi đến Servlet -->
-            <form action="login" method="post">
-                <input type="text" name="username" placeholder="Tên đăng nhập" required>
-                <input type="password" name="password" placeholder="Mật khẩu" required>
-                <button type="submit">Đăng nhập</button>
+            <form action="reset-password" method="post">
+                <input type="text" name="username" placeholder="Gmail của bạn..." required>
+                <button type="submit">Nhận mã OTP</button>
             </form>
 
-            <a href="<%= request.getContextPath() %>/reset-password">Quên mật khẩu?</a>
+            <a href="<%= request.getContextPath() %>/login">Bạn đã có tài khoản?</a>
         </div>
     </div>
 
     <script src="<%= request.getContextPath() %>/js/script.js"></script>
 </body>
 </html>
+
+
+

@@ -36,7 +36,7 @@ public class LoginController extends HttpServlet {
         
         // 1. Validate input
         if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
-            request.setAttribute("error", "Vui lòng nhập đầy đủ thông tin!");
+            request.setAttribute("errorMessage", "Vui lòng nhập đầy đủ thông tin!");
             request.getRequestDispatcher("/auth/login.jsp").forward(request, response);
             return;
         }
@@ -49,15 +49,18 @@ public class LoginController extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("username", username);
             response.sendRedirect("./home");
+            return;
         } else {
             // 4. Thông báo lỗi
             request.setAttribute("errorMessage", "Sai tên đăng nhập hoặc mật khẩu!");
             request.getRequestDispatcher("/auth/login.jsp").forward(request, response);
+            return;
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/auth/login.jsp").forward(request, response);
+        return;
     }
 }

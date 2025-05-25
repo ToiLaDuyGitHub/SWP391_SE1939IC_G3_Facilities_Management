@@ -36,13 +36,13 @@ public class AuthFilter implements Filter {
         }
 
         // Rule 1: Đã đăng nhập mà cố truy cập trang login/register → về home
-        if (isLoggedIn && (path.startsWith("/login") || path.startsWith("/register"))) {
+        if (isLoggedIn && (path.startsWith("/login") || path.startsWith("/reset-password") || path.startsWith("/reset-otp") || path.startsWith("/create-new-password"))) {
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/home");
             return;
         }
 
         // Rule 2: Chưa đăng nhập mà truy cập trang cần auth → về login
-        if (!isLoggedIn && !path.equals("/") && !path.startsWith("/login")) {
+        if (!isLoggedIn && !path.equals("/") && !path.startsWith("/login") && !path.startsWith("/reset-password") && !path.startsWith("/reset-otp") && !path.startsWith("/create-new-password")) {
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/login");
             return;
         }
