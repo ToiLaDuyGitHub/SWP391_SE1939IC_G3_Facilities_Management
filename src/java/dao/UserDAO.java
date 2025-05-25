@@ -4,6 +4,7 @@
  */
 package dao;
 
+import com.mysql.cj.x.protobuf.MysqlxSql;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import java.sql.Connection;
@@ -29,6 +30,7 @@ public class UserDAO {
     public UserDAO(){
         argon2 = Argon2Factory.create();
     }
+
     // Kiểm tra thông tin đăng nhập
     public static boolean validateUser(String username, String rawPassword) {
         String sql = "SELECT PasswordHash FROM users WHERE username = ?";
@@ -48,7 +50,7 @@ public class UserDAO {
         }
         return false;
     }
-
+    
     //Lấy thông tin thời gian resetotp của người dùng
     public static User getUsersResetOTPTime(String username) {
         String sql = "SELECT ResetOTPTime FROM users WHERE username = ?";

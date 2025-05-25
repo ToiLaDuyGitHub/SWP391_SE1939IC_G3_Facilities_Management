@@ -2,19 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/G:/SWP/SWP391_SE1939IC_G3_Facilities_Management/src/java/dao/EmptyDAO.java</file>
-            <file>file:/G:/SWP/SWP391_SE1939IC_G3_Facilities_Management/src/java/dao/RoleDAO.java</file>
-            <file>file:/G:/SWP/SWP391_SE1939IC_G3_Facilities_Management/web/view/index.html</file>
-            <file>file:/G:/SWP/SWP391_SE1939IC_G3_Facilities_Management/src/java/controller/EmptyController.java</file>
-            <file>file:/G:/SWP/SWP391_SE1939IC_G3_Facilities_Management/src/java/controller/auth/LoginController.java</file>
-            <file>file:/G:/SWP/SWP391_SE1939IC_G3_Facilities_Management/src/java/util/PasswordUtil.java</file>
-            <file>file:/G:/SWP/SWP391_SE1939IC_G3_Facilities_Management/web/view/login.html</file>
-            <file>file:/G:/SWP/SWP391_SE1939IC_G3_Facilities_Management/src/java/model/dto/EmptyDTO.java</file>
-            <file>file:/G:/SWP/SWP391_SE1939IC_G3_Facilities_Management/web/view/Manager.html</file>
-            <file>file:/G:/SWP/SWP391_SE1939IC_G3_Facilities_Management/src/java/dao/UserDAO.java</file>
-            <file>file:/G:/SWP/SWP391_SE1939IC_G3_Facilities_Management/src/java/util/CreateNewUser.java</file>
-            <file>file:/D:/SWP391/FIX/SWP391_SE1939IC_G3_Facilities_Management/src/java/util/DBUtil.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
