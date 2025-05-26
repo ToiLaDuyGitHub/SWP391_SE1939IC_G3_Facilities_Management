@@ -1,79 +1,94 @@
--- Tạo cơ sở dữ liệu
-CREATE DATABASE IF NOT EXISTS FacilitiesManagementDB;
-USE FacilitiesManagementDB;
+CREATE DATABASE IF NOT EXISTS `facilitiesmanagementdb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `facilitiesmanagementdb`;
 
--- Bảng Roles
-CREATE TABLE Roles (
-    RoleID INT PRIMARY KEY AUTO_INCREMENT,
-    RoleName VARCHAR(100) NOT NULL
-);
+CREATE TABLE `categories` (
+  `CategoryID` int NOT NULL AUTO_INCREMENT,
+  `CategoryName` varchar(100) NOT NULL,
+  PRIMARY KEY (`CategoryID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Bảng Users
-CREATE TABLE Users (
-    UserID INT PRIMARY KEY AUTO_INCREMENT,
-    Username VARCHAR(100) NOT NULL UNIQUE,
-    PasswordHash VARCHAR(255) NOT NULL,
-    FirstName VARCHAR(100),
-    LastName VARCHAR(100),
-    RoleID INT,
-    PhoneNum VARCHAR(20),
-    RegistrationDate DATETIME DEFAULT CURRENT_TIMESTAMP,
-    IsActive BIT DEFAULT 1,
-    FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
-);
+CREATE TABLE `roles` (
+  `RoleID` int NOT NULL AUTO_INCREMENT,
+  `RoleName` varchar(100) NOT NULL,
+  PRIMARY KEY (`RoleID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Bảng Categories
-CREATE TABLE Categories (
-    CategoryID INT PRIMARY KEY AUTO_INCREMENT,
-    CategoryName VARCHAR(100) NOT NULL
-);
+INSERT INTO `roles` (`RoleID`, `RoleName`) VALUES 
+(1,'Quản lý kho'),
+(2,'Nhân viên kho'),
+(3,'Giám đốc công ty'),
+(4,'Nhân viên công ty');
 
--- Bảng Subcategories
-CREATE TABLE Subcategories (
-    SubcategoryID INT PRIMARY KEY AUTO_INCREMENT,
-    CategoryID INT,
-    SubcategoryName VARCHAR(100) NOT NULL,
-    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
-);
+CREATE TABLE `suppliers` (
+  `SupplierID` int NOT NULL AUTO_INCREMENT,
+  `SupplierName` varchar(150) NOT NULL,
+  `Address` varchar(255) DEFAULT NULL,
+  `PhoneNum` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`SupplierID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Bảng Suppliers
-CREATE TABLE Suppliers (
-    SupplierID INT PRIMARY KEY AUTO_INCREMENT,
-    SupplierName VARCHAR(150) NOT NULL,
-    Address VARCHAR(255),
-    PhoneNum VARCHAR(20)
-);
+CREATE TABLE `subcategories` (
+  `SubcategoryID` int NOT NULL AUTO_INCREMENT,
+  `CategoryID` int DEFAULT NULL,
+  `SubcategoryName` varchar(100) NOT NULL,
+  PRIMARY KEY (`SubcategoryID`),
+  KEY `CategoryID` (`CategoryID`),
+  CONSTRAINT `subcategories_ibfk_1` FOREIGN KEY (`CategoryID`) REFERENCES `categories` (`CategoryID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Bảng Facilities
-CREATE TABLE Facilities (
-    FacilityID INT PRIMARY KEY AUTO_INCREMENT,
-    FacilityName VARCHAR(150) NOT NULL,
-    CategoryID INT,
-    SubcategoryID INT,
-    SupplierID INT,
-    Image VARCHAR(255),
-    Quantity INT DEFAULT 0,
-    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID),
-    FOREIGN KEY (SubcategoryID) REFERENCES Subcategories(SubcategoryID),
-    FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
-);
+CREATE TABLE `facilities` (
+  `FacilityID` int NOT NULL AUTO_INCREMENT,
+  `FacilityName` varchar(150) NOT NULL,
+  `CategoryID` int DEFAULT NULL,
+  `SubcategoryID` int DEFAULT NULL,
+  `SupplierID` int DEFAULT NULL,
+  `Image` varchar(255) DEFAULT NULL,
+  `Quantity` int DEFAULT '0',
+  PRIMARY KEY (`FacilityID`),
+  KEY `CategoryID` (`CategoryID`),
+  KEY `SubcategoryID` (`SubcategoryID`),
+  KEY `SupplierID` (`SupplierID`),
+  CONSTRAINT `facilities_ibfk_1` FOREIGN KEY (`CategoryID`) REFERENCES `categories` (`CategoryID`),
+  CONSTRAINT `facilities_ibfk_2` FOREIGN KEY (`SubcategoryID`) REFERENCES `subcategories` (`SubcategoryID`),
+  CONSTRAINT `facilities_ibfk_3` FOREIGN KEY (`SupplierID`) REFERENCES `suppliers` (`SupplierID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Bảng FacilityConditions
-CREATE TABLE FacilityConditions (
-    FacilityID INT PRIMARY KEY,
-    NewQuantity INT DEFAULT 0,
-    UsableQuantity INT DEFAULT 0,
-    BrokenQuantity INT DEFAULT 0,
-    FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID)
-);
+CREATE TABLE `facilityconditions` (
+  `FacilityID` int NOT NULL,
+  `NewQuantity` int DEFAULT '0',
+  `UsableQuantity` int DEFAULT '0',
+  `BrokenQuantity` int DEFAULT '0',
+  PRIMARY KEY (`FacilityID`),
+  CONSTRAINT `facilityconditions_ibfk_1` FOREIGN KEY (`FacilityID`) REFERENCES `facilities` (`FacilityID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Bảng Records
-CREATE TABLE Records (
-    RecordID INT PRIMARY KEY AUTO_INCREMENT,
-    FacilityID INT,
-    Quantity INT NOT NULL,
-    Type BIT NOT NULL, -- 0: Xuất, 1: Nhập
-    ChangeDate DATETIME DEFAULT CURRENT_TIMESTAMP,
-    Note TEXT,
-    FOREIGN KEY (FacilityID) REFERENCES Facilities(FacilityID)
-);
+CREATE TABLE `records` (
+  `RecordID` int NOT NULL AUTO_INCREMENT,
+  `FacilityID` int DEFAULT NULL,
+  `Quantity` int NOT NULL,
+  `Type` bit(1) NOT NULL,
+  `ChangeDate` datetime DEFAULT CURRENT_TIMESTAMP,
+  `Note` text,
+  PRIMARY KEY (`RecordID`),
+  KEY `FacilityID` (`FacilityID`),
+  CONSTRAINT `records_ibfk_1` FOREIGN KEY (`FacilityID`) REFERENCES `facilities` (`FacilityID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `users` (
+  `UserID` int NOT NULL AUTO_INCREMENT,
+  `Username` varchar(100) NOT NULL,
+  `PasswordHash` varchar(255) NOT NULL,
+  `FirstName` varchar(100) DEFAULT NULL,
+  `LastName` varchar(100) DEFAULT NULL,
+  `RoleID` int DEFAULT NULL,
+  `PhoneNum` varchar(20) DEFAULT NULL,
+  `Address` varchar(255) DEFAULT NULL,
+  `RegistrationDate` datetime DEFAULT CURRENT_TIMESTAMP,
+  `IsActive` bit(1) DEFAULT b'1',
+  `ResetOTP` varchar(6) DEFAULT NULL,
+  `ResetOTPTime` datetime DEFAULT NULL,
+  PRIMARY KEY (`UserID`),
+  UNIQUE KEY `Username` (`Username`),
+  KEY `RoleID` (`RoleID`),
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`RoleID`) REFERENCES `roles` (`RoleID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
