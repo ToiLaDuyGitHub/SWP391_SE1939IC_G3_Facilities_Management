@@ -24,10 +24,10 @@ public class CreateNewUser {
 
     public static void main(String[] args) {
         //Dữ liệu test, trước khi chạy main hãy kiểm tra có bản ghi nào của gmail này không, nếu có thì phải xoá trước
-        String username = "nang@gmail.com";
-        String password = "123";
+        String username = "fms.quanlykho@gmail.com";
+        String password = "swp391test@";
         String passwordHash = PasswordUtil.hashPassword(password);
-        User u = new User(username, passwordHash, "Duy", "Vũ Đình", 2, "0987654321", LocalDateTime.now(), true, null, null);
+        User u = new User(username, passwordHash, "An", "Nguyễn Văn", 1, "0368686868", null, LocalDateTime.now(), true, null, null);
         saveUser(u);
     }
 
@@ -60,6 +60,7 @@ public class CreateNewUser {
 
             // 5. Thực thi và kiểm tra kết quả
             int rowsAffected = stmt.executeUpdate();
+            System.out.println("Tạo tài khoản test thành công");
             return rowsAffected > 0;
 
         } catch (SQLException e) {

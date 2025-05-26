@@ -4,16 +4,13 @@
  */
 package dao;
 
-import com.mysql.cj.x.protobuf.MysqlxSql;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.sql.Timestamp;
-import java.time.ZoneId;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import model.User;

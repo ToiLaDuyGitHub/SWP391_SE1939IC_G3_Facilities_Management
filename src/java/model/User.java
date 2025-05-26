@@ -19,6 +19,7 @@ public class User {
     private String lastName;
     private int roleID;
     private String phoneNum;
+    private String address;
     private LocalDateTime registrationDate;
     private boolean isActive;
     private String resetOTP;
@@ -30,13 +31,14 @@ public class User {
         this.roleID = roleID;
     }
 
-    public User(String username, String passwordHash, String firstName, String lastName, int roleID, String phoneNum, LocalDateTime registrationDate, boolean isActive, String resetOTP, LocalDateTime resetOTPTime) {
+    public User(String username, String passwordHash, String firstName, String lastName, int roleID, String phoneNum, String address, LocalDateTime registrationDate, boolean isActive, String resetOTP, LocalDateTime resetOTPTime) {
         this.username = username;
         this.passwordHash = passwordHash;
         this.firstName = firstName;
         this.lastName = lastName;
         this.roleID = roleID;
         this.phoneNum = phoneNum;
+        this.address = address;
         this.registrationDate = registrationDate;
         this.isActive = isActive;
         this.resetOTP = resetOTP;
@@ -48,7 +50,8 @@ public class User {
         this.resetOTPTime = resetOTPTime;
     }
 
-    public User(int userID, String username, String passwordHash, String firstName, String lastName, int roleID, String phoneNum, LocalDateTime registrationDate, boolean isActive, String resetOTP, LocalDateTime resetOTPTime) {
+    //Full-attibuted constructor
+    public User(int userID, String username, String passwordHash, String firstName, String lastName, int roleID, String phoneNum, String address, LocalDateTime registrationDate, boolean isActive, String resetOTP, LocalDateTime resetOTPTime) {
         this.userID = userID;
         this.username = username;
         this.passwordHash = passwordHash;
@@ -56,12 +59,13 @@ public class User {
         this.lastName = lastName;
         this.roleID = roleID;
         this.phoneNum = phoneNum;
+        this.address = address;
         this.registrationDate = registrationDate;
         this.isActive = isActive;
         this.resetOTP = resetOTP;
         this.resetOTPTime = resetOTPTime;
     }
-
+    
     public int getUserID() {
         return userID;
     }
@@ -117,6 +121,16 @@ public class User {
     public void setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
     }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    
+    
 
     public LocalDateTime getRegistrationDate() {
         return registrationDate;
