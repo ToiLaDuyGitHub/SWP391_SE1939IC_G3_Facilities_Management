@@ -58,7 +58,7 @@
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="dropdown-content">
-                            <a href="#" onclick="showContent('categoryListSection', this)">Xem danh mục vật tư</a>
+                            <a href="${pageContext.request.contextPath}/danhmucvattu/danh-muc-list.jsp" onclick="showContent('categoryListSection', this)">Xem danh mục vật tư</a>
                             <a href="#" onclick="showContent('addCategory', this)">Thêm mới danh mục vật tư</a>
                         </div>
                     </li>
@@ -80,11 +80,6 @@
                     <h2>Chào mừng đến với Hệ thống Quản lý</h2>
                     <p>Vui lòng chọn chức năng từ menu bên trái.</p>
                 </div>
-
-                <!-- Include Personal Information and Change Password Sections -->
-                <%@ include file="PersonalInfo.jsp" %>
-                <!-- Include Material List Section -->
-                <%@ include file="materialList.jsp" %>
 <!--                <div class="content-card hidden" id="profileSection">
                     <h2>Thông tin cá nhân</h2>
                     <div class="profile-card">
