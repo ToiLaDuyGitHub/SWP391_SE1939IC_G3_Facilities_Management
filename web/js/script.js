@@ -24,7 +24,9 @@ function toggleSection(sectionId) {
         'categoryDungCuCamTaySection',
         'categoryGianGiaoSection',
         'categoryMayHanSection',
-        'genericSection'
+        'genericSection',
+        'materialListSection',
+        'addMaterialSection'
     ];
     sections.forEach(id => {
         const section = document.getElementById(id);
@@ -50,7 +52,11 @@ function showContent(sectionId, element) {
         addMaterial: "Thêm mới vật tư"
     };
 
-    if (sectionMap[sectionId]) {
+    if (sectionId === 'materialList') {
+        toggleSection('materialListSection');
+    } else if (sectionId === 'addMaterial') {
+        toggleSection('addMaterialSection');
+    } else if (sectionMap[sectionId]) {
         genericSection.innerHTML = `
             <h2>${sectionMap[sectionId]}</h2>
             <p>Đây là nội dung của chức năng "${sectionMap[sectionId]}".</p>
@@ -63,6 +69,8 @@ function showContent(sectionId, element) {
     highlightMenuItem(element);
     closeSidebarOnMobile();
 }
+
+
 
 function openEditModal() {
     const modal = document.getElementById('editModal');
@@ -97,6 +105,31 @@ function saveChanges() {
         form.submit(); 
     } else {
         console.error("Không tìm thấy form trong modal");
+    }
+}
+
+function handleFormSubmit(event) {
+    event.preventDefault();
+    const form = document.getElementById('addMaterialForm');
+    const successMessage = document.getElementById('successMessage');
+    if (form && successMessage) {
+        console.log("Form data:", new FormData(form));
+        successMessage.classList.remove('hidden');
+        setTimeout(() => {
+            successMessage.classList.add('hidden');
+            form.reset();
+        }, 3000);
+    }
+}
+
+function resetForm() {
+    const form = document.getElementById('addMaterialForm');
+    const successMessage = document.getElementById('successMessage');
+    if (form) {
+        form.reset();
+    }
+    if (successMessage) {
+        successMessage.classList.add('hidden');
     }
 }
 

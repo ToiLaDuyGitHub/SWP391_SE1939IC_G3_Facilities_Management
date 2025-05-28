@@ -82,6 +82,9 @@
                 </div>
 
                 <!-- Include Personal Information and Change Password Sections -->
+                <%@ include file="PersonalInfo.jsp" %>
+                <!-- Include Material List Section -->
+                <%@ include file="materialList.jsp" %>
 <!--                <div class="content-card hidden" id="profileSection">
                     <h2>Thông tin cá nhân</h2>
                     <div class="profile-card">
@@ -167,6 +170,8 @@
                 </div>-->
 
                 <!-- Material Categories Section -->
+                <!-- Include Add Material Section -->
+                <%@ include file="addMaterial.jsp" %>
                 <div class="content-card hidden" id="categoryListSection">
                     <h2>Danh mục vật tư</h2>
                     <ul class="category-list">
