@@ -92,15 +92,12 @@ function closeEditModal() {
 }
 
 function saveChanges() {
-    const updatedData = {
-        name: document.getElementById('editName').value,
-        email: document.getElementById('editEmail').value,
-        phone: document.getElementById('editPhone').value,
-        address: document.getElementById('editAddress').value
-    };
-    console.log("Saving data:", updatedData);
-    alert('Thông tin đã được lưu!');
-    closeEditModal();
+    const form = document.querySelector('#editModal form');
+    if (form) {
+        form.submit(); 
+    } else {
+        console.error("Không tìm thấy form trong modal");
+    }
 }
 
 window.onclick = function(event) {

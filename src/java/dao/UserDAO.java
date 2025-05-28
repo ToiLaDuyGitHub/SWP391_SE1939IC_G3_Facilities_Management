@@ -36,13 +36,13 @@ public class UserDAO {
 
     // Lấy thông tin người dùng và vai trò
     public User_Role getUserWithRole(String username) {
-        String sql = "SELECT u.FirstName, u.LastName, u.Username, u.PhoneNum, r.RoleName " +
-                     "FROM users u " +
-                     "LEFT JOIN roles r ON u.RoleID = r.RoleID " +
-                     "WHERE u.Username = ?";
+        String sql = "SELECT u.FirstName, u.LastName, u.Username, u.PhoneNum, u.Address, r.RoleName "
+                + "FROM users u "
+                + "LEFT JOIN roles r ON u.RoleID = r.RoleID "
+                + "WHERE u.Username = ?";
 
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (
+                Connection conn = DBUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, username);
 
@@ -52,9 +52,9 @@ public class UserDAO {
                     String lastName = rs.getString("LastName");
                     String userName = rs.getString("Username");
                     String phoneNum = rs.getString("PhoneNum");
+                    String address = rs.getString("Address");
                     String roleName = rs.getString("RoleName");
-
-                    return new User_Role(userName, firstName, lastName, phoneNum, roleName);
+                    return new User_Role(userName, firstName, lastName, phoneNum, address, roleName);
                 }
             }
         } catch (SQLException e) {
@@ -62,6 +62,7 @@ public class UserDAO {
         }
         return null;
     }
+
     // Kiểm tra thông tin đăng nhập
     public static boolean validateUser(String username, String rawPassword) {
         String sql = "SELECT PasswordHash FROM users WHERE username = ?";
@@ -289,5 +290,61 @@ public class UserDAO {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }     
+    //update thông tin các nhân người dùng
+    public void updateUserProfile(String username, String firstName, String lastName, String phone, String address) throws SQLException {
+        // Kiểm tra dữ liệu đầu vào
+        if (firstName == null || firstName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Họ không được để trống.");
+        }
+        if (lastName == null || lastName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Tên không được để trống.");
+        }
+        if (phone == null || phone.trim().isEmpty() || !isValidPhone(phone)) {
+            throw new IllegalArgumentException("Số điện thoại không hợp lệ (phải có 10-11 chữ số và bắt đầu bằng 0).");
+        }
+        if (address == null || address.trim().isEmpty()) {
+            throw new IllegalArgumentException("Địa chỉ không được để trống.");
+        }
+
+        // Câu lệnh SQL để cập nhật thông tin người dùng
+        String sql = "UPDATE users SET FirstName = ?, LastName = ?, PhoneNum = ?, Address = ? WHERE Username = ?";
+        try (Connection conn = DBUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            // Gán giá trị cho các tham số
+            stmt.setString(1, firstName);
+            stmt.setString(2, lastName);
+            stmt.setString(3, phone);
+            stmt.setString(4, address);
+
+            // Thực thi câu lệnh cập nhật
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Cập nhật thông tin thất bại, không tìm thấy user: " + username);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Hàm kiểm tra số điện thoại hợp lệ
+    private boolean isValidPhone(String phone) {
+        if (phone == null) {
+            return false;
+        }
+        // Kiểm tra độ dài: phải từ 10 đến 11 chữ số
+        if (phone.length() < 10 || phone.length() > 11) {
+            return false;
+        }
+        // Kiểm tra bắt đầu bằng 0
+        if (!phone.startsWith("0")) {
+            return false;
+        }
+        // Kiểm tra tất cả ký tự là số (0-9)
+        for (char c : phone.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 

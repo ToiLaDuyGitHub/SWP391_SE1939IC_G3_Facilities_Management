@@ -15,14 +15,16 @@ public class User_Role {
     private String username;
     private String firstName;
     private String lastName;
-    private String phoneNum ;
+    private String phoneNum ;   
+    private String address;
     private String roleName ;
     
-    public User_Role(String username,String firstName, String lastName,String phoneNum, String roleName ){
+    public User_Role(String username,String firstName, String lastName,String phoneNum,String address, String roleName ){
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.phoneNum = phoneNum;
+        this.phoneNum = phoneNum;        
+        this.address = address;
         this.roleName = roleName;
     }
 
@@ -44,6 +46,14 @@ public class User_Role {
 
     public String getRoleName() {
         return roleName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
     
 }

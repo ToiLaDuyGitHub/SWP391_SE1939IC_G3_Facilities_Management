@@ -24,10 +24,10 @@ public class CreateNewUser {
 
     public static void main(String[] args) {
         //Dữ liệu test, trước khi chạy main hãy kiểm tra có bản ghi nào của gmail này không, nếu có thì phải xoá trước
-        String username = "fms.quanlykho@gmail.com";
-        String password = "swp391test@";
+        String username = "nang@gmail.com";
+        String password = "12345678";
         String passwordHash = PasswordUtil.hashPassword(password);
-        User u = new User(username, passwordHash, "An", "Nguyễn Văn", 1, "0368686868", null, LocalDateTime.now(), true, null, null);
+        User u = new User(username, passwordHash, "Đào Văn", "Năng", 1, "0987654321", "Nhân Nghĩa, Lý Nhân, Hà Nam", LocalDateTime.now(), true, null, null);
         saveUser(u);
     }
 
