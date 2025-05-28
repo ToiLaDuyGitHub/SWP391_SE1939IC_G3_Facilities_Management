@@ -65,6 +65,19 @@ public class User {
         this.resetOTP = resetOTP;
         this.resetOTPTime = resetOTPTime;
     }
+
+    public User(int userID, String username, String firstName, String lastName, String phoneNum, boolean isActive) {
+        this.userID = userID;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNum = phoneNum;
+        this.isActive = isActive;
+    }
+
+    public User() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
     public int getUserID() {
         return userID;
