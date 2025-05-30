@@ -702,7 +702,7 @@ body::before {
 .hidden {
     display: none;
 }
- /*hien thi vat tu*/
+/*hien thi vat tu*/
 .material-table {
     width: 100%;
     border-collapse: collapse;
@@ -887,5 +887,15 @@ body::before {
     .form-group .submit-btn,
     .form-group .cancel-btn {
         width: 100%;
+    }
+    .success-message {
+        color: green;
+        margin-top: 10px;
+        text-align: center;
+    }
+    .error-message {
+        color: red;
+        margin-top: 10px;
+        text-align: center;
     }
 }

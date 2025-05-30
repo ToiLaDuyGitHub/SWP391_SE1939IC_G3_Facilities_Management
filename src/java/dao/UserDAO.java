@@ -314,6 +314,7 @@ public class UserDAO {
             stmt.setString(2, lastName);
             stmt.setString(3, phone);
             stmt.setString(4, address);
+            stmt.setString(5, username);
 
             // Thực thi câu lệnh cập nhật
             int affectedRows = stmt.executeUpdate();

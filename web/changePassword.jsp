@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="model.dto.User_Role" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -50,12 +51,21 @@
                     </li>
                     <li class="dropdown">
                         <div class="dropdown-toggle" onclick="toggleDropdown(this)">
+                            <span><i class="fas fa-boxes"></i>Phân quyền</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-content">
+                            <a href="Decentralization.jsp" onclick="showContent('materialList', this)">Phân quyền chức năng</a>
+                        </div>
+                    </li>
+                    <li class="dropdown active">
+                        <div class="dropdown-toggle" onclick="toggleDropdown(this)">
                             <span><i class="fas fa-user"></i> Thông tin cá nhân</span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="dropdown-content">
-                            <a href="Profile" onclick="showContent('profileSection', this)">Xem thông tin cá nhân</a>
-                            <a href="#" onclick="showContent('changePasswordSection', this)">Thay đổi mật khẩu</a>
+                            <a href="${pageContext.request.contextPath}/Profile">Xem thông tin cá nhân</a>
+                            <a href="${pageContext.request.contextPath}/changePassword" style="color: blue; background-color: orange;" onclick="showContent('changePasswordSection', this)">Thay đổi mật khẩu</a>
                         </div>
                     </li>
                     <li class="dropdown">
@@ -81,11 +91,9 @@
                 </ul>
             </div>
             <div class="content" id="contentArea">
-
-                <div class="content-card hidden" id="changePasswordSection">
-                    <h2>Thay đổi mật khẩu</h2>
+                <div class="content-card" id="changePasswordSection">
+                    <h2 class="fas fa-lock"> Thay đổi mật khẩu</h2>
                     <div class="profile-card">
-                        <h3><i class="fas fa-lock"></i> Thay đổi mật khẩu</h3>
                         <form action="changePassword" method="post">
                             <div class="form-row">
                                 <label for="currentPassword">Mật khẩu hiện tại:</label>
@@ -100,22 +108,28 @@
                                 <input type="password" id="confirmPassword" name="confirmPassword" required>
                             </div>
                             <button type="submit">Thay đổi mật khẩu</button>
+                            <c:if test="${not empty requestScope.error}">
+                                <p class="error-message" style="color: red;">${requestScope.error}</p>
+                            </c:if>
+                            <c:if test="${not empty requestScope.success}">
+                                <p class="success-message" style="color: green;">${requestScope.success}</p>
+                            </c:if>
                         </form>
                     </div>
                 </div>
-                <!-- Placeholder for static sections -->
                 <div class="content-card hidden" id="genericSection"></div>
             </div>
+            <!-- Placeholder for static sections -->
+            <div class="content-card hidden" id="genericSection"></div>
         </div>
-        <script src="<%= request.getContextPath() %>/js/script.js"></script>
-        <script>
-                                // Tự động hiển thị profileSection khi trang Profile.jsp được tải
-                                document.addEventListener('DOMContentLoaded', function () {
-                                    const profileSection = document.getElementById('profileSection');
-                                    if (profileSection) {
-                                        profileSection.classList.remove('hidden');
-                                    }
-                                });
-        </script>
-    </body>
+    </div>
+    <script src="<%= request.getContextPath() %>/js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileSection = document.getElementById('changePasswordSection');
+            if (profileSection) {
+                profileSection.classList.remove('hidden');
+            }
+    </script>
+</body>
 </html>

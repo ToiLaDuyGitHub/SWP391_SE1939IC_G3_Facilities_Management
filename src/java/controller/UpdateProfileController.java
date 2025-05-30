@@ -92,6 +92,18 @@ public class UpdateProfileController extends HttpServlet {
         String lastName = request.getParameter("editLastName");
         String phone = request.getParameter("editPhone");
         String address = request.getParameter("editAddress");
+        // Kiểm tra xem có thay đổi nào trong dữ liệu hay không
+        boolean isUnchanged = firstName.equals(userRole.getFirstName()) &&
+                             lastName.equals(userRole.getLastName()) &&
+                             phone.equals(userRole.getPhoneNum()) &&
+                             address.equals(userRole.getAddress());
+
+        if (isUnchanged) {
+            // Nếu không có thay đổi, chỉ chuyển tiếp về trang Profile.jsp mà không đặt thông báo
+            request.setAttribute("userRole", userRole);
+            request.getRequestDispatcher("Profile.jsp").forward(request, response);
+            return;
+        }
         try {
             // Cập nhật thông tin người dùng qua UserDAO
             userDAO.updateUserProfile(username, firstName, lastName, phone, address);
@@ -104,9 +116,11 @@ public class UpdateProfileController extends HttpServlet {
             request.setAttribute("successMessage", "Cập nhật thông tin thành công!");
         } catch (SQLException e) {
             e.printStackTrace();
+            request.setAttribute("errorMessage", "Có lỗi xảy ra khi cập nhật thông tin. Vui lòng thử lại.");
         }        
         // Chuyển tiếp về trang Profile
-        response.sendRedirect(request.getContextPath() + "/Profile");
+        request.setAttribute("userRole", userRole);
+        request.getRequestDispatcher("Profile.jsp").forward(request, response);
     }
 }
 
