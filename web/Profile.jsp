@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="model.dto.User_Role" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,7 +15,19 @@
         <title>Hệ thống Quản lý Xây dựng - Trang chủ</title>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-        <link rel="stylesheet" href="<%= request.getContextPath() %>/css/styles.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+        <style>
+            .success-message {
+                color: green;
+                margin-top: 10px;
+                text-align: center;
+            }
+            .error-message {
+                color: red;
+                margin-top: 10px;
+                text-align: center;
+            }
+        </style>
     </head>
     <body>
         <div id="dashboard">
@@ -26,7 +39,10 @@
                         <i class="fas fa-user-circle"></i>
                         <div class="tooltip">
                             <p class="position">Quản lý</p>
-                            <p>${not empty sessionScope.user ? sessionScope.user.fullName : 'Chưa đăng nhập'}</p>
+                            <p><c:choose>
+                                <c:when test="${not empty sessionScope.user}">${sessionScope.user.fullName}</c:when>
+                                <c:otherwise>Chưa đăng nhập</c:otherwise>
+                            </c:choose></p>
                         </div>
                     </div>
                     <form action="${pageContext.request.contextPath}/logout" method="post" style="display: inline;">
@@ -50,12 +66,21 @@
                     </li>
                     <li class="dropdown">
                         <div class="dropdown-toggle" onclick="toggleDropdown(this)">
+                            <span><i class="fas fa-boxes"></i>Phân quyền</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-content">
+                            <a href="Decentralization.jsp" onclick="showContent('materialList', this)">Phân quyền chức năng</a>
+                        </div>
+                    </li>
+                    <li class="dropdown active">
+                        <div class="dropdown-toggle" onclick="toggleDropdown(this)">
                             <span><i class="fas fa-user"></i> Thông tin cá nhân</span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="dropdown-content">
-                            <a href="${pageContext.request.contextPath}/Profile">Xem thông tin cá nhân</a>
-                            <a href="#" onclick="showContent('changePasswordSection', this)">Thay đổi mật khẩu</a>
+                            <a href="${pageContext.request.contextPath}/Profile" style="color: blue; background-color: orange;">Xem thông tin cá nhân</a>
+                            <a href="${pageContext.request.contextPath}/changePassword">Thay đổi mật khẩu</a>
                         </div>
                     </li>
                     <li class="dropdown">
@@ -86,76 +111,85 @@
                     <h2>Thông tin cá nhân</h2>
                     <div class="profile-card">
                         <h3><i class="fas fa-user-circle"></i> Hồ sơ cá nhân</h3>
-                        <%
-                            User_Role userRole = (User_Role) session.getAttribute("userRole");
-                            if (userRole != null) {
-                        %>
-                        <div class="info-row">
-                            <label>Họ và tên:</label>
-                            <span><%= userRole.getLastName() + " " + userRole.getFirstName() %></span>
-                        </div>
-                        <div class="info-row">
-                            <label>Email:</label>
-                            <span><%= userRole.getUsername() %></span>
-                        </div>
-                        <div class="info-row">
-                            <label>Số điện thoại:</label>
-                            <span><%= userRole.getPhoneNum() %></span>
-                        </div>
-                        <div class="info-row">
-                            <label>Địa chỉ:</label>
-                            <span><%= userRole.getAddress()%></span>
-                        </div>
-                        <div class="info-row">
-                            <label>Vai trò:</label>
-                            <span><%= userRole.getRoleName() %></span>
-                        </div>
-                        <button onclick="openEditModal()">Thay đổi</button>
-                        <% } else { %>
-                        <p>Không tìm thấy thông tin người dùng. Vui lòng đăng nhập lại.</p>
-                        <% } %>
+                        <c:choose>
+                            <c:when test="${not empty sessionScope.userRole}">
+                                <div class="info-row">
+                                    <label>Họ và tên:</label>
+                                    <span>${sessionScope.userRole.lastName} ${sessionScope.userRole.firstName}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Email:</label>
+                                    <span>${sessionScope.userRole.username}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Số điện thoại:</label>
+                                    <span>${sessionScope.userRole.phoneNum}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Địa chỉ:</label>
+                                    <span>${sessionScope.userRole.address}</span>
+                                </div>
+                                <div class="info-row">
+                                    <label>Vai trò:</label>
+                                    <span>${sessionScope.userRole.roleName}</span>
+                                </div>
+                                <button onclick="openEditModal()">Thay đổi</button>
+                            </c:when>
+                            <c:otherwise>
+                                <p>Không tìm thấy thông tin người dùng. Vui lòng đăng nhập lại.</p>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
-
 
                 <!-- Edit Modal -->
                 <div id="editModalOverlay" class="modal-overlay"></div>
                 <div id="editModal" class="modal">
                     <span class="close" onclick="closeEditModal()">×</span>
                     <h3>Chỉnh sửa thông tin cá nhân</h3>
-                    <form action="${pageContext.request.contextPath}/updateProfile" method="post">
+                    <form action="${pageContext.request.contextPath}/UpdateProfile" method="post">
                         <div class="form-row">
                             <label for="editLastName">Họ:</label>
-                            <input type="text" id="editLastName" name="editLastName" value="<%=  userRole.getLastName()  %>">
+                            <input type="text" id="editLastName" name="editLastName" value="${sessionScope.userRole.lastName}">
                         </div>
                         <div class="form-row">
                             <label for="editFirstName">Tên:</label>
-                            <input type="text" id="editFirstName" name="editFirstName" value="<%= userRole.getFirstName()  %>">
+                            <input type="text" id="editFirstName" name="editFirstName" value="${sessionScope.userRole.firstName}">
                         </div>
                         <div class="form-row">
                             <label for="editPhone">Số điện thoại:</label>
-                            <input type="tel" id="editPhone" name="editPhone" value="<%= userRole.getPhoneNum()  %>">
+                            <input type="tel" id="editPhone" name="editPhone" value="${sessionScope.userRole.phoneNum}">
                         </div>
                         <div class="form-row">
                             <label for="editAddress">Địa chỉ:</label>
-                            <input type="text" id="editAddress" name="editAddress" value="<%= userRole.getAddress()  %>">
+                            <input type="text" id="editAddress" name="editAddress" value="${sessionScope.userRole.address}">
                         </div>
                         <button type="submit">Lưu thay đổi</button>
+                        <c:if test="${not empty requestScope.successMessage}">
+                            <p class="success-message">${requestScope.successMessage}</p>
+                        </c:if>
+                        <c:if test="${not empty requestScope.errorMessage}">
+                            <p class="error-message">${requestScope.errorMessage}</p>
+                        </c:if>
                     </form>
                 </div>
                 <!-- Placeholder for static sections -->
                 <div class="content-card hidden" id="genericSection"></div>
             </div>
         </div>
-        <script src="<%= request.getContextPath() %>/js/script.js"></script>
+        <script src="${pageContext.request.contextPath}/js/script.js"></script>
         <script>
-                        // Tự động hiển thị profileSection khi trang Profile.jsp được tải
-                        document.addEventListener('DOMContentLoaded', function () {
-                            const profileSection = document.getElementById('profileSection');
-                            if (profileSection) {
-                                profileSection.classList.remove('hidden');
-                            }
-                        });
+            // Tự động hiển thị profileSection khi trang Profile.jsp được tải
+            document.addEventListener('DOMContentLoaded', function () {
+                const profileSection = document.getElementById('profileSection');
+                if (profileSection) {
+                    profileSection.classList.remove('hidden');
+                }
+                // Tự động mở modal nếu có thông báo thành công hoặc lỗi
+                <c:if test="${not empty requestScope.successMessage or not empty requestScope.errorMessage}">
+                    openEditModal();
+                </c:if>
+            });
         </script>
     </body>
 </html>
