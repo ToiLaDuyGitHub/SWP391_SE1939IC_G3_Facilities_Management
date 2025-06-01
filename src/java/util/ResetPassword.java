@@ -23,7 +23,7 @@ import java.util.Properties;
 public class ResetPassword {
 
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    private static final int LENGTH = 6; // Độ dài chuỗi là 6 ký tự
+    private static final int LENGTH = 8; // Độ dài chuỗi là 6 ký tự
 
     public static String generateRandomString() {
         SecureRandom random = new SecureRandom();
@@ -61,7 +61,7 @@ public class ResetPassword {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(fromEmail, senderName, "UTF-8")); // Thêm charset
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
-            String subject = "🔑 OTP Code Password Recovery";
+            String subject = "🔑 Password Recovery";
             message.setSubject(MimeUtility.encodeText(subject, "UTF-8", "B"));
 
             // HTML Template siêu đẹp
@@ -155,7 +155,7 @@ public class ResetPassword {
                         
                     <div class="content">
                         <p>Hello,</p>
-                        <p>You have requested a password reset from our system. Please use the following OTP code:</p>
+                        <p>You have requested a password reset from our system. Please use the following NEW password:</p>
                         
                         <div class="otp-box">
                             {OTP}
@@ -163,12 +163,12 @@ public class ResetPassword {
                         
                         <p>This OTP is valid for <strong>5 minutes</strong>. For account security:</p>
                         <ul>
-                            <li>Do not share this code with anyone</li>
+                            <li>Do not share this password with anyone</li>
                             <li>Delete this email after use</li>
                         </ul>
                         
                         <div class="note">
-                            <p>If you didn't request this code, please ignore this email or contact support.</p>
+                            <p>If you didn't request this password, please ignore this email or contact support.</p>
                         </div>
                     </div>
                     
