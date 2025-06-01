@@ -9,6 +9,17 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link rel="stylesheet" href="<%= request.getContextPath() %>/css/styles.css">
     </head>
+    <script>
+    window.onload = function() {
+        <% if (request.getAttribute("allUser") != null) { %>
+            toggleSection('userList');
+        <% } else if (request.getAttribute("detailUser") != null) { %>
+            toggleSection('userDetail');
+        <% } else { %>
+            toggleSection('welcomeSection');
+        <% } %>
+    }
+</script>
     <body>
         <div id="dashboard">
             <div class="header">
@@ -36,7 +47,7 @@
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="dropdown-content">
-                            <a href="${pageContext.request.contextPath}/Userctr?service=listAllUser">Xem danh sách người dùng</a>
+                            <a href="<%= request.getContextPath() %>/Userctr?service=listAllUser" onclick="showContent('userList', this)">Xem danh sách người dùng</a>
                             <a href="#" onclick="showContent('addUser', this)">Thêm mới người dùng</a>
                             <a href="#" onclick="showContent('editUser', this)">Sửa thông tin người dùng</a>
                         </div>
@@ -82,6 +93,7 @@
 
                 <!-- Include Personal Information and Change Password Sections -->
                 <%@ include file="PersonalInfo.jsp" %>
+                <%@ include file="Admin_UserManager.jsp" %>
 
                 <!-- Material Categories Section -->
                 <div class="content-card hidden" id="categoryListSection">
