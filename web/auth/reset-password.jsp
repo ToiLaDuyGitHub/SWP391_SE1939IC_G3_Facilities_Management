@@ -21,7 +21,7 @@
         <div class="login-container">
             <h2>Reset mật khẩu</h2>
             <p>Vui lòng nhập gmail đã được đăng ký<br/>
-                trên hệ thống để nhận mã OTP</p>
+                trên hệ thống để tạo lệnh reset mật khẩu</p>
 
             <!-- Hiển thị thông báo lỗi nếu có -->
             <c:if test="${not empty errorMessage}">
@@ -31,7 +31,7 @@
             <!-- Form gửi đến Servlet -->
             <form action="reset-password" method="post">
                 <input type="text" name="username" placeholder="Gmail của bạn..." required>
-                <button type="submit">Nhận mã OTP</button>
+                <button type="submit">Yêu cầu reset mật khẩu</button>
             </form>
 
             <a href="<%= request.getContextPath() %>/login">Bạn đã có tài khoản?</a>

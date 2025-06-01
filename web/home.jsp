@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="model.dto.User_Role" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -50,6 +51,16 @@
                             <a href="<%= request.getContextPath() %>/Userctr?service=listAllUser" onclick="showContent('userList', this)">Xem danh sách người dùng</a>
                             <a href="#" onclick="showContent('addUser', this)">Thêm mới người dùng</a>
                             <a href="#" onclick="showContent('editUser', this)">Sửa thông tin người dùng</a>
+                            <a href="${pageContext.request.contextPath}/reset-password-request-list">Danh sách yêu cầu reset mật khẩu</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <div class="dropdown-toggle" onclick="toggleDropdown(this)">
+                            <span><i class="fas fa-boxes"></i>Phân quyền</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-content">
+                            <a href="Decentralization.jsp" onclick="showContent('changePasswordSection', this)">Phân quyền chức năng</a>
                         </div>
                     </li>
                     <li class="dropdown">
@@ -58,8 +69,8 @@
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="dropdown-content">
-                            <a href="#" onclick="showContent('profileSection', this)">Xem thông tin cá nhân</a>
-                            <a href="#" onclick="showContent('changePasswordSection', this)">Thay đổi mật khẩu</a>
+                            <a href="${pageContext.request.contextPath}/Profile">Xem thông tin cá nhân</a>
+                            <a href="${pageContext.request.contextPath}/changePassword">Thay đổi mật khẩu</a>
                         </div>
                     </li>
                     <li class="dropdown">
@@ -68,7 +79,7 @@
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="dropdown-content">
-                            <a href="#" onclick="showContent('categoryListSection', this)">Xem danh mục vật tư</a>
+                            <a href="${pageContext.request.contextPath}/danhmucvattu/danh-muc-list.jsp" onclick="showContent('categoryListSection', this)">Xem danh mục vật tư</a>
                             <a href="#" onclick="showContent('addCategory', this)">Thêm mới danh mục vật tư</a>
                         </div>
                     </li>
@@ -90,6 +101,7 @@
                     <h2>Chào mừng đến với Hệ thống Quản lý</h2>
                     <p>Vui lòng chọn chức năng từ menu bên trái.</p>
                 </div>
+
 
                 <!-- Include Personal Information and Change Password Sections -->
                 <%@ include file="PersonalInfo.jsp" %>

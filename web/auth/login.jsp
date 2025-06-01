@@ -40,7 +40,7 @@
                 <button type="submit">Đăng nhập</button>
             </form>
 
-            <a href="<%= request.getContextPath() %>/reset-password">Quên mật khẩu?</a>
+            <a href="<%= request.getContextPath() %>/reset-password">Bạn cần reset mật khẩu?</a>
         </div>
     </div>
 
