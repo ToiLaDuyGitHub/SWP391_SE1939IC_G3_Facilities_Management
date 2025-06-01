@@ -36,7 +36,7 @@ public class AuthFilter implements Filter {
         }
 
         // Rule 1: Đã đăng nhập mà cố truy cập trang login/register → về home
-        if (isLoggedIn && (path.startsWith("/login") || path.startsWith("/reset-password") || path.startsWith("/reset-otp") || path.startsWith("/create-new-password"))) {
+        if (isLoggedIn && (path.startsWith("/login") || path.equals("/reset-password"))) {
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/home");
             return;
         }

@@ -11,11 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import model.User;
-import util.ResetPassword;
 
 /**
  *
@@ -25,12 +21,10 @@ import util.ResetPassword;
 public class ResetPasswordController extends HttpServlet {
 
     private UserDAO userDAO;
-    private ResetPassword resetPassword;
 
     @Override
     public void init() throws ServletException {
         userDAO = new UserDAO();
-        resetPassword = new ResetPassword();
     }
 
     @Override
@@ -42,35 +36,31 @@ public class ResetPasswordController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
-        User user = userDAO.getUsersResetOTPTime(username);
+        User user = userDAO.getUserWithResetRequest(username);
         if (user == null) {
             request.setAttribute("errorMessage", "Gmail bạn đã nhập<br/>không tồn tại trong hệ thống!");
             request.getRequestDispatcher("/auth/reset-password.jsp").forward(request, response);
             return;
         }
-        if (user != null && user.getResetOTPTime() != null
-                && Duration.between(user.getResetOTPTime().minusHours(7), LocalDateTime.now()).toMinutes() < 5) {
-            //Do LocalDateTime sử dụng múi giờ GMT+7, tuy nhiên dữ liệu từ DB lại quay lại GMT+0 nên phải trừ đi
-            LocalDateTime timeToRequestAgain = user.getResetOTPTime().minusHours(7).plusMinutes(5);
-            // Định dạng thời gian dễ đọc hơn
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-            String formattedTime = timeToRequestAgain.format(formatter);
-
-            request.setAttribute("errorMessage", "Bạn đã yêu cầu một mã Reset OTP gần đây. Vui lòng sử dụng mã đã được gửi vào "
-                    + "gmail của bạn, hoặc đợi đến " + formattedTime + " để có thể yêu cầu một mã mới.");
+        if (user != null && user.isIsResetRequested()) {
+            request.setAttribute("errorMessage", "Tài khoản được liên kết với gmail " + username + " đã được tạo yêu cầu thay đổi"
+                    + " mật khẩu trước đó. Vui lòng đợi mail cấp thông tin mật khẩu mới.");
             request.setAttribute("username", username);
-            request.getRequestDispatcher("/auth/reset-password-otp.jsp").forward(request, response);
-            return; // Quan trọng: Dừng xử lý tiếp
+            request.getRequestDispatcher("/auth/login.jsp").forward(request, response);
+            return;
         }
-        // Thêm vào đầu controller
-        response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
-        String resetOTP = resetPassword.generateRandomString();
-        userDAO.updateResetOTP(username, resetOTP);
-        resetPassword.sendEmail(username, resetOTP);
-        request.setAttribute("successMessage", "Một mã OTP đã được gửi tới gmail của bạn. Vui lòng nhập mã để xác nhận tài khoản thuộc về bạn.");
-        request.setAttribute("username", username);
-        request.getRequestDispatcher("/auth/reset-password-otp.jsp").forward(request, response);
-        return;
+        boolean checkRequest = userDAO.requestResetPassword(username);
+        if (checkRequest) {
+            request.setAttribute("successMessage", "Tạo lệnh yêu cầu reset mật khẩu cho tài khoản " + username + " thành công. Vui lòng đợi xét duyệt để nhận mật khẩu mới.");
+            request.setAttribute("username", username);
+            request.getRequestDispatcher("/auth/login.jsp").forward(request, response);
+            return;
+        }
+        else {
+            request.setAttribute("errorMessage", "Đã xảy ra lỗi khi tạo lệnh yêu cầu reset mật khẩu cho tài khoản " + username + ". Vui lòng thử lại.");
+            request.setAttribute("username", username);
+            request.getRequestDispatcher("/auth/login.jsp").forward(request, response);
+            return;
+        }
     }
 }

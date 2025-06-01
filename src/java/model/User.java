@@ -22,8 +22,7 @@ public class User {
     private String address;
     private LocalDateTime registrationDate;
     private boolean isActive;
-    private String resetOTP;
-    private LocalDateTime resetOTPTime;
+    private boolean isResetRequested;
 
     public User(int userID, String username, int roleID) {
         this.userID = userID;
@@ -31,7 +30,7 @@ public class User {
         this.roleID = roleID;
     }
 
-    public User(String username, String passwordHash, String firstName, String lastName, int roleID, String phoneNum, String address, LocalDateTime registrationDate, boolean isActive, String resetOTP, LocalDateTime resetOTPTime) {
+    public User(String username, String passwordHash, String firstName, String lastName, int roleID, String phoneNum, String address, LocalDateTime registrationDate, boolean isActive, boolean isResetRequested) {
         this.username = username;
         this.passwordHash = passwordHash;
         this.firstName = firstName;
@@ -41,17 +40,11 @@ public class User {
         this.address = address;
         this.registrationDate = registrationDate;
         this.isActive = isActive;
-        this.resetOTP = resetOTP;
-        this.resetOTPTime = resetOTPTime;
-    }
-
-    public User(String username, LocalDateTime resetOTPTime) {
-        this.username = username;
-        this.resetOTPTime = resetOTPTime;
+        this.isResetRequested = isResetRequested;
     }
 
     //Full-attibuted constructor
-    public User(int userID, String username, String passwordHash, String firstName, String lastName, int roleID, String phoneNum, String address, LocalDateTime registrationDate, boolean isActive, String resetOTP, LocalDateTime resetOTPTime) {
+    public User(int userID, String username, String passwordHash, String firstName, String lastName, int roleID, String phoneNum, String address, LocalDateTime registrationDate, boolean isActive, boolean isResetRequested) {
         this.userID = userID;
         this.username = username;
         this.passwordHash = passwordHash;
@@ -62,9 +55,9 @@ public class User {
         this.address = address;
         this.registrationDate = registrationDate;
         this.isActive = isActive;
-        this.resetOTP = resetOTP;
-        this.resetOTPTime = resetOTPTime;
+        this.isResetRequested = isResetRequested;
     }
+    
 
     public User(int userID, String username, String firstName, String lastName, String phoneNum, boolean isActive) {
         this.userID = userID;
@@ -77,6 +70,18 @@ public class User {
 
     public User() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public User(String username, boolean isResetRequested) {
+        this.username = username;
+        this.isResetRequested = isResetRequested;
+    }
+
+    public User(String username, String firstName, String lastName, boolean isResetRequested) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.isResetRequested = isResetRequested;
     }
     
     public int getUserID() {
@@ -161,19 +166,11 @@ public class User {
         this.isActive = isActive;
     }
 
-    public String getResetOTP() {
-        return resetOTP;
+    public boolean isIsResetRequested() {
+        return isResetRequested;
     }
 
-    public void setResetOTP(String resetOTP) {
-        this.resetOTP = resetOTP;
-    }
-
-    public LocalDateTime getResetOTPTime() {
-        return resetOTPTime;
-    }
-
-    public void setResetOTPTime(LocalDateTime resetOTPTime) {
-        this.resetOTPTime = resetOTPTime;
+    public void setIsResetRequested(boolean isResetRequested) {
+        this.isResetRequested = isResetRequested;
     }
 }
