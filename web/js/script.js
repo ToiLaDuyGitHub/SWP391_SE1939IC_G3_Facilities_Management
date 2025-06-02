@@ -207,3 +207,15 @@ function showPermissions() {
     highlightMenuItem(permissionLink);
     closeSidebarOnMobile();
 }
+
+function showMaterialDetail(name, category, subcategory, supplier, quantity, image) {
+    document.getElementById('materialName').value = name;
+    document.getElementById('category').value = category;
+    document.getElementById('subcategory').value = subcategory;
+    document.getElementById('supplier').value = supplier;
+    document.getElementById('quantity').value = quantity;
+    document.getElementById('imageUrl').value = image;
+    document.querySelector('#editModal img').src = image;
+
+    openEditModal();
+}

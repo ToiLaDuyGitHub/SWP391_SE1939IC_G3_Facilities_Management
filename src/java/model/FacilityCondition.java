@@ -9,47 +9,53 @@ package model;
  * @author ToiLaDuyGitHub
  */
 public class FacilityCondition {
-    private int facilityID;
-    private int newQuantity;
-    private int usableQuantity;
-    private int brokenQuantity;
+    private int FacilityID;
+    private int NewQuantity;
+    private int UsableQuantity;
+    private int BrokenQuantity;
+
+ 
 
     public FacilityCondition(int facilityID, int newQuantity, int usableQuantity, int brokenQuantity) {
-        this.facilityID = facilityID;
-        this.newQuantity = newQuantity;
-        this.usableQuantity = usableQuantity;
-        this.brokenQuantity = brokenQuantity;
+        this.FacilityID = facilityID;
+        this.NewQuantity = newQuantity;
+        this.UsableQuantity = usableQuantity;
+        this.BrokenQuantity = brokenQuantity;
     }
 
     public int getFacilityID() {
-        return facilityID;
+        return FacilityID;
     }
 
     public void setFacilityID(int facilityID) {
-        this.facilityID = facilityID;
+        this.FacilityID = facilityID;
     }
 
     public int getNewQuantity() {
-        return newQuantity;
+        return NewQuantity;
     }
 
     public void setNewQuantity(int newQuantity) {
-        this.newQuantity = newQuantity;
+        this.NewQuantity = newQuantity;
     }
 
     public int getUsableQuantity() {
-        return usableQuantity;
+        return UsableQuantity;
     }
 
     public void setUsableQuantity(int usableQuantity) {
-        this.usableQuantity = usableQuantity;
+        this.UsableQuantity = usableQuantity;
     }
 
     public int getBrokenQuantity() {
-        return brokenQuantity;
+        return BrokenQuantity;
     }
 
     public void setBrokenQuantity(int brokenQuantity) {
-        this.brokenQuantity = brokenQuantity;
+        this.BrokenQuantity = brokenQuantity;
+    }
+      @Override
+    public String toString() {
+        return "New: " + NewQuantity + ", Usable: " + UsableQuantity + ", Broken: " + BrokenQuantity;
     }
 }

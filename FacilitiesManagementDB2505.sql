@@ -268,3 +268,14 @@ INSERT INTO `facilities` (`FacilityName`, `CategoryID`, `SubcategoryID`, `Suppli
 ('Cưa máy 2000W', 10, 29, 3, 'img/chainsaw.jpg', 20),
 ('Cưa máy 1500W', 10, 29, 4, 'img/chainsaw.jpg', 15),
 ('Khoan tay 500W', 10, 30, 5, 'img/hand-drill.jpg', 30);
+INSERT INTO `facilityconditions` (`FacilityID`, `NewQuantity`, `UsableQuantity`, `BrokenQuantity`) VALUES
+(1, 40, 8, 2),  -- Búa đóng đinh 1kg: 50 tổng, 40 mới, 8 sử dụng được, 2 hỏng
+(2, 25, 4, 1),  -- Búa đóng đinh 2kg: 30 tổng, 25 mới, 4 sử dụng được, 1 hỏng
+(3, 30, 8, 2),  -- Búa gõ thép: 40 tổng, 30 mới, 8 sử dụng được, 2 hỏng
+(4, 20, 4, 1),  -- Búa cao su nhỏ: 25 tổng, 20 mới, 4 sử dụng được, 1 hỏng
+(5, 15, 4, 1),  -- Búa cao su lớn: 20 tổng, 15 mới, 4 sử dụng được, 1 hỏng
+(6, 800, 150, 50),  -- Gạch đỏ 20x10: 1000 tổng, 800 mới, 150 sử dụng được, 50 hỏng
+(7, 600, 150, 50),  -- Gạch đỏ 30x15: 800 tổng, 600 mới, 150 sử dụng được, 50 hỏng
+(8, 500, 90, 10),   -- Gạch bê tông nhẹ: 600 tổng, 500 mới, 90 sử dụng được, 10 hỏng
+(9, 400, 80, 20),   -- Gạch bê tông 40x20: 500 tổng, 400 mới, 80 sử dụng được, 20 hỏng
+(10, 600, 80, 20);  -- Gạch men 30x30: 700 tổng, 600 mới, 80 sử dụng được, 20 hỏng

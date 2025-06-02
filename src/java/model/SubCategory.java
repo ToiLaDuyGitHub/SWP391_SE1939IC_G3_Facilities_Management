@@ -9,37 +9,42 @@ package model;
  * @author ToiLaDuyGitHub
  */
 public class SubCategory {
-    private int subcategoryID;
-    private int categoryID;
-    private String subcategoryName;
+    private int SubcategoryID;
+    private int CategoryID;
+    private String SubcategoryName;
 
-    public SubCategory(int subcategoryID, int categoryID, String subcategoryName) {
-        this.subcategoryID = subcategoryID;
-        this.categoryID = categoryID;
-        this.subcategoryName = subcategoryName;
+    public SubCategory() {
+    }
+
+    public SubCategory(int SubcategoryID, int CategoryID, String SubcategoryName) {
+        this.SubcategoryID = SubcategoryID;
+        this.CategoryID = CategoryID;
+        this.SubcategoryName = SubcategoryName;
     }
 
     public int getSubcategoryID() {
-        return subcategoryID;
+        return SubcategoryID;
     }
 
-    public void setSubcategoryID(int subcategoryID) {
-        this.subcategoryID = subcategoryID;
+    public void setSubcategoryID(int SubcategoryID) {
+        this.SubcategoryID = SubcategoryID;
     }
 
     public int getCategoryID() {
-        return categoryID;
+        return CategoryID;
     }
 
-    public void setCategoryID(int categoryID) {
-        this.categoryID = categoryID;
+    public void setCategoryID(int CategoryID) {
+        this.CategoryID = CategoryID;
     }
 
     public String getSubcategoryName() {
-        return subcategoryName;
+        return SubcategoryName;
     }
 
-    public void setSubcategoryName(String subcategoryName) {
-        this.subcategoryName = subcategoryName;
+    public void setSubcategoryName(String SubcategoryName) {
+        this.SubcategoryName = SubcategoryName;
     }
+
+    
 }
