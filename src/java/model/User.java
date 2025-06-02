@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package model;
 
 import java.time.LocalDateTime;
@@ -55,16 +59,14 @@ public class User {
     }
     
 
-    public User(int userID, String username, String firstName, String lastName, String phoneNum,int roleID, boolean isActive) {
+    public User(int userID, String username, String firstName, String lastName, String phoneNum, boolean isActive) {
         this.userID = userID;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNum = phoneNum;
-        this.roleID  = roleID;
         this.isActive = isActive;
     }
-
 
     public User() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -82,7 +84,6 @@ public class User {
         this.isResetRequested = isResetRequested;
     }
     
-
     public int getUserID() {
         return userID;
     }
