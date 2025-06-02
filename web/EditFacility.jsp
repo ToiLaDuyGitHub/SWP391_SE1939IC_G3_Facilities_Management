@@ -122,13 +122,22 @@
                         </div>
                     </li>
                     <li class="dropdown">
+                    <div class="dropdown-toggle" onclick="toggleDropdown(this)">
+                        <span><i class="fas fa-boxes"></i>Phân quyền</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="dropdown-content">
+                        <a href="${pageContext.request.contextPath}/Decentralization">Phân quyền chức năng</a>
+                    </div>
+                </li>
+                    <li class="dropdown">
                         <div class="dropdown-toggle" onclick="toggleDropdown(this)">
                             <span><i class="fas fa-user"></i> Thông tin cá nhân</span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="dropdown-content">
                             <a href="${pageContext.request.contextPath}/Profile">Xem thông tin cá nhân</a>
-                            <a href="#" onclick="showContent('changePasswordSection', this)">Thay đổi mật khẩu</a>
+                            <a href="${pageContext.request.contextPath}/changePassword">Thay đổi mật khẩu</a>
                         </div>
                     </li>
                     <li class="dropdown">
