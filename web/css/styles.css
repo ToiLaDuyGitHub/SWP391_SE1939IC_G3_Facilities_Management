@@ -711,12 +711,11 @@ body::before {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    font-size: 18px;
 }
 
 .material-table th,
 .material-table td {
-    padding: 18px;
+    padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
@@ -736,14 +735,11 @@ body::before {
 }
 
 .material-table .product-image {
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     object-fit: cover;
     border-radius: 4px;
 }
-
-
-
 /*them moi vat tu*/
 .form-grid {
     display: grid;

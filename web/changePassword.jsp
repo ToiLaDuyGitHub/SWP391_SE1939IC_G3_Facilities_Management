@@ -85,7 +85,7 @@
                         </div>
                         <div class="dropdown-content">
                             <a href="#" onclick="showContent('materialList', this)">Xem danh sách vật tư</a>
-                            <a href="#" onclick="showContent('addMaterial', this)">Thêm mới vật tư</a>
+                            <a href="${pageContext.request.contextPath}/AddFacility" onclick="showContent('addMaterial', this)">Thêm mới vật tư</a>
                         </div>
                     </li>
                 </ul>

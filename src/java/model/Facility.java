@@ -6,80 +6,101 @@ package model;
 
 /**
  *
- * @author ToiLaDuyGitHub
+ * @author acer
  */
 public class Facility {
-    private int facilityID;
-    private String facilityName;
-    private int categoryID;
-    private int subcategoryID;
-    private int supplierID;
-    private String image;
-    private int quantity;
+    private int FacilityID;
+    private String FacilityName;
+    private Category category;
+    private SubCategory subcategory;
+    private Supplier SupplierID;
+    private String Image;
+    private int Quantity;
+    private FacilityCondition condition;
 
-    public Facility(int facilityID, String facilityName, int categoryID, int subcategoryID, int supplierID, String image, int quantity) {
-        this.facilityID = facilityID;
-        this.facilityName = facilityName;
-        this.categoryID = categoryID;
-        this.subcategoryID = subcategoryID;
-        this.supplierID = supplierID;
-        this.image = image;
-        this.quantity = quantity;
+    public Facility() {
     }
 
+    public Facility(int FacilityID, String FacilityName, Category category, SubCategory subcategory, Supplier SupplierID, String Image, int Quantity, FacilityCondition condition) {
+        this.FacilityID = FacilityID;
+        this.FacilityName = FacilityName;
+        this.category = category;
+        this.subcategory = subcategory;
+        this.SupplierID = SupplierID;
+        this.Image = Image;
+        this.Quantity = Quantity;
+        this.condition = condition;
+    }
+
+    
+
     public int getFacilityID() {
-        return facilityID;
+        return FacilityID;
     }
 
     public void setFacilityID(int facilityID) {
-        this.facilityID = facilityID;
+        this.FacilityID = facilityID;
     }
 
     public String getFacilityName() {
-        return facilityName;
+        return FacilityName;
     }
 
-    public void setFacilityName(String facilityName) {
-        this.facilityName = facilityName;
+    public void setFacilityName(String FacilityName) {
+        this.FacilityName = FacilityName;
     }
 
-    public int getCategoryID() {
-        return categoryID;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryID(int categoryID) {
-        this.categoryID = categoryID;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public int getSubcategoryID() {
-        return subcategoryID;
+    public SubCategory getSubcategory() {
+        return subcategory;
     }
 
-    public void setSubcategoryID(int subcategoryID) {
-        this.subcategoryID = subcategoryID;
+    public void setSubcategory(SubCategory subcategory) {
+        this.subcategory = subcategory;
     }
 
-    public int getSupplierID() {
-        return supplierID;
+    public Supplier getSupplierID() {
+        return SupplierID;
     }
 
-    public void setSupplierID(int supplierID) {
-        this.supplierID = supplierID;
+    public void setSupplierID(Supplier SupplierID) {
+        this.SupplierID = SupplierID;
     }
 
     public String getImage() {
-        return image;
+        return Image;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImage(String Image) {
+        this.Image = Image;
     }
 
     public int getQuantity() {
-        return quantity;
+        return Quantity;
     }
 
     public void setQuantity(int quantity) {
-        this.quantity = quantity;
+        this.Quantity = quantity;
     }
+
+    public FacilityCondition getCondition() {
+        return condition;
+    }
+
+    public void setCondition(FacilityCondition condition) {
+        this.condition = condition;
+    }
+
+   
+
 }
+
+   
+    
