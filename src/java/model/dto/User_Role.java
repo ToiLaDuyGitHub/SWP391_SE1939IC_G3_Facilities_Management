@@ -18,34 +18,48 @@ public class User_Role {
     private String phoneNum ;   
     private String address;
     private String roleName ;
-    
-    public User_Role(String username,String firstName, String lastName,String phoneNum,String address, String roleName ){
+    private int roleID ;
+
+    public User_Role(String username, String firstName, String lastName, String phoneNum, String address, String roleName, int roleID) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.phoneNum = phoneNum;        
+        this.phoneNum = phoneNum;
         this.address = address;
         this.roleName = roleName;
+        this.roleID = roleID;
     }
 
     public String getUsername() {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getFirstName() {
         return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public String getPhoneNum() {
         return phoneNum;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
 
     public String getAddress() {
@@ -55,5 +69,22 @@ public class User_Role {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public int getRoleID() {
+        return roleID;
+    }
+
+    public void setRoleID(int roleID) {
+        this.roleID = roleID;
+    }
+    
     
 }
