@@ -24,16 +24,9 @@ function toggleSection(sectionId) {
         'categoryDungCuCamTaySection',
         'categoryGianGiaoSection',
         'categoryMayHanSection',
-
-        'addUser',
-        'editUser',
-        'userList',
-        'genericSection'
-
         'genericSection',
         'materialListSection',
         'addMaterialSection'
-
     ];
     sections.forEach(id => {
         const section = document.getElementById(id);
@@ -51,6 +44,9 @@ function showContent(sectionId, element) {
     }
 
     const sectionMap = {
+        userList: "Xem danh sách người dùng",
+        addUser: "Thêm mới người dùng",
+        editUser: "Sửa thông tin người dùng",
         addCategory: "Thêm mới danh mục vật tư",
         materialList: "Xem danh sách vật tư",
         addMaterial: "Thêm mới vật tư"
