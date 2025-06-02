@@ -53,7 +53,7 @@ public class UserDAO {
                     String phoneNum = rs.getString("PhoneNum");
                     String address = rs.getString("Address");
                     String roleName = rs.getString("RoleName");
-                    return new User_Role(userName, firstName, lastName, phoneNum, address, roleName);
+                    return new User_Role(userName, firstName, lastName, phoneNum, address, roleName, 0);
                 }
             }
         } catch (SQLException e) {

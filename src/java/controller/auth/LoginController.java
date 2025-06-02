@@ -5,6 +5,7 @@
 package controller.auth;
 
 import dao.UserDAO;
+import dao.FeatureDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,7 +13,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 import model.dto.User_Role;
+import model.Feature;
 import util.PasswordUtil;
 
 /**
@@ -23,11 +27,13 @@ import util.PasswordUtil;
 public class LoginController extends HttpServlet {
     private UserDAO userDAO;
     private PasswordUtil passwordUtil;
+    private FeatureDAO featureDAO;
 
     @Override
     public void init() throws ServletException {
         userDAO = new UserDAO();
         passwordUtil = new PasswordUtil();
+        featureDAO = new FeatureDAO();
     }
 
     @Override
@@ -46,11 +52,22 @@ public class LoginController extends HttpServlet {
         boolean isValidUser = UserDAO.validateUser(username, password);
         
         if (isValidUser) {
-            // 3. Tạo session và chuyển hướng
+            // 3. Tạo session và lưu thông tin user cùng danh sách chức năng
             User_Role userRole = userDAO.getUserWithRole(username);
             HttpSession session = request.getSession();
             session.setAttribute("userRole", userRole);
             session.setAttribute("username", username);
+
+            // Lấy danh sách chức năng của vai trò và lưu vào session
+            try {
+                List<Feature> permittedFeatures = featureDAO.getFeaturesByRole(userRole.getRoleID());
+                session.setAttribute("permittedFeatures", permittedFeatures);
+            } catch (SQLException e) {
+                request.setAttribute("errorMessage", "Lỗi khi lấy danh sách chức năng: " + e.getMessage());
+                request.getRequestDispatcher("/auth/login.jsp").forward(request, response);
+                return;
+            }
+            // Chuyển hướng đến trang chính
             response.sendRedirect("./home");
             return;
         } else {
@@ -59,8 +76,6 @@ public class LoginController extends HttpServlet {
             request.getRequestDispatcher("/auth/login.jsp").forward(request, response);
             return;
         }
-        
-        
     }
 
     @Override

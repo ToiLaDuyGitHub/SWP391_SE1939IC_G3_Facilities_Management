@@ -55,7 +55,7 @@
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="dropdown-content">
-                            <a href="Decentralization.jsp" onclick="showContent('materialList', this)">Phân quyền chức năng</a>
+                            <a href="${pageContext.request.contextPath}/Decentralization">Phân quyền chức năng</a>
                         </div>
                     </li>
                     <li class="dropdown active">
