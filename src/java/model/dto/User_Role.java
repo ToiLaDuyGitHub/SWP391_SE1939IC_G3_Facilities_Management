@@ -19,6 +19,8 @@ public class User_Role {
     private String address;
     private String roleName ;
     private int roleID ;
+    private int userID;
+    private boolean isActive;
 
     public User_Role(String username, String firstName, String lastName, String phoneNum, String address, String roleName, int roleID) {
         this.username = username;
@@ -28,6 +30,29 @@ public class User_Role {
         this.address = address;
         this.roleName = roleName;
         this.roleID = roleID;
+        
+    }
+    public User_Role(int userID, String username, String firstName, String lastName, String phoneNum, int roleID, String roleName, boolean isActive) {
+        this.userID = userID;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNum = phoneNum;
+        this.roleID = roleID;
+        this.roleName = roleName;
+        this.isActive = isActive;
+    }
+    
+    public User_Role(int userID, String username, String firstName, String lastName, 
+                     String phoneNum, String address, String roleName, boolean isActive) {
+        this.userID = userID;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNum = phoneNum;
+        this.address = address;
+        this.roleName = roleName;
+        this.isActive = isActive;
     }
 
     public String getUsername() {
@@ -84,6 +109,22 @@ public class User_Role {
 
     public void setRoleID(int roleID) {
         this.roleID = roleID;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public boolean isIsActive() {
+        return isActive;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
     
     

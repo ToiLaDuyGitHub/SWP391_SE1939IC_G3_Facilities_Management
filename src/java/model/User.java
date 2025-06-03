@@ -68,10 +68,27 @@ public class User {
         this.isActive = isActive;
     }
 
-    public User() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public User(int userID, String username, String firstName, String lastName, String phoneNum,int roleID, boolean isActive) {
+        this.userID = userID;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNum = phoneNum;
+        this.roleID  = roleID;
+        this.isActive = isActive;
     }
 
+    public User(int userID, String username, String passwordHash, String firstName, String lastName, 
+                String phoneNum, String address, int roleID) {
+        this.userID = userID;
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNum = phoneNum;
+        this.address = address;
+        this.roleID = roleID;
+    }
     public User(String username, boolean isResetRequested) {
         this.username = username;
         this.isResetRequested = isResetRequested;
