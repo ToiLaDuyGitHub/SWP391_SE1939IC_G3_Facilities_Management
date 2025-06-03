@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link rel="stylesheet" href="<%= request.getContextPath() %>/css/styles.css">
     </head>
+
     <body>
         <div id="dashboard">
             <div class="header">
@@ -37,9 +38,8 @@
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="dropdown-content">
-                            <a href="${pageContext.request.contextPath}/Userctr?service=listAllUser">Xem danh sách người dùng</a>
-                            <a href="#" onclick="showContent('addUser', this)">Thêm mới người dùng</a>
-                            <a href="#" onclick="showContent('editUser', this)">Sửa thông tin người dùng</a>
+                            <a href="<%= request.getContextPath() %>/Userctr?service=listAllUser" onclick="showContent('userList', this)">Xem danh sách người dùng</a>
+                            <a href="<%= request.getContextPath() %>/addUser" onclick="showContent('userAdd', this)">Thêm mới người dùng</a>
                             <a href="${pageContext.request.contextPath}/reset-password-request-list">Danh sách yêu cầu reset mật khẩu</a>
                         </div>
                     </li>
@@ -91,10 +91,23 @@
                     <h2>Chào mừng đến với Hệ thống Quản lý</h2>
                     <p>Vui lòng chọn chức năng từ menu bên trái.</p>
                 </div>
+                 <%@ include file="Admin_UserManager.jsp" %>
+                 <%@ include file="addUser.jsp" %>
                 <!-- Placeholder for static sections -->
                 <div class="content-card hidden" id="genericSection"></div>
             </div>
         </div>
         <script src="<%= request.getContextPath() %>/js/script.js"></script>
     </body>
+    <script>
+    window.onload = function() {
+        <% if (request.getAttribute("allUser") != null) { %>
+            toggleSection('userList');
+        <% } else if (request.getAttribute("detailUser") != null) { %>
+            toggleSection('userDetail');
+        <% } else { %>
+            toggleSection('welcomeSection');
+        <% } %>
+    }
+</script>
 </html>

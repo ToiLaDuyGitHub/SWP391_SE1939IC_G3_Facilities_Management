@@ -4,8 +4,16 @@
         <servlet-name>UserController</servlet-name>
         <servlet-class>controller.Manager_UserController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddUserController</servlet-name>
+        <servlet-class>controller.AddUserController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
         <url-pattern>/Userctr</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddUserController</servlet-name>
+        <url-pattern>/addUser</url-pattern>
     </servlet-mapping>
 </web-app>
