@@ -30,6 +30,7 @@ public class User_Role {
         this.address = address;
         this.roleName = roleName;
         this.roleID = roleID;
+        this.isActive = isActive;
         
     }
     public User_Role(int userID, String username, String firstName, String lastName, String phoneNum, int roleID, String roleName, boolean isActive) {

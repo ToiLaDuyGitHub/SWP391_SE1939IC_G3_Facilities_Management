@@ -22,8 +22,6 @@
                     <h2>Chào mừng đến với Hệ thống Quản lý</h2>
                     <p>Vui lòng chọn chức năng từ menu bên trái.</p>
                 </div>
-                 <%@ include file="Admin_UserManager.jsp" %>
-                 <%@ include file="addUser.jsp" %>
                 <!-- Placeholder for static sections -->
                 <div class="content-card hidden" id="genericSection"></div>
             </div>

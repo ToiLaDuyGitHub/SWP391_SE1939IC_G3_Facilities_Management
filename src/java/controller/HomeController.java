@@ -16,7 +16,7 @@ import java.io.IOException;
  * @author ToiLaDuyGitHub
  */
 @WebServlet("/home")
-public class EmptyController extends HttpServlet{
+public class HomeController extends HttpServlet{
     public static void main(String[] args) {
         System.out.println("Hello World!");
     }
