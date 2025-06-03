@@ -35,7 +35,7 @@ public class UserDAO {
 
     // Lấy thông tin người dùng và vai trò
     public User_Role getUserWithRole(String username) {
-        String sql = "SELECT u.FirstName, u.LastName, u.Username, u.PhoneNum, u.Address, r.RoleName "
+        String sql = "SELECT u.FirstName, u.LastName, u.Username, u.PhoneNum, u.Address, r.RoleName, u.RoleID, u.IsActive "
                 + "FROM users u "
                 + "LEFT JOIN roles r ON u.RoleID = r.RoleID "
                 + "WHERE u.Username = ?";
@@ -53,7 +53,9 @@ public class UserDAO {
                     String phoneNum = rs.getString("PhoneNum");
                     String address = rs.getString("Address");
                     String roleName = rs.getString("RoleName");
-                    return new User_Role(userName, firstName, lastName, phoneNum, address, roleName, 0);
+                    int roleId = rs.getInt("RoleID");
+                    boolean isActive = rs.getBoolean("isActive");
+                    return new User_Role(userName, firstName, lastName, phoneNum, address, roleName, roleId, isActive);
                 }
             }
         } catch (SQLException e) {
