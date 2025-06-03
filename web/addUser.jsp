@@ -3,7 +3,7 @@
     Created on : Jun 3, 2025, 6:31:12 PM
     Author     : Bùi Hiếu
 --%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +19,7 @@
     </style>
 </head>
 <body>
+    <%@ include file="sidebar.jsp" %>
     <div class="form-container hidden" id="userAdd">
         <h2>Thêm Người Dùng Mới</h2>
         <% String error = (String) request.getAttribute("error"); %>

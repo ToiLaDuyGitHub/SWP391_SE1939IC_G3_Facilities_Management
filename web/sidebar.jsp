@@ -44,9 +44,8 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-content">
-                        <a href="${pageContext.request.contextPath}/Userctr?service=listAllUser">Xem danh sách người dùng</a>
-                        <a href="#" onclick="showContent('addUser', this)">Thêm mới người dùng</a>
-                        <a href="#" onclick="showContent('editUser', this)">Sửa thông tin người dùng</a>
+                        <a href="${pageContext.request.contextPath}/Userctr">Xem danh sách người dùng</a>
+                        <a href="${pageContext.request.contextPath}/addUser">Thêm mới người dùng</a>
                         <a href="${pageContext.request.contextPath}/reset-password-request-list">Danh sách yêu cầu reset mật khẩu</a>
                     </div>
                 </li>
@@ -109,7 +108,7 @@
                     <div class="dropdown-content">
                         <a href="${pageContext.request.contextPath}/FacilityList" onclick="showContent('materialList', this)">Xem danh sách vật tư</a>
                         <a href="${pageContext.request.contextPath}/AddFacility" onclick="showContent('addMaterial', this)">Thêm mới vật tư</a>
-                        <a href="EditFacility.jsp"  onclick="showContent('EditFacility', this)">Sửa thông tin vật tư</a>
+                        <a href="${pageContext.request.contextPath}/EditFacility"  onclick="showContent('EditFacility', this)">Sửa thông tin vật tư</a>
                     </div>
                 </li>
             </ul>
