@@ -5,7 +5,7 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -122,7 +122,7 @@
     </head>
     <body>
         <div id="dashboard">
-            <%@ include file="sidebar.jsp" %>
+            <%@ include file="/sidebar.jsp" %>
             <div class="main-content" id="mainContent">
                 <div style="text-align: center; margin-bottom: 20px">
                     <h2 style="color: #0d6efd;">Danh sách yêu cầu reset mật khẩu</h2>

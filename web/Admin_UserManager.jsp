@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="model.User" %>
 <%@ page import="model.dto.User_Role" %>
@@ -199,6 +199,7 @@
 
 </style>
 <div class="content-card hidden" id="userList">
+    <%@ include file="sidebar.jsp" %>
     <h2><i class="fas fa-users"></i> Danh sách người dùng</h2>
     <!-- Form tìm kiếm và lọc -->
     <form action="<%= request.getContextPath() %>/Userctr" method="get" class="search-form">

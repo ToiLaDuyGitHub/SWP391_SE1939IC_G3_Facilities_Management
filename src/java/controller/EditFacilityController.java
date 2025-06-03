@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller;
 
 import dao.FacilityDAO;
@@ -23,24 +22,28 @@ import java.nio.file.Paths;
  *
  * @author Admin
  */
-@WebServlet(name="EditFacilityController", urlPatterns={"/EditFacility"})
+@WebServlet(name = "EditFacilityController", urlPatterns = {"/EditFacility"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-                 maxFileSize = 1024 * 1024 * 10,      // 10MB
-                 maxRequestSize = 1024 * 1024 * 50)   // 50MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50)   // 50MB
 public class EditFacilityController extends HttpServlet {
-   private static final String UPLOAD_DIR = "uploads";
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    private static final String UPLOAD_DIR = "uploads";
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-  
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -48,12 +51,13 @@ public class EditFacilityController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-       
-    } 
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/EditFacility.jsp").forward(request, response);
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -61,9 +65,9 @@ public class EditFacilityController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         FacilityDAO facilityDAO = new FacilityDAO();
-       try {
+        try {
             // Lấy các tham số từ form trong JSP
             int facilityID = Integer.parseInt(request.getParameter("facilityID")); // ID của vật tư
             String facilityName = request.getParameter("materialName"); // Tên vật tư
@@ -116,11 +120,10 @@ public class EditFacilityController extends HttpServlet {
             request.getRequestDispatcher("/EditFacility.jsp").forward(request, response);
         }
     }
-    
-    
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override
