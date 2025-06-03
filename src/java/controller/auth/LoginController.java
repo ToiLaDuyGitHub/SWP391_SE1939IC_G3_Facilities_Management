@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import model.dto.User_Role;
 import model.Feature;
@@ -25,6 +26,7 @@ import util.PasswordUtil;
  */
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
+
     private UserDAO userDAO;
     private PasswordUtil passwordUtil;
     private FeatureDAO featureDAO;
@@ -40,36 +42,47 @@ public class LoginController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        
+
         // 1. Validate input
         if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
             request.setAttribute("errorMessage", "Vui lòng nhập đầy đủ thông tin!");
             request.getRequestDispatcher("/auth/login.jsp").forward(request, response);
             return;
         }
-        
+
         // 2. Kiểm tra thông tin đăng nhập
         boolean isValidUser = UserDAO.validateUser(username, password);
-        
+
         if (isValidUser) {
             // 3. Tạo session và lưu thông tin user cùng danh sách chức năng
             User_Role userRole = userDAO.getUserWithRole(username);
-            HttpSession session = request.getSession();
-            session.setAttribute("userRole", userRole);
-            session.setAttribute("username", username);
-
-            // Lấy danh sách chức năng của vai trò và lưu vào session
-            try {
-                List<Feature> permittedFeatures = featureDAO.getFeaturesByRole(userRole.getRoleID());
-                session.setAttribute("permittedFeatures", permittedFeatures);
-            } catch (SQLException e) {
-                request.setAttribute("errorMessage", "Lỗi khi lấy danh sách chức năng: " + e.getMessage());
+            if (userRole.isIsActive() == false) {
+                request.setAttribute("errorMessage", "Tài khoản đã bị khoá!");
                 request.getRequestDispatcher("/auth/login.jsp").forward(request, response);
+            } else {
+                HttpSession session = request.getSession();
+                session.setAttribute("userRole", userRole);
+                session.setAttribute("username", username);
+
+                // Lấy danh sách chức năng của vai trò và lưu vào session
+                try {
+                    List<Feature> permittedFeatures = featureDAO.getFeaturesByRole(userRole.getRoleID());
+                    session.setAttribute("permittedFeatures", permittedFeatures);
+                    List<String> permittedUrls = new ArrayList<>();
+                    for (Feature feature : permittedFeatures) {
+                        permittedUrls.add(feature.getUrl());
+                    }
+                    session.setAttribute("permittedUrls", permittedUrls);
+
+                } catch (SQLException e) {
+                    request.setAttribute("errorMessage", "Lỗi khi lấy danh sách chức năng: " + e.getMessage());
+                    request.getRequestDispatcher("/auth/login.jsp").forward(request, response);
+                    return;
+                }
+                // Chuyển hướng đến trang chính
+                response.sendRedirect("./home");
                 return;
             }
-            // Chuyển hướng đến trang chính
-            response.sendRedirect("./home");
-            return;
         } else {
             // 4. Thông báo lỗi
             request.setAttribute("errorMessage", "Sai tên đăng nhập hoặc mật khẩu!");

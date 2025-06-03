@@ -64,7 +64,7 @@ public class ProfileController extends HttpServlet {
             return;
         }
 
-        // User_Role is already in session from LoginController
+        // User_Role đã có trong phiên làm việc từ LoginController
         User_Role userRole = (User_Role) session.getAttribute("userRole");
         request.setAttribute("userRole", userRole);
         request.getRequestDispatcher("/Profile.jsp").forward(request, response);

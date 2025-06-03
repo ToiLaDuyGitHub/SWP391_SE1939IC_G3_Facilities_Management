@@ -22,7 +22,7 @@ public class User_Role {
     private int userID;
     private boolean isActive;
 
-    public User_Role(String username, String firstName, String lastName, String phoneNum, String address, String roleName, int roleID) {
+    public User_Role(String username, String firstName, String lastName, String phoneNum, String address, String roleName, int roleID, boolean isActive) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;

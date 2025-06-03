@@ -219,3 +219,40 @@ function showMaterialDetail(name, category, subcategory, supplier, quantity, ima
 
     openEditModal();
 }
+
+function setActiveMenu() {
+    // Lấy URL hiện tại
+    const currentPath = window.location.pathname;
+
+    // Lấy tất cả các thẻ a trong sidebar
+    const menuLinks = document.querySelectorAll('.sidebar a');
+
+    // Xóa class active khỏi tất cả các link
+    menuLinks.forEach(link => {
+        link.classList.remove('active');
+    });
+
+    // Tìm và thêm class active cho link phù hợp
+    menuLinks.forEach(link => {
+        const href = link.getAttribute('href');
+
+        // Kiểm tra nếu URL hiện tại chứa href của link
+        if (href && currentPath.includes(href.split('/').pop())) {
+            link.classList.add('active');
+
+            // Mở dropdown nếu link nằm trong dropdown
+            const dropdownContent = link.closest('.dropdown-content');
+            if (dropdownContent) {
+                const dropdown = dropdownContent.closest('.dropdown');
+                dropdown.classList.add('active');
+                dropdownContent.style.display = 'block';
+            }
+        }
+    });
+}
+
+// Gọi hàm khi trang được load
+document.addEventListener('DOMContentLoaded', setActiveMenu);
+
+// Gọi lại hàm khi URL thay đổi (cho SPA)
+window.addEventListener('popstate', setActiveMenu);
