@@ -155,9 +155,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach var="user" items="${resetReqList}" varStatus="loop">
+                                    <c:forEach var="user" items="${resetReqList}">
                                         <tr>
-                                            <td style="text-align: center;">${loop.index + 1}</td>
+                                            <td style="text-align: center;">${user.username}</td>
                                             <td style="text-align: center;">${user.username}</td>
                                             <td style="text-align: center;">${user.lastName}</td>
                                             <td style="text-align: center;">${user.firstName}</td>

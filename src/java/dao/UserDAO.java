@@ -193,12 +193,12 @@ public class UserDAO {
 
     public List<User> getResetPasswordReqList(int offset, int limit) {
         List<User> userList = new ArrayList<User>();
-        String sql = "SELECT u.username, u.firstname, u.lastname, u.isresetrequested from Users u where u.isresetrequested = 1 LIMIT ? OFFSET ?";
+        String sql = "SELECT u.username, u.firstname, u.lastname, u.isresetrequested FROM facilitiesmanagementdb.users u where u.isresetrequested = 1 LIMIT ? OFFSET ?";
         try (Connection conn = DBUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, limit);
             stmt.setInt(2, offset);
             try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
+                while (rs.next()) {
                     User u = new User(rs.getString("username"),
                             rs.getString("firstname"),
                             rs.getString("lastname"),
