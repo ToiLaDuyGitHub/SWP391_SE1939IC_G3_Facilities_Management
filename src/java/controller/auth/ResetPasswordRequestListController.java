@@ -24,7 +24,7 @@ import util.ResetPassword;
 public class ResetPasswordRequestListController extends HttpServlet {
 
     private UserDAO userDAO;
-    private static final int RECORDS_PER_PAGE = 1; // Số bản ghi mỗi trang
+    private static final int RECORDS_PER_PAGE = 6;
 
     @Override
     public void init() throws ServletException {

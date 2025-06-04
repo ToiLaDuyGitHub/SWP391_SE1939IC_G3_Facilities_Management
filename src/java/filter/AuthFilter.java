@@ -46,17 +46,17 @@ public class AuthFilter implements Filter {
             return;
         }
         
-//        // Rule 3: CHỈ kiểm tra quyền truy cập khi đã đăng nhập
-//        if (isLoggedIn) {
-//            List<String> permittedUrls = Optional.ofNullable((List<String>) session.getAttribute("permittedUrls"))
-//                    .orElse(new ArrayList<>());
-//            
-//            // Nếu đã đăng nhập nhưng truy cập vào những trang không được cho phép → về home
-//            if (!permittedUrls.contains(path) && !path.equals("/home") && !path.equals("/logout")) {
-//                httpResponse.sendRedirect(httpRequest.getContextPath() + "/home");
-//                return;
-//            }
-//        }
+        // Rule 3: CHỈ kiểm tra quyền truy cập khi đã đăng nhập
+        if (isLoggedIn) {
+            List<String> permittedUrls = Optional.ofNullable((List<String>) session.getAttribute("permittedUrls"))
+                    .orElse(new ArrayList<>());
+            
+            // Nếu đã đăng nhập nhưng truy cập vào những trang không được cho phép → về home
+            if (!permittedUrls.contains(path) && !path.equals("/home") && !path.equals("/logout")) {
+                httpResponse.sendRedirect(httpRequest.getContextPath() + "/home");
+                return;
+            }
+        }
         
         //Cho phép truy cập nếu không vi phạm rule nào
         chain.doFilter(request, response);

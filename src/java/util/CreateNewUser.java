@@ -24,10 +24,10 @@ public class CreateNewUser {
 
     public static void main(String[] args) {
         //Dữ liệu test, trước khi chạy main hãy kiểm tra có bản ghi nào của gmail này không, nếu có thì phải xoá trước
-        String username = "nangdvhe187101@fpt.edu.vn";
-        String password = "123";
+        String username = "admin";
+        String password = "admin";
         String passwordHash = PasswordUtil.hashPassword(password);
-        User u = new User(username, passwordHash, "Hệ thống", "Quản trị", 1, "0123456789", "Nhân Nghĩa, Lý Nhân, Hà Nam", LocalDateTime.now(), true, false);
+        User u = new User(username, passwordHash, "Hệ Thống", "Quản Lý", 1, "0346832536", "Xuân Khanh, Sơn Tây, Hà Nội", LocalDateTime.now(), true, false);
         saveUser(u);
     }
 
@@ -46,8 +46,8 @@ public class CreateNewUser {
             }
 
             // 3. Chuẩn bị câu lệnh SQL
-            String sql = "INSERT INTO users (Username, PasswordHash, FirstName, LastName, RoleID, PhoneNum, RegistrationDate, IsActive)"
-                    + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO users (Username, PasswordHash, FirstName, LastName, RoleID, PhoneNum, Address, RegistrationDate, IsActive)"
+                    + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, u.getUsername());
             stmt.setString(2, u.getPasswordHash());
@@ -55,8 +55,9 @@ public class CreateNewUser {
             stmt.setString(4, u.getLastName());
             stmt.setInt(5, u.getRoleID());
             stmt.setString(6, u.getPhoneNum());
-            stmt.setTimestamp(7, Timestamp.valueOf(u.getRegistrationDate()));
-            stmt.setBoolean(8, u.isIsActive());
+            stmt.setString(7, u.getAddress());
+            stmt.setTimestamp(8, Timestamp.valueOf(u.getRegistrationDate()));
+            stmt.setBoolean(9, u.isIsActive());
 
             // 5. Thực thi và kiểm tra kết quả
             int rowsAffected = stmt.executeUpdate();
