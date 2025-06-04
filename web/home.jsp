@@ -29,14 +29,14 @@
         <script src="<%= request.getContextPath() %>/js/script.js"></script>
     </body>
     <script>
-    window.onload = function() {
+        window.onload = function () {
         <% if (request.getAttribute("allUser") != null) { %>
-            toggleSection('userList');
+                                    document.getElementById('userList').classList.remove('hidden');
+                                    document.getElementById('userDetail').classList.add('hidden');
         <% } else if (request.getAttribute("detailUser") != null) { %>
-            toggleSection('userDetail');
-        <% } else { %>
-            toggleSection('welcomeSection');
+                                    document.getElementById('userList').classList.add('hidden');
+                                    document.getElementById('userDetail').classList.remove('hidden');
         <% } %>
-    }
-</script>
+                                }
+    </script>
 </html>

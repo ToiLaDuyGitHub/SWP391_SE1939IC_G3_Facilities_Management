@@ -922,3 +922,121 @@ body::before {
         text-align: center;
     }
 }
+/* Form "Thêm người dùng" (cho addUser.jsp) */
+.content-card.add-user-form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #f9a825; /* Viền trái màu cam */
+}
+
+.content-card.add-user-form h2 {
+    font-size: 24px;
+    color: #f9a825; /* Màu cam cho tiêu đề */
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+.form-row.add-user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 15px;
+}
+
+.form-row.add-user label {
+    width: 150px;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-row.add-user input[type="text"],
+.form-row.add-user input[type="password"],
+.form-row.add-user select {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #fafafa;
+    transition: border 0.3s;
+    max-width: 300px;
+}
+
+.form-row.add-user input[type="text"]:focus,
+.form-row.add-user input[type="password"]:focus,
+.form-row.add-user select:focus {
+    border-color: #4a90e2; /* Màu xanh khi focus */
+    outline: none;
+}
+
+.content-card.add-user-form button {
+    padding: 12px 20px;
+    background: linear-gradient(90deg, #4a90e2, #6aa8e6); /* Màu xanh gradient */
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background 0.3s, transform 0.2s;
+    margin-right: 10px;
+}
+
+.content-card.add-user-form button:hover {
+    background: linear-gradient(90deg, #6aa8e6, #4a90e2);
+    transform: scale(1.02);
+}
+
+/* Loại bỏ scrollbar ngang */
+.content-card.add-user-form {
+    overflow-x: visible;
+}
+
+/* Responsive cho form */
+@media (max-width: 768px) {
+    .content-card.add-user-form {
+        max-width: 90%;
+        margin: 10px;
+        padding: 15px;
+    }
+
+    .form-row.add-user {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-row.add-user label {
+        width: auto;
+        margin-bottom: 5px;
+    }
+
+    .form-row.add-user input[type="text"],
+    .form-row.add-user input[type="password"],
+    .form-row.add-user select {
+        width: 100%;
+        max-width: unset;
+    }
+}
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+.pagination a {
+    margin: 0 5px;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #007bff;
+}
+.pagination a.active {
+    background-color: #007bff;
+    color: white;
+}
+
+
