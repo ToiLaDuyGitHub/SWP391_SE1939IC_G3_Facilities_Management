@@ -96,8 +96,8 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-content">
-                        <a href="${pageContext.request.contextPath}/danhmucvattu/danh-muc-list.jsp" onclick="showContent('categoryListSection', this)">Xem danh mục vật tư</a>
-                        <a href="#" onclick="showContent('addCategory', this)">Thêm mới danh mục vật tư</a>
+                        <a href="${pageContext.request.contextPath}/manage-category">Xem danh mục vật tư</a>
+                        <a href="${pageContext.request.contextPath}/manage-category?action=addForm">Thêm mới danh mục vật tư</a>
                     </div>
                 </li>
                 <li class="dropdown">

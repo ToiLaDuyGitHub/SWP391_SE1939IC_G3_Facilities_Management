@@ -1,10 +1,8 @@
-<%-- 
-    Document   : danh-muc-list
-    Created on : May 24, 2025, 13:00:45 PM
-    Author     : ToiLaDuyGitHub
---%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -122,212 +120,280 @@
                 padding: 20px;
                 color: #6c757d;
             }
+
+            .stats-container {
+                display: flex;
+                gap: 20px;
+                margin-bottom: 20px;
+            }
+
+            .stat-card {
+                background: #fff;
+                border-radius: 8px;
+                padding: 20px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                flex: 1;
+                text-align: center;
+            }
+
+            .stat-number {
+                font-size: 2em;
+                font-weight: 700;
+                color: #0d6efd;
+            }
+
+            .stat-label {
+                color: #6c757d;
+                margin-top: 5px;
+            }
+
+            .alert {
+                padding: 15px;
+                margin-bottom: 20px;
+                border: 1px solid transparent;
+                border-radius: 4px;
+            }
+
+            .alert-success {
+                color: #155724;
+                background-color: #d4edda;
+                border-color: #c3e6cb;
+            }
+
+            .alert-error {
+                color: #721c24;
+                background-color: #f8d7da;
+                border-color: #f5c6cb;
+            }
+
+            .search-container {
+                background: #fff;
+                border-radius: 8px;
+                padding: 20px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+            }
+
+            .search-form {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+            }
+
+            .search-input {
+                flex: 1;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+
+            .search-btn {
+                padding: 10px 20px;
+                background: #0d6efd;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .search-btn:hover {
+                background: #0b5ed7;
+            }
+
+            .category-actions {
+                display: flex;
+                gap: 10px;
+            }
+
+            .add-btn {
+                background: #28a745;
+                color: white;
+                border: none;
+                padding: 8px 12px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 12px;
+            }
+
+            .add-btn:hover {
+                background: #218838;
+            }
         </style>
     </head>
     <body>
         <div id="dashboard">
-            <%@ include file="sidebar.jsp" %>
+            <div class="header">
+                <h1><i class="fas fa-hard-hat"></i> Hệ thống Quản lý Xây dựng</h1>
+                <div class="actions">
+                    <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+                    <div class="user-info">
+                        <i class="fas fa-user-circle"></i>
+                        <div class="tooltip">
+                            <p class="position">Quản lý</p>
+                            <p>${not empty sessionScope.user ? sessionScope.user.fullName : 'Chưa đăng nhập'}</p>
+                        </div>
+                    </div>
+                    <form action="${pageContext.request.contextPath}/logout" method="post" style="display: inline;">
+                        <button type="submit" class="logout-button" onclick="logout()">Đăng xuất</button>
+                    </form>
+                </div>
+            </div>
+            <div class="sidebar" id="sidebar">
+                <h3><i class="fas fa-tools"></i> Menu</h3>
+                <ul>
+                    <li class="dropdown">
+                        <div class="dropdown-toggle" onclick="toggleDropdown(this)">
+                            <span><i class="fas fa-users"></i> Quản lý người dùng</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-content">
+                            <a href="${pageContext.request.contextPath}/Userctr?service=listAllUser">Xem danh sách người dùng</a>
+                            <a href="#" onclick="showContent('addUser', this)">Thêm mới người dùng</a>
+                            <a href="#" onclick="showContent('editUser', this)">Sửa thông tin người dùng</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <div class="dropdown-toggle" onclick="toggleDropdown(this)">
+                            <span><i class="fas fa-user"></i> Thông tin cá nhân</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-content">
+                            <a href="${pageContext.request.contextPath}/Profile">Xem thông tin cá nhân</a>
+                            <a href="#" onclick="showContent('changePasswordSection', this)">Thay đổi mật khẩu</a>
+                        </div>
+                    </li>
+                    <li class="dropdown active">
+                        <div class="dropdown-toggle" onclick="toggleDropdown(this)">
+                            <span><i class="fas fa-folder"></i> Quản lý danh mục vật tư</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-content">
+                            <a href="${pageContext.request.contextPath}/manage-category" 
+                               class="active-link">Xem danh mục vật tư</a>
+                            <a href="${pageContext.request.contextPath}/manage-category?action=addForm">Thêm mới danh mục vật tư</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <div class="dropdown-toggle" onclick="toggleDropdown(this)">
+                            <span><i class="fas fa-boxes"></i> Quản lý vật tư</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-content">
+                            <a href="materialList.jsp" onclick="showContent('materialList', this)">Xem danh sách vật tư</a>
+                            <a href="addMaterial.jsp" onclick="showContent('addMaterial', this)">Thêm mới vật tư</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
             <div class="main-content" id="mainContent">
                 <div style="text-align: center; margin-bottom: 20px">
                     <h2 style="color: #0d6efd;">Danh mục vật tư</h2>
                 </div>
+
+                <!-- Hiển thị thông báo -->
+                <c:if test="${not empty successMessage}">
+                    <div class="alert alert-success">
+                        ${successMessage}
+                    </div>
+                </c:if>
+                <c:if test="${not empty errorMessage}">
+                    <div class="alert alert-error">
+                        ${errorMessage}
+                    </div>
+                </c:if>
+
+                <!-- Thống kê -->
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-number">${totalCategories}</div>
+                        <div class="stat-label">Tổng danh mục</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${totalSubcategories}</div>
+                        <div class="stat-label">Tổng danh mục con</div>
+                    </div>
+                </div>
+
+                <!-- Tìm kiếm -->
+                <div class="search-container">
+                    <form class="search-form" action="${pageContext.request.contextPath}/manage-category" method="get">
+                        <input type="hidden" name="action" value="search">
+                        <input type="text" name="searchTerm" value="${searchTerm}" 
+                               placeholder="Tìm kiếm danh mục..." class="search-input">
+                        <button type="submit" class="search-btn">
+                            <i class="fas fa-search"></i> Tìm kiếm
+                        </button>
+                        <a href="${pageContext.request.contextPath}/manage-category" class="search-btn" style="text-decoration: none;">
+                            <i class="fas fa-refresh"></i> Reset
+                        </a>
+                    </form>
+                </div>
+
                 <div class="category-container">
-                    <div class="category-card">
-                        <div class="category-header" onclick="toggleCategory(this)">
-                            <h3 class="category-title">Vật liệu xây dựng cơ bản</h3>
-                            <i class="fas fa-chevron-down category-arrow"></i>
-                        </div>
-                        <div class="subcategory-list">
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Xi măng</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
+                    <c:choose>
+                        <c:when test="${empty categories}">
+                            <div class="no-categories">
+                                <i class="fas fa-folder-open" style="font-size: 48px; color: #ddd; margin-bottom: 10px;"></i>
+                                <p>Chưa có danh mục nào trong hệ thống.</p>
                             </div>
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Cát</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="category" items="${categories}">
+                                <div class="category-card">
+                                    <div class="category-header" onclick="toggleCategory(this)">
+                                        <h3 class="category-title">${category.categoryName}</h3>
+                                        <div class="category-actions">
+                                            <button class="action-btn" onclick="event.stopPropagation(); editCategory(${category.categoryID}, &quot;${category.categoryName}&quot;)" 
+                                                    title="Sửa danh mục">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="action-btn" onclick="event.stopPropagation(); deleteCategory(${category.categoryID}, &quot;${category.categoryName}&quot;)" 
+                                                    title="Xóa danh mục">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                            <i class="fas fa-chevron-down category-arrow"></i>
+                                        </div>
+                                    </div>
+                                    <div class="subcategory-list">
+                                        <!-- Lọc subcategories theo categoryID -->
+                                        <c:set var="hasSubcategories" value="false" />
+                                        <c:forEach var="subcategoryInfo" items="${subcategoriesWithInfo}">
+                                            <c:set var="subcategory" value="${subcategoryInfo[0]}" />
+                                            <c:set var="categoryInfo" value="${subcategoryInfo[1]}" />
+                                            <c:if test="${subcategory.categoryID == category.categoryID}">
+                                                <c:set var="hasSubcategories" value="true" />
+                                                <div class="subcategory-item">
+                                                    <span class="subcategory-name">${subcategory.subcategoryName}</span>
+                                                    <div class="subcategory-actions">
+                                                        <button class="action-btn" 
+                                                                onclick="editSubcategory(${subcategory.subcategoryID}, ${subcategory.categoryID}, '${subcategory.subcategoryName}')" 
+                                                                title="Sửa">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button class="action-btn" 
+                                                                onclick="deleteSubcategory(${subcategory.subcategoryID}, '${subcategory.subcategoryName}')" 
+                                                                title="Xóa">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </c:if>
+                                        </c:forEach>
+                                        <c:if test="${!hasSubcategories}">
+                                            <div class="subcategory-item">
+                                                <span class="subcategory-name" style="color: #999; font-style: italic;">
+                                                    Chưa có danh mục con nào
+                                                </span>
+                                                <div class="subcategory-actions">
+                                                </div>
+                                            </div>
+                                        </c:if>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Đá</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Gạch</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Sắt thép</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="category-card">
-                        <div class="category-header" onclick="toggleCategory(this)">
-                            <h3 class="category-title">Vật liệu hoàn thiện</h3>
-                            <i class="fas fa-chevron-down category-arrow"></i>
-                        </div>
-                        <div class="subcategory-list">
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Gạch ốp lát</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Sơn</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Trần thạch cao</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Cửa</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Kính</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="category-card">
-                        <div class="category-header" onclick="toggleCategory(this)">
-                            <h3 class="category-title">Vật tư điện & nước</h3>
-                            <i class="fas fa-chevron-down category-arrow"></i>
-                        </div>
-                        <div class="subcategory-list">
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Dây điện</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Ống luồn dây điện</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Thiết bị điện</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Ống nước</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Phụ kiện</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Thiết bị vệ sinh</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="category-card">
-                        <div class="category-header" onclick="toggleCategory(this)">
-                            <h3 class="category-title">Thiết bị máy móc & công cụ</h3>
-                            <i class="fas fa-chevron-down category-arrow"></i>
-                        </div>
-                        <div class="subcategory-list">
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Máy móc thi công</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Dụng cụ cầm tay</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Thiết bị an toàn</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="category-card">
-                        <div class="category-header" onclick="toggleCategory(this)">
-                            <h3 class="category-title">Vật liệu chuyên dụng</h3>
-                            <i class="fas fa-chevron-down category-arrow"></i>
-                        </div>
-                        <div class="subcategory-list">
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Vật liệu cách nhiệt</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Vật liệu chống thấm</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                            <div class="subcategory-item">
-                                <span class="subcategory-name">Vật liệu chịu lửa</span>
-                                <div class="subcategory-actions">
-                                    <button class="action-btn" title="Sửa"><i class="fas fa-edit"></i></button>
-                                    <button class="action-btn" title="Xóa"><i class="fas fa-trash"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </div>
@@ -356,6 +422,173 @@
             function toggleDropdown(element) {
                 const dropdown = element.closest('.dropdown');
                 dropdown.classList.toggle('active');
+            }
+
+            // Các hàm xử lý CRUD
+            function showAddCategoryModal() {
+                const categoryName = prompt("Nhập tên danh mục mới:");
+                if (categoryName && categoryName.trim()) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '${pageContext.request.contextPath}/manage-category';
+                    
+                    const actionInput = document.createElement('input');
+                    actionInput.type = 'hidden';
+                    actionInput.name = 'action';
+                    actionInput.value = 'addCategory';
+                    
+                    const nameInput = document.createElement('input');
+                    nameInput.type = 'hidden';
+                    nameInput.name = 'categoryName';
+                    nameInput.value = categoryName.trim();
+                    
+                    form.appendChild(actionInput);
+                    form.appendChild(nameInput);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
+
+            function editCategory(categoryId, currentName) {
+                const newName = prompt("Sửa tên danh mục:", currentName);
+                if (newName && newName.trim() && newName.trim() !== currentName) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '${pageContext.request.contextPath}/manage-category';
+                    
+                    const actionInput = document.createElement('input');
+                    actionInput.type = 'hidden';
+                    actionInput.name = 'action';
+                    actionInput.value = 'updateCategory';
+                    
+                    const idInput = document.createElement('input');
+                    idInput.type = 'hidden';
+                    idInput.name = 'categoryId';
+                    idInput.value = categoryId;
+                    
+                    const nameInput = document.createElement('input');
+                    nameInput.type = 'hidden';
+                    nameInput.name = 'categoryName';
+                    nameInput.value = newName.trim();
+                    
+                    form.appendChild(actionInput);
+                    form.appendChild(idInput);
+                    form.appendChild(nameInput);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
+
+            function deleteCategory(categoryId, categoryName) {
+                if (confirm(`Bạn có chắc chắn muốn xóa danh mục "${categoryName}"?\nLưu ý: Chỉ có thể xóa danh mục không có danh mục con.`)) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '${pageContext.request.contextPath}/manage-category';
+                    
+                    const actionInput = document.createElement('input');
+                    actionInput.type = 'hidden';
+                    actionInput.name = 'action';
+                    actionInput.value = 'deleteCategory';
+                    
+                    const idInput = document.createElement('input');
+                    idInput.type = 'hidden';
+                    idInput.name = 'categoryId';
+                    idInput.value = categoryId;
+                    
+                    form.appendChild(actionInput);
+                    form.appendChild(idInput);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
+
+            function showAddSubcategoryModal(categoryId, categoryName) {
+                const subcategoryName = prompt(`Nhập tên danh mục con cho "${categoryName}":`);
+                if (subcategoryName && subcategoryName.trim()) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '${pageContext.request.contextPath}/manage-category';
+                    
+                    const actionInput = document.createElement('input');
+                    actionInput.type = 'hidden';
+                    actionInput.name = 'action';
+                    actionInput.value = 'addSubcategory';
+                    
+                    const categoryIdInput = document.createElement('input');
+                    categoryIdInput.type = 'hidden';
+                    categoryIdInput.name = 'categoryId';
+                    categoryIdInput.value = categoryId;
+                    
+                    const nameInput = document.createElement('input');
+                    nameInput.type = 'hidden';
+                    nameInput.name = 'subcategoryName';
+                    nameInput.value = subcategoryName.trim();
+                    
+                    form.appendChild(actionInput);
+                    form.appendChild(categoryIdInput);
+                    form.appendChild(nameInput);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
+
+            function editSubcategory(subcategoryId, categoryId, currentName) {
+                const newName = prompt("Sửa tên danh mục con:", currentName);
+                if (newName && newName.trim() && newName.trim() !== currentName) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '${pageContext.request.contextPath}/manage-category';
+                    
+                    const actionInput = document.createElement('input');
+                    actionInput.type = 'hidden';
+                    actionInput.name = 'action';
+                    actionInput.value = 'updateSubcategory';
+                    
+                    const subcategoryIdInput = document.createElement('input');
+                    subcategoryIdInput.type = 'hidden';
+                    subcategoryIdInput.name = 'subcategoryId';
+                    subcategoryIdInput.value = subcategoryId;
+                    
+                    const categoryIdInput = document.createElement('input');
+                    categoryIdInput.type = 'hidden';
+                    categoryIdInput.name = 'categoryId';
+                    categoryIdInput.value = categoryId;
+                    
+                    const nameInput = document.createElement('input');
+                    nameInput.type = 'hidden';
+                    nameInput.name = 'subcategoryName';
+                    nameInput.value = newName.trim();
+                    
+                    form.appendChild(actionInput);
+                    form.appendChild(subcategoryIdInput);
+                    form.appendChild(categoryIdInput);
+                    form.appendChild(nameInput);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
+
+            function deleteSubcategory(subcategoryId, subcategoryName) {
+                if (confirm(`Bạn có chắc chắn muốn xóa danh mục con "${subcategoryName}"?`)) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '${pageContext.request.contextPath}/manage-category';
+                    
+                    const actionInput = document.createElement('input');
+                    actionInput.type = 'hidden';
+                    actionInput.name = 'action';
+                    actionInput.value = 'deleteSubcategory';
+                    
+                    const idInput = document.createElement('input');
+                    idInput.type = 'hidden';
+                    idInput.name = 'subcategoryId';
+                    idInput.value = subcategoryId;
+                    
+                    form.appendChild(actionInput);
+                    form.appendChild(idInput);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
             }
         </script>
     </body>
