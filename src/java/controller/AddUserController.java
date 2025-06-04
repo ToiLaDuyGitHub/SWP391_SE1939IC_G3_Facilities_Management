@@ -12,7 +12,7 @@ import util.CreateUserMail;
 import util.PasswordUtil;
 import util.ResetPassword;
 
-@WebServlet(name = "AddUserController", urlPatterns = {"/AddUserController"})
+@WebServlet(name = "AddUserController", urlPatterns = {"/addUser"})
 public class AddUserController extends HttpServlet {
 
     private static final String SUCCESS_URL = "home.jsp"; // Trang hiển thị danh sách người dùng
@@ -70,11 +70,13 @@ public class AddUserController extends HttpServlet {
             req.setAttribute("error", "Hành động không hợp lệ!");
             req.getRequestDispatcher(ERROR_URL).forward(req, resp);
         }
+        
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // Hiển thị form thêm người dùng
+        
         req.getRequestDispatcher(ERROR_URL).forward(req, resp);
     }
 }

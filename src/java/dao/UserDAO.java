@@ -418,14 +418,13 @@ public int insertUser(User u) {
     }
 
     // Lấy danh sách người dùng lọc theo từ khóa, vai trò và trạng thái
-    public List<User_Role> getFilteredUsersWithRoles(String keywords, String roleFilter, String statusFilter) {
+    public List<User_Role> getFilteredUsersWithRoles(String keywords, String roleFilter, String statusFilter, int page, int pageSize) {
         List<User_Role> users = new ArrayList<>();
         StringBuilder sql = new StringBuilder(
             "SELECT u.UserID, u.Username, u.FirstName, u.LastName, u.PhoneNum, u.RoleID, r.RoleName, u.IsActive " +
             "FROM users u JOIN roles r ON u.RoleID = r.RoleID WHERE 1=1"
         );
         List<Object> params = new ArrayList<>();
-
         if (keywords != null && !keywords.trim().isEmpty()) {
             sql.append(" AND (u.FirstName LIKE ? OR u.LastName LIKE ? OR CONCAT(u.FirstName, ' ', u.LastName) LIKE ?)");
             String keywordPattern = "%" + keywords.trim() + "%";
@@ -433,17 +432,27 @@ public int insertUser(User u) {
             params.add(keywordPattern);
             params.add(keywordPattern);
         }
-
         if (roleFilter != null && !roleFilter.isEmpty()) {
-            sql.append(" AND u.RoleID = ?");
-            params.add(Integer.parseInt(roleFilter));
+            try {
+                int roleId = Integer.parseInt(roleFilter);
+                sql.append(" AND u.RoleID = ?");
+                params.add(roleId);
+            } catch (NumberFormatException e) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.WARNING, "Invalid roleFilter: " + roleFilter, e);
+            }
         }
-
         if (statusFilter != null && !statusFilter.isEmpty()) {
-            sql.append(" AND u.IsActive = ?");
-            params.add(Boolean.parseBoolean(statusFilter));
+            if (statusFilter.equalsIgnoreCase("true") || statusFilter.equalsIgnoreCase("false")) {
+                sql.append(" AND u.IsActive = ?");
+                params.add(Boolean.parseBoolean(statusFilter));
+            } else {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.WARNING, "Invalid statusFilter: " + statusFilter);
+            }
         }
-
+        int offset = (page - 1) * pageSize;
+        sql.append(" LIMIT ? OFFSET ?");
+        params.add(pageSize);
+        params.add(offset);
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stm = conn.prepareStatement(sql.toString())) {
             for (int i = 0; i < params.size(); i++) {
@@ -504,6 +513,48 @@ public int insertUser(User u) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+   public int getFilteredUsersCount(String keywords, String roleFilter, String statusFilter) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM users u JOIN roles r ON u.RoleID = r.RoleID WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+        if (keywords != null && !keywords.trim().isEmpty()) {
+            sql.append(" AND (u.FirstName LIKE ? OR u.LastName LIKE ? OR CONCAT(u.FirstName, ' ', u.LastName) LIKE ?)");
+            String keywordPattern = "%" + keywords.trim() + "%";
+            params.add(keywordPattern);
+            params.add(keywordPattern);
+            params.add(keywordPattern);
+        }
+        if (roleFilter != null && !roleFilter.isEmpty()) {
+            try {
+                int roleId = Integer.parseInt(roleFilter);
+                sql.append(" AND u.RoleID = ?");
+                params.add(roleId);
+            } catch (NumberFormatException e) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.WARNING, "Invalid roleFilter: " + roleFilter, e);
+            }
+        }
+        if (statusFilter != null && !statusFilter.isEmpty()) {
+            if (statusFilter.equalsIgnoreCase("true") || statusFilter.equalsIgnoreCase("false")) {
+                sql.append(" AND u.IsActive = ?");
+                params.add(Boolean.parseBoolean(statusFilter));
+            } else {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.WARNING, "Invalid statusFilter: " + statusFilter);
+            }
+        }
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stm = conn.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                stm.setObject(i + 1, params.get(i));
+            }
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "Error counting filtered users", ex);
+        }
+        return 0;
     }
     
 }
