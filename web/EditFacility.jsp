@@ -88,6 +88,33 @@
             align-items: center;
             gap: 8px;
         }
+        .suggestions-box {
+            position: absolute;
+            top: 100%; /* Đặt ngay dưới ô input */
+            left: 25%; /* Căn giữa theo input (vì input có width: 50%) */
+            width: 50%; /* Cùng chiều rộng với input */
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none; /* Ẩn mặc định */
+        }
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            border-bottom: 1px solid #eee;
+        }
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
     </style>
     <body>
         <div id="dashboard">
@@ -106,24 +133,14 @@
                             <i class="fas fa-exclamation-circle"></i> ${errorMessage}
                         </div>
                     </c:if>
-                    <c:if test="${not empty sessionScope.successMessage}">
-                        <div class="success-message">
-                            <i class="fas fa-check-circle"></i> ${sessionScope.successMessage}
-                        </div>
-                        <% session.removeAttribute("successMessage"); %>
-                    </c:if>
-                    <c:if test="${not empty sessionScope.errorMessage}">
-                        <div class="error-message">
-                            <i class="fas fa-exclamation-circle"></i> ${sessionScope.errorMessage}
-                        </div>
-                        <% session.removeAttribute("errorMessage"); %>
-                    </c:if>
+                   
 
                     <form action="${pageContext.request.contextPath}/SearchFacility" method="get">
                         <div class="form-group">
                             <div class="search-container">
                                 <input type="text" id="searchMaterial" name="searchMaterial" placeholder="Nhập tên vật tư để tìm kiếm" value="${param.searchMaterial}">
                                 <button type="submit"><i class="fas fa-search"></i> Tìm kiếm</button>
+                                <div id="suggestionsBox" class="suggestions-box"></div>
                             </div>
                         </div>
                     </form>  
@@ -211,13 +228,17 @@
         </div>
         <script src="<%= request.getContextPath() %>/js/script.js"></script>
         <script>
-            // Xóa đoạn mã JavaScript hiển thị thông báo trước đó
+            const facilities = [
+                <c:forEach var="facility" items="${allFacilities}" varStatus="loop">
+                    "${facility.facilityName}"${loop.last ? '' : ','}
+                </c:forEach>
+            ];
+
             document.addEventListener('DOMContentLoaded', function () {
-                const profileSection = document.getElementById('');
-                if (profileSection) {
-                    profileSection.classList.remove('hidden');
-                }
-            });
+                const searchInput = document.getElementById('searchMaterial');
+                const suggestionsBox = document.getElementById('suggestionsBox');
+
+           
         </script>
     </body>
 </html>

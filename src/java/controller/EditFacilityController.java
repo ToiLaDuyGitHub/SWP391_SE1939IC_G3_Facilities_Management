@@ -69,17 +69,17 @@ public class EditFacilityController extends HttpServlet {
         FacilityDAO facilityDAO = new FacilityDAO();
         try {
             // Lấy các tham số từ form trong JSP
-            int facilityID = Integer.parseInt(request.getParameter("facilityID")); // ID của vật tư
-            String facilityName = request.getParameter("materialName"); // Tên vật tư
-            int subcategoryID = Integer.parseInt(request.getParameter("subcategoryID")); // ID danh mục con
-            int quantity = Integer.parseInt(request.getParameter("quantity")); // Số lượng tổng
-            int newQuantity = Integer.parseInt(request.getParameter("statusNew")); // Số lượng mới
-            int usableQuantity = Integer.parseInt(request.getParameter("statusOld")); // Số lượng sử dụng được
-            int brokenQuantity = Integer.parseInt(request.getParameter("statusDamaged")); // Số lượng hỏng
-            String supplierName = request.getParameter("supplier"); // Tên nhà cung cấp
-            String supplierAddress = request.getParameter("supplierAddress"); // Địa chỉ nhà cung cấp
-            String supplierPhone = request.getParameter("supplierPhone"); // Số điện thoại nhà cung cấp
-            String oldImageUrl = request.getParameter("imageUrl"); // URL hình ảnh cũ
+            int facilityID = Integer.parseInt(request.getParameter("facilityID")); 
+            String facilityName = request.getParameter("materialName"); 
+            int subcategoryID = Integer.parseInt(request.getParameter("subcategoryID")); 
+            int quantity = Integer.parseInt(request.getParameter("quantity")); 
+            int newQuantity = Integer.parseInt(request.getParameter("statusNew")); 
+            int usableQuantity = Integer.parseInt(request.getParameter("statusOld")); 
+            int brokenQuantity = Integer.parseInt(request.getParameter("statusDamaged")); 
+            String supplierName = request.getParameter("supplier"); 
+            String supplierAddress = request.getParameter("supplierAddress"); 
+            String supplierPhone = request.getParameter("supplierPhone"); 
+            String oldImageUrl = request.getParameter("imageUrl"); 
 
             // Xử lý upload hình ảnh mới
             String imageUrl = oldImageUrl; // Mặc định giữ URL hình ảnh cũ
@@ -104,10 +104,8 @@ public class EditFacilityController extends HttpServlet {
             facilityDAO.updateFacility(facilityID, facilityName, subcategoryID, supplierName, supplierAddress, supplierPhone, imageUrl, quantity, newQuantity, usableQuantity, brokenQuantity);
 
             // Sau khi cập nhật thành công, lấy lại thông tin vật tư đã cập nhật để hiển thị
-            request.setAttribute("successMessage", "Cập nhật vật tư thành công!");
-            Facility updatedFacility = facilityDAO.getFacilityByName(facilityName);
-            request.setAttribute("facility", updatedFacility);
-            request.getRequestDispatcher("/EditFacility.jsp").forward(request, response);
+             request.getSession().setAttribute("successMessage", "Cập nhật vật tư thành công!");
+            response.sendRedirect(request.getContextPath() + "/FacilityList");
 
         } catch (SQLException e) {
             // Xử lý lỗi liên quan đến cơ sở dữ liệu

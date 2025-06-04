@@ -34,16 +34,12 @@ public class FacilityController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-//        FacilityDAO facility = new FacilityDAO();
-//        List<Facility> list = facility.getAllFacilities();
-//        
-//        request.setAttribute("facilities", list);
-//        request.getRequestDispatcher("materialList.jsp").forward(request, response);
+// Tạo đối tượng FacilityDAO
         FacilityDAO facilityDAO = new FacilityDAO();
         List<Facility> list = null;
 
         try {
+            // Gọi phương thức getAllFacilities() để lấy toàn bộ danh sách vật tư
             list = facilityDAO.getAllFacilities();
             request.setAttribute("facilities", list);
             
@@ -52,6 +48,7 @@ public class FacilityController extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace(); 
             request.setAttribute("error", "Không thể tải danh sách vật tư: " + e.getMessage());
+            request.getRequestDispatcher("materialList.jsp").forward(request, response);
         }
 
        

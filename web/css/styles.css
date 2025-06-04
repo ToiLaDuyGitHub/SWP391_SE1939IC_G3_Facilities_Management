@@ -604,6 +604,33 @@ body::before {
     transform: scale(1.02);
 }
 
+.modal .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.modal .info-row:last-child {
+    border-bottom: none;
+}
+
+.modal .info-row label {
+    color: #666;
+    font-weight: 500;
+    margin: 0; /* Override margin từ modal label mặc định */
+}
+
+.modal .info-row span {
+    color: #333;
+}
+
+.modal img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
+
 /* Styling for the password change form button within profile-card */
 .profile-card form button {
     background: linear-gradient(90deg, #4a90e2, #6aa8e6);
