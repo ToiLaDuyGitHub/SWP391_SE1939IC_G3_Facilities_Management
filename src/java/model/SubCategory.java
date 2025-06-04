@@ -9,42 +9,68 @@ package model;
  * @author ToiLaDuyGitHub
  */
 public class SubCategory {
-    private int SubcategoryID;
-    private int CategoryID;
-    private String SubcategoryName;
+    private int subcategoryID;
+    private int categoryID;
+    private String subcategoryName;
 
-    public SubCategory() {
+    // Constructor với tất cả tham số
+    public SubCategory(int subcategoryID, int categoryID, String subcategoryName) {
+        this.subcategoryID = subcategoryID;
+        this.categoryID = categoryID;
+        this.subcategoryName = subcategoryName;
     }
 
-    public SubCategory(int SubcategoryID, int CategoryID, String SubcategoryName) {
-        this.SubcategoryID = SubcategoryID;
-        this.CategoryID = CategoryID;
-        this.SubcategoryName = SubcategoryName;
+    // Constructor không có ID (dùng khi insert)
+    public SubCategory(int categoryID, String subcategoryName) {
+        this.categoryID = categoryID;
+        this.subcategoryName = subcategoryName;
     }
 
     public int getSubcategoryID() {
-        return SubcategoryID;
+        return subcategoryID;
     }
 
-    public void setSubcategoryID(int SubcategoryID) {
-        this.SubcategoryID = SubcategoryID;
+    public void setSubcategoryID(int subcategoryID) {
+        this.subcategoryID = subcategoryID;
     }
 
     public int getCategoryID() {
-        return CategoryID;
+        return categoryID;
     }
 
-    public void setCategoryID(int CategoryID) {
-        this.CategoryID = CategoryID;
+    public void setCategoryID(int categoryID) {
+        this.categoryID = categoryID;
     }
 
     public String getSubcategoryName() {
-        return SubcategoryName;
+        return subcategoryName;
     }
 
-    public void setSubcategoryName(String SubcategoryName) {
-        this.SubcategoryName = SubcategoryName;
+    public void setSubcategoryName(String subcategoryName) {
+        this.subcategoryName = subcategoryName;
     }
 
-    
+    // toString method
+    @Override
+    public String toString() {
+        return "SubCategory{" +
+                "subcategoryID=" + subcategoryID +
+                ", categoryID=" + categoryID +
+                ", subcategoryName='" + subcategoryName + '\'' +
+                '}';
+    }
+
+    // equals và hashCode methods
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        SubCategory that = (SubCategory) obj;
+        return subcategoryID == that.subcategoryID;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(subcategoryID);
+    }
 }
