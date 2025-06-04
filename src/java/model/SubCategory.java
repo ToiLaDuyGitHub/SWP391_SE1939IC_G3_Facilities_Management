@@ -26,6 +26,11 @@ public class SubCategory {
         this.subcategoryName = subcategoryName;
     }
 
+    public SubCategory() {
+    }
+    
+    
+
     public int getSubcategoryID() {
         return subcategoryID;
     }

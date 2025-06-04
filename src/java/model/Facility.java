@@ -17,11 +17,11 @@ public class Facility {
     private String Image;
     private int Quantity;
     private FacilityCondition condition;
-
+private String Detail;
     public Facility() {
     }
 
-    public Facility(int FacilityID, String FacilityName, Category category, SubCategory subcategory, Supplier SupplierID, String Image, int Quantity, FacilityCondition condition) {
+    public Facility(int FacilityID, String FacilityName, Category category, SubCategory subcategory, Supplier SupplierID, String Image, int Quantity, FacilityCondition condition, String Detail) {
         this.FacilityID = FacilityID;
         this.FacilityName = FacilityName;
         this.category = category;
@@ -30,16 +30,15 @@ public class Facility {
         this.Image = Image;
         this.Quantity = Quantity;
         this.condition = condition;
+        this.Detail = Detail;
     }
-
-    
 
     public int getFacilityID() {
         return FacilityID;
     }
 
-    public void setFacilityID(int facilityID) {
-        this.FacilityID = facilityID;
+    public void setFacilityID(int FacilityID) {
+        this.FacilityID = FacilityID;
     }
 
     public String getFacilityName() {
@@ -86,8 +85,8 @@ public class Facility {
         return Quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.Quantity = quantity;
+    public void setQuantity(int Quantity) {
+        this.Quantity = Quantity;
     }
 
     public FacilityCondition getCondition() {
@@ -98,7 +97,15 @@ public class Facility {
         this.condition = condition;
     }
 
-   
+    public String getDetail() {
+        return Detail;
+    }
+
+    public void setDetail(String Detail) {
+        this.Detail = Detail;
+    }
+
+    
 
 }
 

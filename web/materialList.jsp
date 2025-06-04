@@ -11,7 +11,7 @@
         <style>
             .content-card {
                 max-width: 1550px;
-                
+
             }
             .edit-button {
                 background-color: #4CAF50;
@@ -54,6 +54,7 @@
                 display: flex;
                 justify-content: center;
                 margin-bottom: 20px;
+                position: relative;
             }
             .search-container input[type="text"] {
                 width: 50%;
@@ -107,7 +108,7 @@
             <div class="content" id="contentArea">
                 <div class="content-card hidden" id="materialListSection">
                     <!-- Biểu mẫu tìm kiếm -->
-                    <form action="${pageContext.request.contextPath}/SearchListFacility" method="get">
+                    <form action="${pageContext.request.contextPath}/SearchList" method="get">
                         <div class="form-group">
                             <div class="search-container">
                                 <input type="text" id="searchMaterial" name="searchMaterial" placeholder="Nhập tên vật tư để tìm kiếm" value="${param.searchMaterial}">
@@ -115,7 +116,9 @@
                             </div>
                         </div>
                     </form>
+                    
 
+                 
                     <!-- Thông báo lỗi -->
                     <c:if test="${not empty errorMessage}">
                         <div class="error-message">
@@ -137,7 +140,7 @@
                         </thead>
                         <tbody>
                             <c:set var="page" value="${param.page != null ? param.page : 1}" />
-                            <c:set var="itemsPerPage" value="7" />
+                            <c:set var="itemsPerPage" value="6" />
                             <c:set var="start" value="${(page - 1) * itemsPerPage}" />
                             <c:set var="end" value="${start + itemsPerPage - 1}" />
                             <c:set var="totalItems" value="${facilities.size()}" />
@@ -159,7 +162,12 @@
                                         </c:if>
                                     </td>
                                     <td>
-                                        <button class="edit-button" onclick="openEditModal(${facility.facilityID})">Chi tiết</button>
+                                        <button class="edit-button" onclick="showMaterialDetail('${facility.facilityName}',
+                                                        '${facility.category.categoryName}', '${facility.subcategory.subcategoryName}',
+                                                        '${facility.supplierID.supplierName}', ${facility.quantity},
+                                                ${facility.condition.newQuantity}, ${facility.condition.usableQuantity},
+                                                ${facility.condition.brokenQuantity}, '${facility.image}',
+                                                        '${facility.detail}')">Chi tiết</button>                                
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -182,18 +190,65 @@
                     </div>
                 </div>
 
-                <!-- Overlay -->
+                <!-- Modal chi tiết vật tư -->
                 <div id="editModalOverlay" class="modal-overlay" onclick="closeEditModal()"></div>
+                <div id="editModal" class="modal">
+                    <span class="close" onclick="closeEditModal()">×</span>
+                    <h3>Chi tiết vật tư</h3>
+                    <div class="info-row">
+                        <label>Tên vật tư:</label>
+                        <span id="materialName"></span>
+                    </div>
+                    <div class="info-row">
+                        <label>Danh mục:</label>
+                        <span id="category"></span>
+                    </div>
+                    <div class="info-row">
+                        <label>Danh mục con:</label>
+                        <span id="subcategory"></span>
+                    </div>
+                    <div class="info-row">
+                        <label>Nhà cung cấp:</label>
+                        <span id="supplier"></span>
+                    </div>
+                    <div class="info-row">
+                        <label>Số lượng tổng:</label>
+                        <span id="quantity"></span>
+                    </div>
+                    <div class="info-row">
+                        <label>Số lượng mới:</label>
+                        <span id="newQuantity"></span>
+                    </div>
+                    <div class="info-row">
+                        <label>Số lượng sử dụng được:</label>
+                        <span id="usableQuantity"></span>
+                    </div>
+                    <div class="info-row">
+                        <label>Số lượng hỏng:</label>
+                        <span id="brokenQuantity"></span>
+                    </div>
+                    <div class="info-row">
+                        <label>Chi tiết:</label>
+                        <span id="detail"></span>
+                    </div>
+                    <div class="info-row">
+                        <label>Hình ảnh:</label>
+                        <span><img id="materialImage" src="" alt="Hình ảnh vật tư" style="display: none;"></span>
+                    </div>
+                </div>
+
             </div>
         </div>
         <script src="<%= request.getContextPath() %>/js/script.js"></script>
         <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        const profileSection = document.getElementById('materialListSection');
-                        if (profileSection) {
-                            profileSection.classList.remove('hidden');
-                        }
-                    });
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const profileSection = document.getElementById('materialListSection');
+                            if (profileSection) {
+                                profileSection.classList.remove('hidden');
+                            }
+                        });
+
+
         </script>
     </body>
 </html>

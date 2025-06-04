@@ -208,14 +208,24 @@ function showPermissions() {
     closeSidebarOnMobile();
 }
 
-function showMaterialDetail(name, category, subcategory, supplier, quantity, image) {
-    document.getElementById('materialName').value = name;
-    document.getElementById('category').value = category;
-    document.getElementById('subcategory').value = subcategory;
-    document.getElementById('supplier').value = supplier;
-    document.getElementById('quantity').value = quantity;
-    document.getElementById('imageUrl').value = image;
-    document.querySelector('#editModal img').src = image;
+function showMaterialDetail(name, category, subcategory, supplier, quantity, newQuantity, usableQuantity, brokenQuantity, image, detail) {
+    document.getElementById('materialName').textContent = name;
+    document.getElementById('category').textContent = category;
+    document.getElementById('subcategory').textContent = subcategory;
+    document.getElementById('supplier').textContent = supplier;
+    document.getElementById('quantity').textContent = quantity;
+    document.getElementById('newQuantity').textContent = newQuantity;
+    document.getElementById('usableQuantity').textContent = usableQuantity;
+    document.getElementById('brokenQuantity').textContent = brokenQuantity;
+    document.getElementById('detail').textContent = detail;
+
+    const materialImage = document.getElementById('materialImage');
+    if (image && image !== 'null') {
+        materialImage.src = image;
+        materialImage.style.display = 'block';
+    } else {
+        materialImage.style.display = 'none';
+    }
 
     openEditModal();
 }
@@ -256,3 +266,4 @@ document.addEventListener('DOMContentLoaded', setActiveMenu);
 
 // Gọi lại hàm khi URL thay đổi (cho SPA)
 window.addEventListener('popstate', setActiveMenu);
+

@@ -439,7 +439,23 @@ public class SubCategoryDAO extends DBUtil {
         System.out.println("\n=== KẾT THÚC TEST SUBCATEGORY DAO ===");
     }
 
-    public List<SubCategory> getAllSubCategories() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<SubCategory> getAllSubCategories() throws SQLException {
+        List<SubCategory> subCategories = new ArrayList<>();
+
+        String sql = "SELECT * FROM subcategories";
+
+        try (Connection conn = DBUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                SubCategory subcategory = new SubCategory();
+                int subcategoryID = rs.getInt("SubcategoryID");
+                int categoryID = rs.getInt("CategoryID");
+                String subcategoryName = rs.getString("SubcategoryName");
+
+                subCategories.add(new SubCategory(subcategoryID, categoryID, subcategoryName));
+            }
+
+        }
+        return subCategories;
     }
 } 
