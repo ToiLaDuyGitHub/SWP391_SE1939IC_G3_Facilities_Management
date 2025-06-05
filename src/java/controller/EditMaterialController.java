@@ -4,8 +4,8 @@
  */
 package controller;
 
-import dao.FacilityDAO;
-import model.Facility;
+import dao.MaterialDAO;
+import model.Material;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,11 +22,11 @@ import java.nio.file.Paths;
  *
  * @author Admin
  */
-@WebServlet(name = "EditFacilityController", urlPatterns = {"/EditFacility"})
+@WebServlet(name = "EditMaterialController", urlPatterns = {"/edit-material"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
         maxRequestSize = 1024 * 1024 * 50)   // 50MB
-public class EditFacilityController extends HttpServlet {
+public class EditMaterialController extends HttpServlet {
 
     private static final String UPLOAD_DIR = "uploads";
 
@@ -52,7 +52,7 @@ public class EditFacilityController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/EditFacility.jsp").forward(request, response);
+        request.getRequestDispatcher("/EditMaterial.jsp").forward(request, response);
     }
 
     /**
@@ -66,11 +66,11 @@ public class EditFacilityController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        FacilityDAO facilityDAO = new FacilityDAO();
+        MaterialDAO materialDAO = new MaterialDAO();
         try {
             // Lấy các tham số từ form trong JSP
-            int facilityID = Integer.parseInt(request.getParameter("facilityID")); 
-            String facilityName = request.getParameter("materialName"); 
+            int materialID = Integer.parseInt(request.getParameter("materialID")); 
+            String materialName = request.getParameter("materialName"); 
             int subcategoryID = Integer.parseInt(request.getParameter("subcategoryID")); 
             int quantity = Integer.parseInt(request.getParameter("quantity")); 
             int newQuantity = Integer.parseInt(request.getParameter("statusNew")); 
@@ -100,22 +100,22 @@ public class EditFacilityController extends HttpServlet {
                 imageUrl = UPLOAD_DIR + "/" + fileName;
             }
 
-            // Gọi phương thức updateFacility trong FacilityDAO để cập nhật thông tin vật tư vào cơ sở dữ liệu
-            facilityDAO.updateFacility(facilityID, facilityName, subcategoryID, supplierName, supplierAddress, supplierPhone, imageUrl, quantity, newQuantity, usableQuantity, brokenQuantity);
+            // Gọi phương thức updateMaterial trong MaterialDAO để cập nhật thông tin vật tư vào cơ sở dữ liệu
+            materialDAO.updateMaterial(materialID, materialName, subcategoryID, supplierName, supplierAddress, supplierPhone, imageUrl, quantity, newQuantity, usableQuantity, brokenQuantity);
 
             // Sau khi cập nhật thành công, lấy lại thông tin vật tư đã cập nhật để hiển thị
              request.getSession().setAttribute("successMessage", "Cập nhật vật tư thành công!");
-            response.sendRedirect(request.getContextPath() + "/FacilityList");
+            response.sendRedirect(request.getContextPath() + "/MaterialList");
 
         } catch (SQLException e) {
             // Xử lý lỗi liên quan đến cơ sở dữ liệu
             e.printStackTrace();
             request.setAttribute("errorMessage", "Lỗi khi cập nhật vật tư: " + e.getMessage());
-            request.getRequestDispatcher("/EditFacility.jsp").forward(request, response);
+            request.getRequestDispatcher("/EditMaterial.jsp").forward(request, response);
         } catch (NumberFormatException e) {
             // Xử lý lỗi khi người dùng nhập sai định dạng số (ví dụ: nhập chữ vào ô số lượng)
             request.setAttribute("errorMessage", "Vui lòng nhập đúng định dạng số cho các trường số lượng!");
-            request.getRequestDispatcher("/EditFacility.jsp").forward(request, response);
+            request.getRequestDispatcher("/EditMaterial.jsp").forward(request, response);
         }
     }
 

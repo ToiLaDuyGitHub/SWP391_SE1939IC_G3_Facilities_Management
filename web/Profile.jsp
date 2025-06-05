@@ -74,7 +74,7 @@
                 <div id="editModal" class="modal">
                     <span class="close" onclick="closeEditModal()">×</span>
                     <h3>Chỉnh sửa thông tin cá nhân</h3>
-                    <form action="${pageContext.request.contextPath}/UpdateProfile" method="post">
+                    <form action="${pageContext.request.contextPath}/update-profile" method="post">
                         <div class="form-row">
                             <label for="editLastName">Họ:</label>
                             <input type="text" id="editLastName" name="editLastName" value="${sessionScope.userRole.lastName}">

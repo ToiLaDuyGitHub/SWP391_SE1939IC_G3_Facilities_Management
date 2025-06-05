@@ -8,12 +8,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
-import model.Facility;
+import model.Material;
 import util.DBUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import model.Category;
-import model.FacilityCondition;
+import model.MaterialCondition;
 import model.SubCategory;
 import model.Supplier;
 
@@ -21,44 +21,44 @@ import model.Supplier;
  *
  * @author Admin
  */
-public class FacilityDAO {
+public class MaterialDAO {
 
-    public List<Facility> getAllFacilities() {
-        List<Facility> list = new ArrayList<>();
-        String sql = "SELECT f.FacilityID, f.FacilityName, f.Quantity, f.Image, f.Detail, " +
+    public List<Material> getAllMaterials() {
+        List<Material> list = new ArrayList<>();
+        String sql = "SELECT f.MaterialID, f.MaterialName, f.Quantity, f.Image, f.Detail, " +
                      "c.CategoryID, c.CategoryName, " +
                      "sc.SubcategoryID, sc.SubcategoryName, " +
                      "s.SupplierID, s.SupplierName, " +
                      "fc.NewQuantity, fc.UsableQuantity, fc.BrokenQuantity " +
-                     "FROM facilities f " +
+                     "FROM materials f " +
                      "LEFT JOIN categories c ON f.CategoryID = c.CategoryID " +
                      "LEFT JOIN subcategories sc ON f.SubcategoryID = sc.SubcategoryID " +
                      "LEFT JOIN suppliers s ON f.SupplierID = s.SupplierID " +
-                     "LEFT JOIN facilityconditions fc ON f.FacilityID = fc.FacilityID";
+                     "LEFT JOIN materialconditions fc ON f.MaterialID = fc.MaterialID";
 
         try (Connection conn = DBUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Facility facility = new Facility();
+                Material material = new Material();
 
-                facility.setFacilityID(rs.getInt("FacilityID"));
-                facility.setFacilityName(rs.getString("FacilityName"));
-                facility.setCategory(new Category(rs.getInt("CategoryID"), rs.getString("CategoryName")));
-                facility.setSubcategory(new SubCategory(rs.getInt("SubcategoryID"), rs.getInt("CategoryID"), rs.getString("SubcategoryName")));
-                facility.setSupplierID(new Supplier(rs.getInt("SupplierID"), rs.getString("SupplierName"), null, null));
-                facility.setQuantity(rs.getInt("Quantity"));
-                facility.setImage(rs.getString("Image"));
-                facility.setDetail(rs.getString("Detail"));
+                material.setMaterialID(rs.getInt("MaterialID"));
+                material.setMaterialName(rs.getString("MaterialName"));
+                material.setCategory(new Category(rs.getInt("CategoryID"), rs.getString("CategoryName")));
+                material.setSubcategory(new SubCategory(rs.getInt("SubcategoryID"), rs.getInt("CategoryID"), rs.getString("SubcategoryName")));
+                material.setSupplierID(new Supplier(rs.getInt("SupplierID"), rs.getString("SupplierName"), null, null));
+                material.setQuantity(rs.getInt("Quantity"));
+                material.setImage(rs.getString("Image"));
+                material.setDetail(rs.getString("Detail"));
 
-                FacilityCondition condition = new FacilityCondition(
-                    rs.getInt("FacilityID"),
+                MaterialCondition condition = new MaterialCondition(
+                    rs.getInt("MaterialID"),
                     rs.getInt("NewQuantity"),
                     rs.getInt("UsableQuantity"),
                     rs.getInt("BrokenQuantity")
                 );
-                facility.setCondition(condition);
+                material.setCondition(condition);
 
-                list.add(facility);
+                list.add(material);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,7 +67,7 @@ public class FacilityDAO {
     }
 
     // Thêm vật tư mới
-    public void addFacility(String FacilityName, int SubcategoryID, String SupplierName,
+    public void addMaterial(String MaterialName, int SubcategoryID, String SupplierName,
             String Address, String PhoneNum, String Image,
             int totalQuantity, int NewQuantity, int UsableQuantity) throws SQLException {
         Connection conn = null;
@@ -107,9 +107,9 @@ public class FacilityDAO {
             stmt.close();
 
             // Thêm vật tư
-            String insertFacilitySQL = "INSERT INTO facilities (FacilityName, CategoryID, SubcategoryID, SupplierID, Image, Quantity) VALUES (?, ?, ?, ?, ?, ?)";
-            stmt = conn.prepareStatement(insertFacilitySQL, PreparedStatement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, FacilityName);
+            String insertMaterialSQL = "INSERT INTO materials (MaterialName, CategoryID, SubcategoryID, SupplierID, Image, Quantity) VALUES (?, ?, ?, ?, ?, ?)";
+            stmt = conn.prepareStatement(insertMaterialSQL, PreparedStatement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, MaterialName);
             stmt.setInt(2, CategoryID);
             stmt.setInt(3, SubcategoryID);
             stmt.setInt(4, supplierId);
@@ -117,17 +117,17 @@ public class FacilityDAO {
             stmt.setInt(6, totalQuantity);
             stmt.executeUpdate();
             rs = stmt.getGeneratedKeys();
-            int facilityId = 0;
+            int materialId = 0;
             if (rs.next()) {
-                facilityId = rs.getInt(1);
+                materialId = rs.getInt(1);
             }
             rs.close();
             stmt.close();
 
             // Thêm trạng thái vật tư
-            String insertConditionSQL = "INSERT INTO facilityconditions (FacilityID, NewQuantity, UsableQuantity, BrokenQuantity) VALUES (?, ?, ?, 0)";
+            String insertConditionSQL = "INSERT INTO materialconditions (MaterialID, NewQuantity, UsableQuantity, BrokenQuantity) VALUES (?, ?, ?, 0)";
             stmt = conn.prepareStatement(insertConditionSQL);
-            stmt.setInt(1, facilityId);
+            stmt.setInt(1, materialId);
             stmt.setInt(2, NewQuantity);
             stmt.setInt(3, UsableQuantity);
             stmt.executeUpdate();
@@ -158,38 +158,38 @@ public class FacilityDAO {
     }
 
     // Tìm vật tư theo tên
-    public Facility getFacilityByName(String facilityName) {
+    public Material getMaterialByName(String materialName) {
     String sql = "SELECT f.*, c.CategoryName, sc.SubcategoryName, sup.SupplierName, sup.Address, sup.PhoneNum, fc.NewQuantity, fc.UsableQuantity, fc.BrokenQuantity "
-            + "FROM facilities f "
+            + "FROM materials f "
             + "LEFT JOIN categories c ON f.CategoryID = c.CategoryID "
             + "LEFT JOIN subcategories sc ON f.SubcategoryID = sc.SubcategoryID "
             + "LEFT JOIN suppliers sup ON f.SupplierID = sup.SupplierID "
-            + "LEFT JOIN facilityconditions fc ON f.FacilityID = fc.FacilityID "
-            + "WHERE TRIM(LOWER(f.FacilityName)) = ?";
+            + "LEFT JOIN materialconditions fc ON f.MaterialID = fc.MaterialID "
+            + "WHERE TRIM(LOWER(f.MaterialName)) = ?";
 
     try (Connection conn = DBUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-        stmt.setString(1, facilityName);
+        stmt.setString(1, materialName);
         ResultSet rs = stmt.executeQuery();
 
         if (rs.next()) {
-            Facility facility = new Facility();
-            facility.setFacilityID(rs.getInt("FacilityID"));
-            facility.setFacilityName(rs.getString("FacilityName"));
-            facility.setCategory(new Category(rs.getInt("CategoryID"), rs.getString("CategoryName")));
-            facility.setSubcategory(new SubCategory(rs.getInt("SubcategoryID"), rs.getInt("CategoryID"), rs.getString("SubcategoryName")));
-            facility.setSupplierID(new Supplier(rs.getInt("SupplierID"), rs.getString("SupplierName"), rs.getString("Address"), rs.getString("PhoneNum")));
-            facility.setQuantity(rs.getInt("Quantity"));
-            facility.setImage(rs.getString("Image"));
+            Material material = new Material();
+            material.setMaterialID(rs.getInt("MaterialID"));
+            material.setMaterialName(rs.getString("MaterialName"));
+            material.setCategory(new Category(rs.getInt("CategoryID"), rs.getString("CategoryName")));
+            material.setSubcategory(new SubCategory(rs.getInt("SubcategoryID"), rs.getInt("CategoryID"), rs.getString("SubcategoryName")));
+            material.setSupplierID(new Supplier(rs.getInt("SupplierID"), rs.getString("SupplierName"), rs.getString("Address"), rs.getString("PhoneNum")));
+            material.setQuantity(rs.getInt("Quantity"));
+            material.setImage(rs.getString("Image"));
 
-            // Gán đối tượng FacilityCondition
-            FacilityCondition condition = new FacilityCondition(
-                    rs.getInt("FacilityID"),
+            // Gán đối tượng MaterialCondition
+            MaterialCondition condition = new MaterialCondition(
+                    rs.getInt("MaterialID"),
                     rs.getInt("NewQuantity"),
                     rs.getInt("UsableQuantity"),
                     rs.getInt("BrokenQuantity")
             );
-            facility.setCondition(condition); // Gán đối tượng thay vì chuỗi
-            return facility;
+            material.setCondition(condition); // Gán đối tượng thay vì chuỗi
+            return material;
         }
     } catch (SQLException e) {
         e.printStackTrace();
@@ -198,47 +198,47 @@ public class FacilityDAO {
 }
     
     
-    public List<Facility> suggestFacilitiesByName(String facilityName) {
-    List<Facility> facilities = new ArrayList<>();
+    public List<Material> suggestMaterialsByName(String materialName) {
+    List<Material> materials = new ArrayList<>();
     String sql = "SELECT f.*, c.CategoryName, sc.SubcategoryName, sup.SupplierName, sup.Address, sup.PhoneNum, fc.NewQuantity, fc.UsableQuantity, fc.BrokenQuantity "
-            + "FROM facilities f "
+            + "FROM materials f "
             + "LEFT JOIN categories c ON f.CategoryID = c.CategoryID "
             + "LEFT JOIN subcategories sc ON f.SubcategoryID = sc.SubcategoryID "
             + "LEFT JOIN suppliers sup ON f.SupplierID = sup.SupplierID "
-            + "LEFT JOIN facilityconditions fc ON f.FacilityID = fc.FacilityID "
-            + "WHERE TRIM(LOWER(f.FacilityName)) LIKE ?";
+            + "LEFT JOIN materialconditions fc ON f.MaterialID = fc.MaterialID "
+            + "WHERE TRIM(LOWER(f.MaterialName)) LIKE ?";
 
     try (Connection conn = DBUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-        stmt.setString(1, facilityName.trim().toLowerCase() + "%"); // Tìm các tên bắt đầu bằng từ khóa
+        stmt.setString(1, materialName.trim().toLowerCase() + "%"); // Tìm các tên bắt đầu bằng từ khóa
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
-            Facility facility = new Facility();
-            facility.setFacilityID(rs.getInt("FacilityID"));
-            facility.setFacilityName(rs.getString("FacilityName"));
-            facility.setCategory(new Category(rs.getInt("CategoryID"), rs.getString("CategoryName")));
-            facility.setSubcategory(new SubCategory(rs.getInt("SubcategoryID"), rs.getInt("CategoryID"), rs.getString("SubcategoryName")));
-            facility.setSupplierID(new Supplier(rs.getInt("SupplierID"), rs.getString("SupplierName"), rs.getString("Address"), rs.getString("PhoneNum")));
-            facility.setQuantity(rs.getInt("Quantity"));
-            facility.setImage(rs.getString("Image"));
+            Material material = new Material();
+            material.setMaterialID(rs.getInt("MaterialID"));
+            material.setMaterialName(rs.getString("MaterialName"));
+            material.setCategory(new Category(rs.getInt("CategoryID"), rs.getString("CategoryName")));
+            material.setSubcategory(new SubCategory(rs.getInt("SubcategoryID"), rs.getInt("CategoryID"), rs.getString("SubcategoryName")));
+            material.setSupplierID(new Supplier(rs.getInt("SupplierID"), rs.getString("SupplierName"), rs.getString("Address"), rs.getString("PhoneNum")));
+            material.setQuantity(rs.getInt("Quantity"));
+            material.setImage(rs.getString("Image"));
 
-            FacilityCondition condition = new FacilityCondition(
-                    rs.getInt("FacilityID"),
+            MaterialCondition condition = new MaterialCondition(
+                    rs.getInt("MaterialID"),
                     rs.getInt("NewQuantity"),
                     rs.getInt("UsableQuantity"),
                     rs.getInt("BrokenQuantity")
             );
-            facility.setCondition(condition);
-            facilities.add(facility);
+            material.setCondition(condition);
+            materials.add(material);
         }
     } catch (SQLException e) {
         e.printStackTrace();
     }
-    return facilities;
+    return materials;
 }
     
     // Cập nhật thông tin vật tư trong cơ sở dữ liệu
-    public void updateFacility(int facilityID, String facilityName, int subcategoryID, String supplierName,
+    public void updateMaterial(int materialID, String materialName, int subcategoryID, String supplierName,
             String supplierAddress, String supplierPhone, String imageUrl, int totalQuantity,
             int newQuantity, int usableQuantity, int brokenQuantity) throws SQLException {
         Connection conn = null;
@@ -250,9 +250,9 @@ public class FacilityDAO {
             conn.setAutoCommit(false);
 
             // 1. Lấy SupplierID và CategoryID hiện tại của vật tư
-            String getFacilitySQL = "SELECT SupplierID, CategoryID FROM facilities WHERE FacilityID = ?";
-            stmt = conn.prepareStatement(getFacilitySQL);
-            stmt.setInt(1, facilityID);
+            String getMaterialSQL = "SELECT SupplierID, CategoryID FROM materials WHERE MaterialID = ?";
+            stmt = conn.prepareStatement(getMaterialSQL);
+            stmt.setInt(1, materialID);
             rs = stmt.executeQuery();
             int supplierID = 0;
             int categoryID = 0;
@@ -260,7 +260,7 @@ public class FacilityDAO {
                 supplierID = rs.getInt("SupplierID");
                 categoryID = rs.getInt("CategoryID");
             } else {
-                throw new SQLException("Không tìm thấy vật tư với FacilityID: " + facilityID);
+                throw new SQLException("Không tìm thấy vật tư với MaterialID: " + materialID);
             }
             rs.close();
             stmt.close();
@@ -288,26 +288,26 @@ public class FacilityDAO {
             stmt.executeUpdate();
             stmt.close();
 
-            // 4. Cập nhật thông tin vật tư trong bảng facilities
-            String updateFacilitySQL = "UPDATE facilities SET FacilityName = ?, CategoryID = ?, SubcategoryID = ?, SupplierID = ?, Image = ?, Quantity = ? WHERE FacilityID = ?";
-            stmt = conn.prepareStatement(updateFacilitySQL);
-            stmt.setString(1, facilityName);
+            // 4. Cập nhật thông tin vật tư trong bảng materials
+            String updateMaterialSQL = "UPDATE materials SET MaterialName = ?, CategoryID = ?, SubcategoryID = ?, SupplierID = ?, Image = ?, Quantity = ? WHERE MaterialID = ?";
+            stmt = conn.prepareStatement(updateMaterialSQL);
+            stmt.setString(1, materialName);
             stmt.setInt(2, categoryID);
             stmt.setInt(3, subcategoryID);
             stmt.setInt(4, supplierID);
             stmt.setString(5, imageUrl);
             stmt.setInt(6, totalQuantity);
-            stmt.setInt(7, facilityID);
+            stmt.setInt(7, materialID);
             stmt.executeUpdate();
             stmt.close();
 
-            // 5. Cập nhật trạng thái vật tư trong bảng facilityconditions
-            String updateConditionSQL = "UPDATE facilityconditions SET NewQuantity = ?, UsableQuantity = ?, BrokenQuantity = ? WHERE FacilityID = ?";
+            // 5. Cập nhật trạng thái vật tư trong bảng materialconditions
+            String updateConditionSQL = "UPDATE materialconditions SET NewQuantity = ?, UsableQuantity = ?, BrokenQuantity = ? WHERE MaterialID = ?";
             stmt = conn.prepareStatement(updateConditionSQL);
             stmt.setInt(1, newQuantity);
             stmt.setInt(2, usableQuantity);
             stmt.setInt(3, brokenQuantity);
-            stmt.setInt(4, facilityID);
+            stmt.setInt(4, materialID);
             stmt.executeUpdate();
             stmt.close();
 
@@ -335,7 +335,7 @@ public class FacilityDAO {
         }
     }
     // Xóa vật tư
-    public void deleteFacility(int facilityID) throws SQLException {
+    public void deleteMaterial(int materialID) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -344,42 +344,42 @@ public class FacilityDAO {
             conn = DBUtil.getConnection();
             
             // 1. Lấy SupplierID của vật tư
-            String getSupplierSQL = "SELECT SupplierID FROM facilities WHERE FacilityID = ?";
+            String getSupplierSQL = "SELECT SupplierID FROM materials WHERE MaterialID = ?";
             stmt = conn.prepareStatement(getSupplierSQL);
-            stmt.setInt(1, facilityID);
+            stmt.setInt(1, materialID);
             rs = stmt.executeQuery();
             int supplierID = 0;
             if (rs.next()) {
                 supplierID = rs.getInt("SupplierID");
             } else {
-                throw new SQLException("Không tìm thấy vật tư với FacilityID: " + facilityID);
+                throw new SQLException("Không tìm thấy vật tư với MaterialID: " + materialID);
             }
             rs.close();
             stmt.close();
 
             // 2. Xóa các bản ghi liên quan trong bảng records
-            String deleteRecordsSQL = "DELETE FROM records WHERE FacilityID = ?";
+            String deleteRecordsSQL = "DELETE FROM records WHERE MaterialID = ?";
             stmt = conn.prepareStatement(deleteRecordsSQL);
-            stmt.setInt(1, facilityID);
+            stmt.setInt(1, materialID);
             stmt.executeUpdate();
             stmt.close();
 
-            // 3. Xóa trạng thái vật tư trong bảng facilityconditions
-            String deleteConditionSQL = "DELETE FROM facilityconditions WHERE FacilityID = ?";
+            // 3. Xóa trạng thái vật tư trong bảng materialconditions
+            String deleteConditionSQL = "DELETE FROM materialconditions WHERE MaterialID = ?";
             stmt = conn.prepareStatement(deleteConditionSQL);
-            stmt.setInt(1, facilityID);
+            stmt.setInt(1, materialID);
             stmt.executeUpdate();
             stmt.close();
 
-            // 4. Xóa vật tư trong bảng facilities
-            String deleteFacilitySQL = "DELETE FROM facilities WHERE FacilityID = ?";
-            stmt = conn.prepareStatement(deleteFacilitySQL);
-            stmt.setInt(1, facilityID);
+            // 4. Xóa vật tư trong bảng materials
+            String deleteMaterialSQL = "DELETE FROM materials WHERE MaterialID = ?";
+            stmt = conn.prepareStatement(deleteMaterialSQL);
+            stmt.setInt(1, materialID);
             stmt.executeUpdate();
             stmt.close();
 
             // 5. Kiểm tra xem Supplier có còn được tham chiếu bởi vật tư nào khác không
-            String checkSupplierSQL = "SELECT COUNT(*) FROM facilities WHERE SupplierID = ?";
+            String checkSupplierSQL = "SELECT COUNT(*) FROM materials WHERE SupplierID = ?";
             stmt = conn.prepareStatement(checkSupplierSQL);
             stmt.setInt(1, supplierID);
             rs = stmt.executeQuery();

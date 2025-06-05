@@ -20,7 +20,7 @@ import model.dto.User_Role;
  *
  * @author ADMIN
  */
-@WebServlet(name = "UpdateProfileController", urlPatterns = {"/UpdateProfile"})
+@WebServlet(name = "UpdateProfileController", urlPatterns = {"/update-profile"})
 public class UpdateProfileController extends HttpServlet {
 
     /**

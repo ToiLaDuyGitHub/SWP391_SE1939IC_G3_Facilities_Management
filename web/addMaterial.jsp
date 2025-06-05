@@ -1,5 +1,5 @@
 <%-- 
-    Document   : addFacility
+    Document   : addMaterial
     Created on : 1 thg 6, 2025, 01:40:09
     Author     : Admin
 --%>
@@ -57,13 +57,13 @@
                             <i class="fas fa-exclamation-circle"></i> ${error}
                         </div>
                     </c:if>
-                    <form id="addMaterialForm" action="AddFacility" method="post" enctype="multipart/form-data">
+                    <form id="addMaterialForm" action="add-material" method="post" enctype="multipart/form-data">
                         <div class="form-grid">
                             <!-- Cột bên trái -->
                             <div class="form-column">
                                 <div class="form-group">
                                     <label for="materialName"><i class="fas fa-tag"></i> Tên vật tư:</label>
-                                    <input type="text" id="materialName" name="FacilityName" placeholder="Nhập tên vật tư" required>
+                                    <input type="text" id="materialName" name="MaterialName" placeholder="Nhập tên vật tư" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="supplierName"><i class="fas fa-building"></i> Tên nhà cung cấp:</label>

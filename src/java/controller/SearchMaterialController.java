@@ -5,7 +5,7 @@
 
 package controller;
 
-import dao.FacilityDAO;
+import dao.MaterialDAO;
 import dao.SubCategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,15 +15,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.Facility;
+import model.Material;
 import model.SubCategory;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name="SearchFacilityController", urlPatterns={"/SearchFacility"})
-public class SearchFacilityController extends HttpServlet {
+@WebServlet(name="SearchMaterialController", urlPatterns={"/search-material"})
+public class SearchMaterialController extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,7 +37,7 @@ public class SearchFacilityController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
        
-        FacilityDAO facilityDAO = new FacilityDAO();
+        MaterialDAO materialDAO = new MaterialDAO();
         SubCategoryDAO subCategory = new SubCategoryDAO();
         try {
 
@@ -46,21 +46,21 @@ public class SearchFacilityController extends HttpServlet {
             
         } catch (Exception e) {
         }
-        String FacilityName = request.getParameter("searchMaterial");
+        String MaterialName = request.getParameter("searchMaterial");
         // Kiểm tra nếu tên vật tư không rỗng
-        if (FacilityName != null && !FacilityName.trim().isEmpty()) {
+        if (MaterialName != null && !MaterialName.trim().isEmpty()) {
             // Gọi DAO để tìm vật tư theo tên
-            Facility facility = facilityDAO.getFacilityByName(FacilityName);
+            Material material = materialDAO.getMaterialByName(MaterialName);
 
             // Nếu tìm thấy vật tư, đặt vào request để hiển thị trên JSP
-            if (facility != null) {
-                request.setAttribute("facility", facility);
+            if (material != null) {
+                request.setAttribute("material", material);
             } else {
-                request.setAttribute("errorMessage", "Không tìm thấy vật tư với tên: " + FacilityName);
+                request.setAttribute("errorMessage", "Không tìm thấy vật tư với tên: " + MaterialName);
                 
             }
         }
-        request.getRequestDispatcher("/EditFacility.jsp").forward(request, response);
+        request.getRequestDispatcher("/EditMaterial.jsp").forward(request, response);
     } 
 
     /** 

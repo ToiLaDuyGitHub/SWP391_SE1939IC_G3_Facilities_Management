@@ -4,10 +4,9 @@
  */
 package controller;
 
-import dao.FacilityDAO;
+import dao.MaterialDAO;
 import dao.SubCategoryDAO;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -22,9 +21,9 @@ import model.SubCategory;
  *
  * @author Admin
  */
-@WebServlet(name = "AddFacilityControl", urlPatterns = {"/AddFacility"})
+@WebServlet(name = "AddMaterialController", urlPatterns = {"/add-material"})
 @MultipartConfig
-public class AddFacilityController extends HttpServlet {
+public class AddMaterialController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -54,7 +53,7 @@ public class AddFacilityController extends HttpServlet {
 
             List<SubCategory> subcategoryList = subCategory.getAllSubCategories();
             request.setAttribute("subcategoryList", subcategoryList);
-            request.getRequestDispatcher("addFacility.jsp").forward(request, response);
+            request.getRequestDispatcher("addMaterial.jsp").forward(request, response);
         } catch (Exception e) {
         }
     }
@@ -70,10 +69,10 @@ public class AddFacilityController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        FacilityDAO facilityDAO = new FacilityDAO();
+        MaterialDAO materialDAO = new MaterialDAO();
         try {
             // Lấy thông tin từ form
-            String FacilityName = request.getParameter("FacilityName");
+            String MaterialName = request.getParameter("MaterialName");
             String SupplierName = request.getParameter("SupplierName");
             String Address = request.getParameter("Address");
             String PhoneNum = request.getParameter("PhoneNum");
@@ -85,7 +84,7 @@ public class AddFacilityController extends HttpServlet {
             if (subcategoryIdStr == null || newQuantityStr == null || usableQuantityStr == null
                     || subcategoryIdStr.isEmpty() || newQuantityStr.isEmpty() || usableQuantityStr.isEmpty()) {
                 request.setAttribute("error", "Vui lòng điền đầy đủ thông tin.");
-                request.getRequestDispatcher("addFacility.jsp").forward(request, response);
+                request.getRequestDispatcher("addMaterial.jsp").forward(request, response);
                 return;
             }
 
@@ -111,7 +110,7 @@ public class AddFacilityController extends HttpServlet {
             }
 
             // Thêm vật tư mới vào cơ sở dữ liệu
-            facilityDAO.addFacility(FacilityName, SubcategoryID, SupplierName,
+            materialDAO.addMaterial(MaterialName, SubcategoryID, SupplierName,
                     Address, PhoneNum, imagePath, totalQuantity,
                     NewQuantity, UsableQuantity);
 
@@ -120,11 +119,11 @@ public class AddFacilityController extends HttpServlet {
             SubCategoryDAO subCategory = new SubCategoryDAO();
             List<SubCategory> subcategoryList = subCategory.getAllSubCategories();
             request.setAttribute("subcategoryList", subcategoryList);
-            request.getRequestDispatcher("addFacility.jsp").forward(request, response);
+            request.getRequestDispatcher("addMaterial.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", "Không thể thêm vật tư: " + e.getMessage());
-            request.getRequestDispatcher("addFacility.jsp").forward(request, response);
+            request.getRequestDispatcher("addMaterial.jsp").forward(request, response);
         }
     }
 

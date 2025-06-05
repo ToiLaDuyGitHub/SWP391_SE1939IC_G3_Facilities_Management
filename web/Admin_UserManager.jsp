@@ -10,7 +10,6 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link rel="stylesheet" href="<%= request.getContextPath() %>/css/styles.css">
 
-
         <style>
             /* Reset mặc định */
             * {
@@ -222,83 +221,12 @@
     </head>
     <body>
         <div id="dashboard">
-            <div class="header">
-                <h1><i class="fas fa-hard-hat"></i> Hệ thống Quản lý Xây dựng</h1>
-                <div class="actions">
-                    <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-                    <div class="user-info">
-                        <i class="fas fa-user-circle"></i>
-                        <div class="tooltip">
-                            <p class="position">Quản lý</p>
-                            <p>${not empty sessionScope.user ? sessionScope.user.fullName : 'Chưa đăng nhập'}</p>
-                        </div>
-                    </div>
-                    <form action="${pageContext.request.contextPath}/logout" method="post" style="display: inline;">
-                        <button type="submit" class="logout-button" onclick="logout()">Đăng xuất</button>
-                    </form>
-                </div>
-            </div>
-            <div class="sidebar" id="sidebar">
-                <h3><i class="fas fa-tools"></i> Menu</h3>
-                <ul>
-                    <li class="dropdown">
-                        <div class="dropdown-toggle" onclick="toggleDropdown(this)">
-                            <span><i class="fas fa-users"></i> Quản lý người dùng</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="dropdown-content">
-                            <a href="${pageContext.request.contextPath}/Userctr?service=listAllUser">Xem danh sách người dùng</a>
-                            <a href="${pageContext.request.contextPath}/addUser">Thêm mới người dùng</a>
-                            <a href="${pageContext.request.contextPath}/reset-password-request-list">Danh sách yêu cầu reset mật khẩu</a>
-                        </div>
-                    </li>
-                    <li class="dropdown">
-                        <div class="dropdown-toggle" onclick="toggleDropdown(this)">
-                            <span><i class="fas fa-boxes"></i> Phân quyền</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="dropdown-content">
-                            <a href="${pageContext.request.contextPath}/Decentralization">Phân quyền chức năng</a>
-                        </div>
-                    </li>
-                    <li class="dropdown">
-                        <div class="dropdown-toggle" onclick="toggleDropdown(this)">
-                            <span><i class="fas fa-user"></i> Thông tin cá nhân</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="dropdown-content">
-                            <a href="${pageContext.request.contextPath}/Profile">Xem thông tin cá nhân</a>
-                            <a href="${pageContext.request.contextPath}/changePassword">Thay đổi mật khẩu</a>
-                        </div>
-                    </li>
-                    <li class="dropdown">
-                        <div class="dropdown-toggle" onclick="toggleDropdown(this)">
-                            <span><i class="fas fa-folder"></i> Quản lý danh mục vật tư</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="dropdown-content">
-                            <a href="${pageContext.request.contextPath}/danhmucvattu/danh-muc-list.jsp">Xem danh mục vật tư</a>
-                            <a href="#" onclick="showContent('addCategory', this)">Thêm mới danh mục vật tư</a>
-                        </div>
-                    </li>
-                    <li class="dropdown">
-                        <div class="dropdown-toggle" onclick="toggleDropdown(this)">
-                            <span><i class="fas fa-boxes"></i> Quản lý vật tư</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="dropdown-content">
-                            <a href="${pageContext.request.contextPath}/FacilityList">Xem danh sách vật tư</a>
-                            <a href="${pageContext.request.contextPath}/AddFacility">Thêm mới vật tư</a>
-                            <a href="EditFacility.jsp">Sửa thông tin vật tư</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            <%@ include file="sidebar.jsp" %>
             <div class="content" id="contentArea">
                 <div class="content-card" id="userList">
                     <h2><i class="fas fa-users"></i> Danh sách người dùng</h2>
                     <!-- Form tìm kiếm và lọc -->
-                    <form action="<%= request.getContextPath() %>/Userctr" method="get" class="search-form">
+                    <form action="<%= request.getContextPath() %>/manage-user" method="get" class="search-form">
                         <input type="hidden" name="service" value="searchByKeywords">
                         <input type="text" name="keywords" placeholder="Nhập tên người dùng..." value="<%= request.getAttribute("keywords") != null ? request.getAttribute("keywords") : "" %>">
                         <button type="submit"><i class="fas fa-search"></i> Tìm kiếm</button>
@@ -349,7 +277,7 @@
                                 <td><%= user.getRoleName() %></td>
                                 <td><%= user.isIsActive() ? "Hoạt động" : "Không hoạt động" %></td>
                                 <td>
-                                    <form action="<%= request.getContextPath() %>/Userctr" method="post">
+                                    <form action="<%= request.getContextPath() %>/manage-user" method="post">
                                         <input type="hidden" name="action" value="updateStatus">
                                         <input type="hidden" name="userId" value="<%= user.getUserID() %>">
                                         <input type="hidden" name="keywords" value="<%= request.getAttribute("keywords") != null ? request.getAttribute("keywords") : "" %>">
@@ -360,7 +288,7 @@
                                     </form>
                                 </td>
                                 <td>
-                                    <button onclick="window.location = '<%= request.getContextPath() %>/Userctr?service=userDetail&userId=<%= user.getUserID() %>'" class="detail-button">Chi tiết</button>
+                                    <button onclick="window.location = '<%= request.getContextPath() %>/manage-user?service=userDetail&userId=<%= user.getUserID() %>'" class="detail-button">Chi tiết</button>
                                 </td>
                             </tr>
                             <% } %>
@@ -380,7 +308,7 @@
                         String keywords = request.getParameter("keywords");
                         String roleFilter = request.getParameter("roleFilter");
                         String statusFilter = request.getParameter("statusFilter");
-                        String baseUrl = request.getContextPath() + "/Userctr?service=" + (service != null ? service : "listAllUser");
+                        String baseUrl = request.getContextPath() + "/manage-user?service=" + (service != null ? service : "listAllUser");
                         if (service != null && service.equals("searchByKeywords")) {
                             if (keywords != null && !keywords.isEmpty()) baseUrl += "&keywords=" + java.net.URLEncoder.encode(keywords, "UTF-8");
                             if (roleFilter != null && !roleFilter.isEmpty()) baseUrl += "&roleFilter=" + roleFilter;
@@ -432,7 +360,7 @@
                             <label>Địa chỉ:</label>
                             <span><%= detailUser.getAddress() != null ? detailUser.getAddress() : "Chưa có thông tin" %></span>
                         </div>
-                        <button onclick="window.location = '<%= request.getContextPath() %>/Userctr?service=listAllUser'">Quay lại</button>
+                        <button onclick="window.location = '<%= request.getContextPath() %>/manage-user?service=listAllUser'">Quay lại</button>
                         <% } else if (request.getAttribute("error") != null) { %>
                         <div class="alert alert-danger">
                             <%= request.getAttribute("error") %>

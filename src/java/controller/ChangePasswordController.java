@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.sql.SQLException;
 import model.dto.User_Role;
 import util.PasswordUtil;
 
@@ -21,8 +20,8 @@ import util.PasswordUtil;
  *
  * @author ADMIN
  */
-@WebServlet(name = "changePasswordController", urlPatterns = {"/changePassword"})
-public class changePasswordController extends HttpServlet {
+@WebServlet(name = "ChangePasswordController", urlPatterns = {"/change-password"})
+public class ChangePasswordController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP GET and POST methods.

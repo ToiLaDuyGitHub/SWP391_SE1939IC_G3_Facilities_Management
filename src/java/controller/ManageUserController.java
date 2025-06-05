@@ -7,12 +7,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
-import model.User;
 import model.dto.User_Role;
 
-public class Manager_UserController extends HttpServlet {
+public class ManageUserController extends HttpServlet {
 
     private static final String HOME_URL = "Admin_UserManager.jsp";
 

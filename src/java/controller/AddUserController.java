@@ -12,7 +12,7 @@ import util.CreateUserMail;
 import util.PasswordUtil;
 import util.ResetPassword;
 
-@WebServlet(name = "AddUserController", urlPatterns = {"/addUser"})
+@WebServlet(name = "AddUserController", urlPatterns = {"/add-user"})
 public class AddUserController extends HttpServlet {
 
     private static final String SUCCESS_URL = "home.jsp"; // Trang hiển thị danh sách người dùng
