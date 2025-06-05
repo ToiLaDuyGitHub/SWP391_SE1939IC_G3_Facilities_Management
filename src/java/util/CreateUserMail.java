@@ -26,7 +26,7 @@ public class CreateUserMail {
         String host = "smtp.gmail.com";
         String fromEmail = "quanlyvattu.fms@gmail.com";
         String password = "mkisisvjsmpdsfhk";
-        String senderName = "Hệ thống Quản lý Vật tư - Facilities Management System (FMS)";
+        String senderName = "Hệ thống Quản lý Vật tư - Materials Management System (MAMAS)";
 
         Properties properties = new Properties();
         properties.put("mail.smtp.host", host);
@@ -132,9 +132,9 @@ public class CreateUserMail {
                 <div class="email-container">
                     <div class="header">
                         <div class="logo-container">
-                            <img src="https://images.emojiterra.com/google/android-12l/512px/1f3d7.png" class="logo-img" alt="FMS Logo">
+                            <img src="https://images.emojiterra.com/google/android-12l/512px/1f3d7.png" class="logo-img" alt="MAMAS Logo">
                         </div>
-                        <h1>Facilities Management System (FMS)</h1>
+                        <h1>Materials Management System (MAMAS)</h1>
                     </div>
                         
                     <div class="content">
@@ -151,7 +151,7 @@ public class CreateUserMail {
                     </div>
                     
                     <div class="footer">
-                        <p>© 2025 Facilities Management System (FMS)</p>
+                        <p>© 2025 Materials Management System (MAMAS)</p>
                         <p>This is an automated email, please do not reply</p>
                     </div>
                 </div>

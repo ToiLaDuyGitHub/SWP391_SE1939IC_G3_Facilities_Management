@@ -8,22 +8,22 @@ package model;
  *
  * @author acer
  */
-public class Facility {
-    private int FacilityID;
-    private String FacilityName;
+public class Material {
+    private int MaterialID;
+    private String MaterialName;
     private Category category;
     private SubCategory subcategory;
     private Supplier SupplierID;
     private String Image;
     private int Quantity;
-    private FacilityCondition condition;
+    private MaterialCondition condition;
 private String Detail;
-    public Facility() {
+    public Material() {
     }
 
-    public Facility(int FacilityID, String FacilityName, Category category, SubCategory subcategory, Supplier SupplierID, String Image, int Quantity, FacilityCondition condition, String Detail) {
-        this.FacilityID = FacilityID;
-        this.FacilityName = FacilityName;
+    public Material(int MaterialID, String MaterialName, Category category, SubCategory subcategory, Supplier SupplierID, String Image, int Quantity, MaterialCondition condition, String Detail) {
+        this.MaterialID = MaterialID;
+        this.MaterialName = MaterialName;
         this.category = category;
         this.subcategory = subcategory;
         this.SupplierID = SupplierID;
@@ -33,20 +33,20 @@ private String Detail;
         this.Detail = Detail;
     }
 
-    public int getFacilityID() {
-        return FacilityID;
+    public int getMaterialID() {
+        return MaterialID;
     }
 
-    public void setFacilityID(int FacilityID) {
-        this.FacilityID = FacilityID;
+    public void setMaterialID(int MaterialID) {
+        this.MaterialID = MaterialID;
     }
 
-    public String getFacilityName() {
-        return FacilityName;
+    public String getMaterialName() {
+        return MaterialName;
     }
 
-    public void setFacilityName(String FacilityName) {
-        this.FacilityName = FacilityName;
+    public void setMaterialName(String MaterialName) {
+        this.MaterialName = MaterialName;
     }
 
     public Category getCategory() {
@@ -89,11 +89,11 @@ private String Detail;
         this.Quantity = Quantity;
     }
 
-    public FacilityCondition getCondition() {
+    public MaterialCondition getCondition() {
         return condition;
     }
 
-    public void setCondition(FacilityCondition condition) {
+    public void setCondition(MaterialCondition condition) {
         this.condition = condition;
     }
 

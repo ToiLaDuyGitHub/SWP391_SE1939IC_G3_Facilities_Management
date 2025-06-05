@@ -19,7 +19,7 @@ import model.dto.User_Role;
  *
  * @author ADMIN
  */
-@WebServlet(name="ProfileController", urlPatterns={"/Profile"})
+@WebServlet(name="ProfileController", urlPatterns={"/profile"})
 public class ProfileController extends HttpServlet {
    
     /** 

@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author ADMIN
  */
-@WebServlet(name="DecentralizationController", urlPatterns={"/Decentralization"})
+@WebServlet(name="DecentralizationController", urlPatterns={"/decentralization"})
 public class DecentralizationController extends HttpServlet {
     private FeatureDAO featureDAO;
     private RoleDAO roleDAO;

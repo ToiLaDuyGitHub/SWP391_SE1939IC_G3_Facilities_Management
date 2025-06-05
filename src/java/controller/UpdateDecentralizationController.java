@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author ADMIN
  */
-@WebServlet(urlPatterns = {"/UpdateDecentralization"})
+@WebServlet(urlPatterns = {"/update-decentralization"})
 public class UpdateDecentralizationController extends HttpServlet {
 
     private FeatureDAO featureDAO;

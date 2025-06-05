@@ -12,15 +12,15 @@ import java.time.LocalDateTime;
  */
 public class Record {
     private int recordID;
-    private int facilityID;
+    private int materialID;
     private int quantity;
     private boolean type;
     private LocalDateTime changeDate;
     private String note;
 
-    public Record(int recordID, int facilityID, int quantity, boolean type, LocalDateTime changeDate, String note) {
+    public Record(int recordID, int materialID, int quantity, boolean type, LocalDateTime changeDate, String note) {
         this.recordID = recordID;
-        this.facilityID = facilityID;
+        this.materialID = materialID;
         this.quantity = quantity;
         this.type = type;
         this.changeDate = changeDate;
@@ -35,12 +35,12 @@ public class Record {
         this.recordID = recordID;
     }
 
-    public int getFacilityID() {
-        return facilityID;
+    public int getMaterialID() {
+        return materialID;
     }
 
-    public void setFacilityID(int facilityID) {
-        this.facilityID = facilityID;
+    public void setMaterialID(int materialID) {
+        this.materialID = materialID;
     }
 
     public int getQuantity() {

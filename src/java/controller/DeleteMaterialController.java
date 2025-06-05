@@ -5,7 +5,7 @@
 
 package controller;
 
-import dao.FacilityDAO;
+import dao.MaterialDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import jakarta.servlet.ServletException;
@@ -18,8 +18,8 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author Admin
  */
-@WebServlet(name="DeleteFacilityController", urlPatterns={"/DeleteFacility"})
-public class DeleteFacilityController extends HttpServlet {
+@WebServlet(name="DeleteMaterialController", urlPatterns={"/delete-material"})
+public class DeleteMaterialController extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -53,27 +53,27 @@ public class DeleteFacilityController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       FacilityDAO facilityDAO = new FacilityDAO();
+       MaterialDAO materialDAO = new MaterialDAO();
         try {
-            // Lấy facilityID từ yêu cầu
-            int facilityID = Integer.parseInt(request.getParameter("facilityID"));
+            // Lấy materialID từ yêu cầu
+            int materialID = Integer.parseInt(request.getParameter("materialID"));
 
             // Xóa vật tư bằng DAO
-            facilityDAO.deleteFacility(facilityID);
+            materialDAO.deleteMaterial(materialID);
 
             // Chuyển hướng đến trang danh sách vật tư với thông báo thành công
             request.getSession().setAttribute("successMessage", "Xóa vật tư thành công!");
-            response.sendRedirect(request.getContextPath() + "/EditFacility.jsp");
+            response.sendRedirect(request.getContextPath() + "/EditMaterial.jsp");
 
         } catch (SQLException e) {
             e.printStackTrace();
             // Chuyển hướng với thông báo lỗi nếu việc xóa thất bại
             request.getSession().setAttribute("errorMessage", "Không thể xóa vật tư: " + e.getMessage());
-            response.sendRedirect(request.getContextPath() + "/EditFacility?searchMaterial=" + request.getParameter("materialName"));
+            response.sendRedirect(request.getContextPath() + "/EditMaterial?searchMaterial=" + request.getParameter("materialName"));
         } catch (NumberFormatException e) {
-            // Xử lý định dạng facilityID không hợp lệ
+            // Xử lý định dạng materialID không hợp lệ
             request.getSession().setAttribute("errorMessage", "ID vật tư không hợp lệ.");
-            response.sendRedirect(request.getContextPath() + "/EditFacility?searchMaterial=" + request.getParameter("materialName"));
+            response.sendRedirect(request.getContextPath() + "/EditMaterial?searchMaterial=" + request.getParameter("materialName"));
         }
     }
 

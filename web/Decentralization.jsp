@@ -95,7 +95,7 @@
                             <% session.removeAttribute("errorMessage"); %>
                         </c:if>
 
-                        <form action="${pageContext.request.contextPath}/UpdateDecentralization" method="post">
+                        <form action="${pageContext.request.contextPath}/update-decentralization" method="post">
                             <table>
                                 <thead>
                                     <tr>

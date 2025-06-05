@@ -153,6 +153,16 @@ body::before {
     min-height: 100vh;
 }
 
+.content {
+    margin-left: 250px;
+    padding: 20px 40px;
+    flex: 1;
+    display: block; /* Thay đổi từ flex để tránh centering */
+    width: calc(100vw - 250px);
+    box-sizing: border-box;
+    min-height: calc(100vh - 80px); /* Đảm bảo chiều cao tối thiểu */
+}   
+
 .header {
     background: linear-gradient(90deg, #4a90e2, #6aa8e6);
     color: white;
@@ -363,15 +373,6 @@ body::before {
 .dropdown-content a {
     padding: 8px 10px;
     display: block;
-}
-
-.content {
-    margin-left: 250px;
-    padding: 40px;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
 }
 
 .content-card {
@@ -1038,5 +1039,298 @@ body::before {
     background-color: #007bff;
     color: white;
 }
+/* Fix cho bảng người dùng - thêm vào cuối file styles.css */
+
+/* Override content-card width cho trang quản lý người dùng */
+.content-card#userList,
+.content-card#userDetail {
+    max-width: none !important; /* Loại bỏ giới hạn width */
+    width: 100% !important;
+    margin: 20px 0 !important; /* Không center */
+}
 
 
+
+/* Specific styles cho table trong user management */
+#userList table {
+    width: 100% !important;
+    table-layout: auto !important; /* Cho phép table tự điều chỉnh */
+    min-width: 800px; /* Đảm bảo table không bị thu nhỏ quá */
+}
+
+/* Fix cho search form */
+#userList .search-form {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .content {
+        padding: 20px;
+    }
+    
+    #userList table {
+        min-width: 700px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 15px;
+    }
+    
+    .content-card#userList,
+    .content-card#userDetail {
+        margin: 10px 0 !important;
+        padding: 15px !important;
+    }
+    
+    #userList table {
+        min-width: 600px;
+        font-size: 12px;
+    }
+    
+    #userList .search-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    #userList .search-form input[type="text"],
+    #userList .search-form select,
+    #userList .search-form button {
+        width: 100%;
+        min-width: unset;
+    }
+}
+
+/* Fix cho header khi có sidebar */
+.header {
+    position: relative;
+    z-index: 2; /* Đảm bảo header luôn ở trên */
+}
+
+/* Đảm bảo sidebar không che content */
+.sidebar {
+    z-index: 1;
+    overflow-y: auto; /* Cho phép scroll nếu menu dài */
+}
+
+/* Menu toggle button cho mobile */
+.menu-toggle {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block !important;
+        background: none !important;
+        border: none !important;
+        color: white !important;
+        font-size: 20px !important;
+        cursor: pointer !important;
+    }
+}
+
+/* Thêm vào cuối file styles.css */
+
+/* Fix cho trang Material List */
+.content-card#materialListSection {
+    max-width: none !important; /* Loại bỏ giới hạn width */
+    width: 100% !important;
+    margin: 20px 0 !important;
+    padding: 30px !important;
+}
+
+/* Fix cho material table */
+.material-table {
+    width: 100% !important;
+    table-layout: auto !important;
+    min-width: 1200px; /* Đảm bảo table có đủ không gian */
+    margin-top: 20px;
+}
+
+/* Fix cho search container */
+.search-container {
+    display: flex;
+    justify-content: flex-start; /* Thay đổi từ center */
+    margin-bottom: 20px;
+    width: 100%;
+    gap: 10px;
+}
+
+.search-container input[type="text"] {
+    width: 400px; /* Fixed width thay vì 50% */
+    max-width: 400px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    transition: border 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+
+/* Pagination styling */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Modal adjustments */
+.modal {
+    max-width: 600px; /* Tăng width cho modal */
+    width: 90%;
+}
+
+/* Responsive adjustments cho material list */
+@media (max-width: 1400px) {
+    .content {
+        padding: 20px;
+    }
+    
+    .content-card#materialListSection {
+        padding: 20px !important;
+    }
+    
+    .material-table {
+        min-width: 1000px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .material-table {
+        min-width: 900px;
+        font-size: 12px;
+    }
+    
+    .search-container input[type="text"] {
+        width: 300px;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 15px;
+    }
+    
+    .content-card#materialListSection {
+        margin: 10px 0 !important;
+        padding: 15px !important;
+    }
+    
+    .material-table {
+        min-width: 600px;
+        font-size: 11px;
+    }
+    
+    .search-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-container input[type="text"] {
+        width: 100%;
+        max-width: none;
+        margin-bottom: 10px;
+    }
+    
+    .search-container button {
+        width: 100%;
+        margin-left: 0;
+    }
+    
+    .material-table th,
+    .material-table td {
+        padding: 8px 4px;
+    }
+    
+    .product-image {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .edit-button {
+        padding: 3px 6px;
+        font-size: 12px;
+    }
+}
+
+/* Fix cho header khi có sidebar */
+.header {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+/* Đảm bảo sidebar không che content */
+.sidebar {
+    z-index: 1;
+    overflow-y: auto;
+    position: fixed;
+    top: 60px; /* Điều chỉnh theo chiều cao header */
+}
+
+/* Menu toggle button */
+.menu-toggle {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block !important;
+        background: none !important;
+        border: none !important;
+        color: white !important;
+        font-size: 20px !important;
+        cursor: pointer !important;
+    }
+}
+
+/* Fix cho form tìm kiếm */
+.form-group {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+/* Đảm bảo error message hiển thị đúng */
+.error-message {
+    background-color: #f44336;
+    color: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}

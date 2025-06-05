@@ -12,9 +12,9 @@ import model.Supplier;
  *
  * @author Admin
  */
-public class FacilityDTO {
-    private int facilityID;
-    private String facilityName;
+public class MaterialDTO {
+    private int materialID;
+    private String materialName;
     private Category category;
     private SubCategory subcategory;
     private Supplier supplierID;
@@ -22,7 +22,7 @@ public class FacilityDTO {
     private int quantity;
     private String condition;
 
-    public FacilityDTO() {
+    public MaterialDTO() {
     }
 
    
@@ -35,20 +35,20 @@ public class FacilityDTO {
         this.condition = condition;
     }
 
-    public int getFacilityID() {
-        return facilityID;
+    public int getMaterialID() {
+        return materialID;
     }
 
-    public void setFacilityID(int facilityID) {
-        this.facilityID = facilityID;
+    public void setMaterialID(int materialID) {
+        this.materialID = materialID;
     }
 
-    public String getFacilityName() {
-        return facilityName;
+    public String getMaterialName() {
+        return materialName;
     }
 
-    public void setFacilityName(String facilityName) {
-        this.facilityName = facilityName;
+    public void setMaterialName(String materialName) {
+        this.materialName = materialName;
     }
 
     public Category getCategory() {

@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dao.FacilityDAO;
+import dao.MaterialDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,14 +13,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.Facility;
+import model.Material;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "FacilityController", urlPatterns = {"/FacilityList"})
-public class FacilityController extends HttpServlet {
+@WebServlet(name = "ManageMaterialController", urlPatterns = {"/manage-material"})
+public class ManageMaterialController extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -34,14 +34,14 @@ public class FacilityController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-// Tạo đối tượng FacilityDAO
-        FacilityDAO facilityDAO = new FacilityDAO();
-        List<Facility> list = null;
+// Tạo đối tượng MaterialDAO
+        MaterialDAO materialDAO = new MaterialDAO();
+        List<Material> list = null;
 
         try {
-            // Gọi phương thức getAllFacilities() để lấy toàn bộ danh sách vật tư
-            list = facilityDAO.getAllFacilities();
-            request.setAttribute("facilities", list);
+            // Gọi phương thức getAllMaterials() để lấy toàn bộ danh sách vật tư
+            list = materialDAO.getAllMaterials();
+            request.setAttribute("materials", list);
             
              request.getRequestDispatcher("materialList.jsp").forward(request, response);
             

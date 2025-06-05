@@ -44,8 +44,8 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-content">
-                        <a href="${pageContext.request.contextPath}/Userctr">Xem danh sách người dùng</a>
-                        <a href="${pageContext.request.contextPath}/addUser">Thêm mới người dùng</a>
+                        <a href="${pageContext.request.contextPath}/manage-user">Xem danh sách người dùng</a>
+                        <a href="${pageContext.request.contextPath}/add-user">Thêm mới người dùng</a>
                         <a href="${pageContext.request.contextPath}/reset-password-request-list">Danh sách yêu cầu reset mật khẩu</a>
                     </div>
                 </li>
@@ -55,15 +55,15 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-content">
-                        <a href="${pageContext.request.contextPath}/Decentralization">Phân quyền chức năng</a>
+                        <a href="${pageContext.request.contextPath}/decentralization">Phân quyền chức năng</a>
                     </div>
                 </li>
 
                 <!-- Kiểm tra thông tin cá nhân -->
                 <c:set var="hasProfile" value="false" />
                 <c:forEach var="feature" items="${sessionScope.permittedFeatures}">
-                    <c:if test="${fn:contains(feature.url, '/Profile') || 
-                                  fn:contains(feature.url, '/changePassword')}">
+                    <c:if test="${fn:contains(feature.url, '/profile') || 
+                                  fn:contains(feature.url, '/change-password')}">
                         <c:set var="hasProfile" value="true" />
                     </c:if>
                 </c:forEach>
@@ -76,14 +76,14 @@
                         </div>
                         <div class="dropdown-content">
                             <c:forEach var="feature" items="${sessionScope.permittedFeatures}">
-                                <c:if test="${feature.url == '/Profile'}">
-                                    <a href="${pageContext.request.contextPath}/Profile">Xem thông tin cá nhân</a>
+                                <c:if test="${feature.url == '/profile'}">
+                                    <a href="${pageContext.request.contextPath}/profile">Xem thông tin cá nhân</a>
                                 </c:if>
                             </c:forEach>
                             
                             <c:forEach var="feature" items="${sessionScope.permittedFeatures}">
-                                <c:if test="${feature.url == '/changePassword'}">
-                                    <a href="${pageContext.request.contextPath}/changePassword">Thay đổi mật khẩu</a>
+                                <c:if test="${feature.url == '/change-password'}">
+                                    <a href="${pageContext.request.contextPath}/change-password">Thay đổi mật khẩu</a>
                                 </c:if>
                             </c:forEach>
                         </div>
@@ -106,9 +106,9 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-content">
-                        <a href="${pageContext.request.contextPath}/FacilityList" onclick="showContent('materialList', this)">Xem danh sách vật tư</a>
-                        <a href="${pageContext.request.contextPath}/AddFacility" onclick="showContent('addMaterial', this)">Thêm mới vật tư</a>
-                        <a href="${pageContext.request.contextPath}/EditFacility"  onclick="showContent('EditFacility', this)">Sửa thông tin vật tư</a>
+                        <a href="${pageContext.request.contextPath}/manage-material" onclick="showContent('materialList', this)">Xem danh sách vật tư</a>
+                        <a href="${pageContext.request.contextPath}/add-material" onclick="showContent('addMaterial', this)">Thêm mới vật tư</a>
+                        <a href="${pageContext.request.contextPath}/edit-material"  onclick="showContent('EditMaterial', this)">Sửa thông tin vật tư</a>
                     </div>
                 </li>
             </ul>

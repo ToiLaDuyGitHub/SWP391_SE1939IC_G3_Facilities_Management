@@ -8,27 +8,27 @@ package model;
  *
  * @author ToiLaDuyGitHub
  */
-public class FacilityCondition {
-    private int FacilityID;
+public class MaterialCondition {
+    private int MaterialID;
     private int NewQuantity;
     private int UsableQuantity;
     private int BrokenQuantity;
 
  
 
-    public FacilityCondition(int facilityID, int newQuantity, int usableQuantity, int brokenQuantity) {
-        this.FacilityID = facilityID;
+    public MaterialCondition(int materialID, int newQuantity, int usableQuantity, int brokenQuantity) {
+        this.MaterialID = materialID;
         this.NewQuantity = newQuantity;
         this.UsableQuantity = usableQuantity;
         this.BrokenQuantity = brokenQuantity;
     }
 
-    public int getFacilityID() {
-        return FacilityID;
+    public int getMaterialID() {
+        return MaterialID;
     }
 
-    public void setFacilityID(int facilityID) {
-        this.FacilityID = facilityID;
+    public void setMaterialID(int materialID) {
+        this.MaterialID = materialID;
     }
 
     public int getNewQuantity() {

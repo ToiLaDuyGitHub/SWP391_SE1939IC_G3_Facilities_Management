@@ -5,7 +5,7 @@
 
 package controller;
 
-import dao.FacilityDAO;
+import dao.MaterialDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,14 +15,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
-import model.Facility;
+import model.Material;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name="SearchMarterInList", urlPatterns={"/SearchList"})
-public class SearchMarterInList extends HttpServlet {
+@WebServlet(name="SearchMaterialInListController", urlPatterns={"/search-material-in-list"})
+public class SearchMaterialInListController extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -45,26 +45,26 @@ public class SearchMarterInList extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         
-        FacilityDAO facilityDAO = new FacilityDAO();
+        MaterialDAO materialDAO = new MaterialDAO();
         String searchMaterial = request.getParameter("searchMaterial");
-        List<Facility> allFacilities = facilityDAO.getAllFacilities(); //  Lấy toàn bộ danh sách để gợi ý
+        List<Material> allMaterials = materialDAO.getAllMaterials(); //  Lấy toàn bộ danh sách để gợi ý
 
-        List<Facility> facilities;
+        List<Material> materials;
         if (searchMaterial == null || searchMaterial.trim().isEmpty()) {
-            facilities = allFacilities;
+            materials = allMaterials;
         } else {
-            Facility facility = facilityDAO.getFacilityByName(searchMaterial.trim().toLowerCase());
-            facilities = new ArrayList<>();
-            if (facility != null) {
-                facilities.add(facility);
+            Material material = materialDAO.getMaterialByName(searchMaterial.trim().toLowerCase());
+            materials = new ArrayList<>();
+            if (material != null) {
+                materials.add(material);
             } else {
-                facilities = allFacilities;
+                materials = allMaterials;
                 request.setAttribute("errorMessage", "Không tìm thấy vật tư với tên: " + searchMaterial);
             }
         }
 
-        request.setAttribute("facilities", facilities);
-        request.setAttribute("allFacilitiesForSuggestions", allFacilities); // Đặt attribute cho gợi ý
+        request.setAttribute("materials", materials);
+        request.setAttribute("allMaterialsForSuggestions", allMaterials); // Đặt attribute cho gợi ý
 
         request.getRequestDispatcher("/materialList.jsp").forward(request, response);
     }

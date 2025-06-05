@@ -1,5 +1,5 @@
 <%-- 
-    Document   : UpdateFacility
+    Document   : UpdateMaterial
     Created on : 31 thg 5, 2025, 16:46:37
     Author     : Admin
 --%>
@@ -135,7 +135,7 @@
                     </c:if>
                    
 
-                    <form action="${pageContext.request.contextPath}/SearchFacility" method="get">
+                    <form action="${pageContext.request.contextPath}/search-material" method="get">
                         <div class="form-group">
                             <div class="search-container">
                                 <input type="text" id="searchMaterial" name="searchMaterial" placeholder="Nhập tên vật tư để tìm kiếm" value="${param.searchMaterial}">
@@ -144,19 +144,19 @@
                             </div>
                         </div>
                     </form>  
-                    <form id="editMaterialForm" action="${pageContext.request.contextPath}/EditFacility" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="facilityID" value="${facility != null ? facility.facilityID : ''}">
+                    <form id="editMaterialForm" action="${pageContext.request.contextPath}/edit-material" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="materialID" value="${material != null ? material.materialID : ''}">
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="materialName"><i class="fas fa-box"></i> Tên vật tư</label>
-                                <input type="text" id="materialName" name="materialName" value="${facility != null ? facility.facilityName : ''}" required>
+                                <input type="text" id="materialName" name="materialName" value="${material != null ? material.materialName : ''}" required>
                             </div>
                             <!-- Danh mục (dropdown để chọn danh mục con) -->
                             <div class="form-group">
                                 <label for="subcategory"><i class="fas fa-folder"></i> Danh mục</label>
                                 <select id="subcategory" name="subcategoryID" required>
                                     <c:forEach var="subcategory" items="${subcategoryList}">
-                                        <option value="${subcategory.subcategoryID}" ${facility != null && facility.subcategory != null && facility.subcategory.subcategoryID == subcategory.subcategoryID ? 'selected' : ''}>
+                                        <option value="${subcategory.subcategoryID}" ${material != null && material.subcategory != null && material.subcategory.subcategoryID == subcategory.subcategoryID ? 'selected' : ''}>
                                             ${subcategory.subcategoryName}
                                         </option>
                                     </c:forEach>
@@ -164,7 +164,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="quantity"><i class="fas fa-sort-numeric-up"></i> Số lượng</label>
-                                <input type="number" id="quantity" name="quantity" value="${facility != null ? facility.quantity : ''}">
+                                <input type="number" id="quantity" name="quantity" value="${material != null ? material.quantity : ''}">
                             </div>
                             <div class="form-group">
                                 <label><i class="fas fa-info-circle"></i> Tình trạng</label>
@@ -172,41 +172,41 @@
                                     <div style="flex: 1;">
                                         <label for="statusNew">Mới</label>
                                         <input type="number" id="statusNew" name="statusNew" min="0" 
-                                               value="${facility != null && facility.condition != null ? facility.condition.newQuantity : '0'}">
+                                               value="${material != null && material.condition != null ? material.condition.newQuantity : '0'}">
                                     </div>
                                     <div style="flex: 1;">
                                         <label for="statusOld">Cũ</label>
                                         <input type="number" id="statusOld" name="statusOld" min="0" 
-                                               value="${facility != null && facility.condition != null ? facility.condition.usableQuantity : '0'}">
+                                               value="${material != null && material.condition != null ? material.condition.usableQuantity : '0'}">
                                     </div>
                                     <div style="flex: 1;">
                                         <label for="statusDamaged">Hỏng</label>
                                         <input type="number" id="statusDamaged" name="statusDamaged" min="0" 
-                                               value="${facility != null && facility.condition != null ? facility.condition.brokenQuantity : '0'}">
+                                               value="${material != null && material.condition != null ? material.condition.brokenQuantity : '0'}">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="supplier"><i class="fas fa-truck"></i> Nhà cung cấp</label>
-                                <input type="text" id="supplier" name="supplier" value="${facility != null && facility.supplierID != null ? facility.supplierID.supplierName : ''}">
+                                <input type="text" id="supplier" name="supplier" value="${material != null && material.supplierID != null ? material.supplierID.supplierName : ''}">
                             </div>
                             <!-- Địa chỉ nhà cung cấp -->
                             <div class="form-group">
                                 <label for="supplierAddress"><i class="fas fa-map-marker-alt"></i> Địa chỉ nhà cung cấp</label>
                                 <input type="text" id="supplierAddress" name="supplierAddress" 
-                                       value="${facility != null && facility.supplierID != null && facility.supplierID.address != null ? facility.supplierID.address : ''}">
+                                       value="${material != null && material.supplierID != null && material.supplierID.address != null ? material.supplierID.address : ''}">
                             </div>
                             <!-- Số điện thoại nhà cung cấp -->
                             <div class="form-group">
                                 <label for="supplierPhone"><i class="fas fa-phone"></i> Số điện thoại nhà cung cấp</label>
                                 <input type="text" id="supplierPhone" name="supplierPhone" 
-                                       value="${facility != null && facility.supplierID != null && facility.supplierID.phoneNum != null ? facility.supplierID.phoneNum : ''}">
+                                       value="${material != null && material.supplierID != null && material.supplierID.phoneNum != null ? material.supplierID.phoneNum : ''}">
                             </div>
                             <div class="form-group">
                                 <label for="image"><i class="fas fa-image"></i> Hình ảnh</label>
-                                <img id="materialImage" class="image-display" src="${facility != null ? facility.image : ''}" alt="Hình ảnh vật tư" style="display: ${facility != null && facility.image != null ? 'block' : 'none'};">
+                                <img id="materialImage" class="image-display" src="${material != null ? material.image : ''}" alt="Hình ảnh vật tư" style="display: ${material != null && material.image != null ? 'block' : 'none'};">
                                 <input type="file" id="image" name="image" accept="image/*">
-                                <input type="hidden" id="imageUrlaceous" name="imageUrl" value="${facility != null ? facility.image : ''}">
+                                <input type="hidden" id="imageUrlaceous" name="imageUrl" value="${material != null ? material.image : ''}">
                             </div>
                         </div>
                         <div class="form-group form-actions">
@@ -214,11 +214,11 @@
                         </div>
                     </form>
                     <!-- Form xóa được tách ra ngoài form chỉnh sửa -->
-                    <c:if test="${not empty facility}">
-                        <form action="${pageContext.request.contextPath}/DeleteFacility" method="post" style="display: inline;">
+                    <c:if test="${not empty material}">
+                        <form action="${pageContext.request.contextPath}/delete-material" method="post" style="display: inline;">
                            <div class="form-group form-actions">
-                            <input type="hidden" name="facilityID" value="${facility.facilityID}">
-                            <input type="hidden" name="materialName" value="${facility.facilityName}">
+                            <input type="hidden" name="materialID" value="${material.materialID}">
+                            <input type="hidden" name="materialName" value="${material.materialName}">
                             <button type="submit" class="cancel-btn"><i class="fas fa-trash"></i> Xóa vật tư</button>
                            </div> 
                         </form>
@@ -229,8 +229,8 @@
         <script src="<%= request.getContextPath() %>/js/script.js"></script>
         <script>
             const facilities = [
-                <c:forEach var="facility" items="${allFacilities}" varStatus="loop">
-                    "${facility.facilityName}"${loop.last ? '' : ','}
+                <c:forEach var="material" items="${allMaterials}" varStatus="loop">
+                    "${material.materialName}"${loop.last ? '' : ','}
                 </c:forEach>
             ];
 

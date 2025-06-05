@@ -24,7 +24,7 @@
                 <div class="content-card" id="changePasswordSection">
                     <h2 class="fas fa-lock"> Thay đổi mật khẩu</h2>
                     <div class="profile-card">
-                        <form action="changePassword" method="post">
+                        <form action="change-password" method="post">
                             <div class="form-row">
                                 <label for="currentPassword">Mật khẩu hiện tại:</label>
                                 <input type="password" id="currentPassword" name="currentPassword" required>
@@ -52,14 +52,13 @@
             <!-- Placeholder for static sections -->
             <div class="content-card hidden" id="genericSection"></div>
         </div>
-    </div>
-    <script src="<%= request.getContextPath() %>/js/script.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        <script src="<%= request.getContextPath() %>/js/script.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
             const profileSection = document.getElementById('changePasswordSection');
-            if (profileSection) {
-                profileSection.classList.remove('hidden');
+                    if (profileSection) {
+            profileSection.classList.remove('hidden');
             }
-    </script>
-</body>
+        </script>
+    </body>
 </html>

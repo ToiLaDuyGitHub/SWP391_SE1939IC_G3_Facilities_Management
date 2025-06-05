@@ -108,7 +108,7 @@
             <div class="content" id="contentArea">
                 <div class="content-card hidden" id="materialListSection">
                     <!-- Biểu mẫu tìm kiếm -->
-                    <form action="${pageContext.request.contextPath}/SearchList" method="get">
+                    <form action="${pageContext.request.contextPath}/search-material-in-list" method="get">
                         <div class="form-group">
                             <div class="search-container">
                                 <input type="text" id="searchMaterial" name="searchMaterial" placeholder="Nhập tên vật tư để tìm kiếm" value="${param.searchMaterial}">
@@ -143,31 +143,31 @@
                             <c:set var="itemsPerPage" value="6" />
                             <c:set var="start" value="${(page - 1) * itemsPerPage}" />
                             <c:set var="end" value="${start + itemsPerPage - 1}" />
-                            <c:set var="totalItems" value="${facilities.size()}" />
+                            <c:set var="totalItems" value="${materials.size()}" />
                             <c:set var="totalPages" value="${(totalItems + itemsPerPage - 1) / itemsPerPage}" />
 
-                            <c:forEach var="facility" items="${facilities}" begin="${start}" end="${end}">
+                            <c:forEach var="material" items="${materials}" begin="${start}" end="${end}">
                                 <tr>
-                                    <td>${facility.facilityID}</td>
-                                    <td>${facility.facilityName}</td>
-                                    <td>${facility.category.categoryName}</td>
-                                    <td>${facility.supplierID.supplierName}</td>
-                                    <td>${facility.quantity}</td>
+                                    <td>${material.materialID}</td>
+                                    <td>${material.materialName}</td>
+                                    <td>${material.category.categoryName}</td>
+                                    <td>${material.supplierID.supplierName}</td>
+                                    <td>${material.quantity}</td>
                                     <td>
-                                        <c:if test="${not empty facility.image}">
-                                            <img src="${facility.image}" alt="${facility.facilityName}" class="product-image">
+                                        <c:if test="${not empty material.image}">
+                                            <img src="${material.image}" alt="${material.materialName}" class="product-image">
                                         </c:if>
-                                        <c:if test="${empty facility.image}">
+                                        <c:if test="${empty material.image}">
                                             <span>Không có hình ảnh</span>
                                         </c:if>
                                     </td>
                                     <td>
-                                        <button class="edit-button" onclick="showMaterialDetail('${facility.facilityName}',
-                                                        '${facility.category.categoryName}', '${facility.subcategory.subcategoryName}',
-                                                        '${facility.supplierID.supplierName}', ${facility.quantity},
-                                                ${facility.condition.newQuantity}, ${facility.condition.usableQuantity},
-                                                ${facility.condition.brokenQuantity}, '${facility.image}',
-                                                        '${facility.detail}')">Chi tiết</button>                                
+                                        <button class="edit-button" onclick="showMaterialDetail('${material.materialName}',
+                                                        '${material.category.categoryName}', '${material.subcategory.subcategoryName}',
+                                                        '${material.supplierID.supplierName}', ${material.quantity},
+                                                ${material.condition.newQuantity}, ${material.condition.usableQuantity},
+                                                ${material.condition.brokenQuantity}, '${material.image}',
+                                                        '${material.detail}')">Chi tiết</button>                                
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -177,15 +177,15 @@
                     <!-- Pagination Controls -->
                     <div class="pagination">
                         <c:if test="${page > 1}">
-                            <a href="${pageContext.request.contextPath}/FacilityList?page=${page - 1}">&laquo; Trước</a>
+                            <a href="${pageContext.request.contextPath}/MaterialList?page=${page - 1}">&laquo; Trước</a>
                         </c:if>
 
                         <c:forEach var="i" begin="1" end="${totalPages}">
-                            <a href="${pageContext.request.contextPath}/FacilityList?page=${i}" class="${i == page ? 'active' : ''}">${i}</a>
+                            <a href="${pageContext.request.contextPath}/MaterialList?page=${i}" class="${i == page ? 'active' : ''}">${i}</a>
                         </c:forEach>
 
                         <c:if test="${page < totalPages}">
-                            <a href="${pageContext.request.contextPath}/FacilityList?page=${page + 1}">Tiếp &raquo;</a>
+                            <a href="${pageContext.request.contextPath}/MaterialList?page=${page + 1}">Tiếp &raquo;</a>
                         </c:if>
                     </div>
                 </div>
