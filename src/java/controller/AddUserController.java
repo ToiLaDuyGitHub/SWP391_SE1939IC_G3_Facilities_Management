@@ -11,13 +11,18 @@ import java.io.IOException;
 import util.CreateUserMail;
 import util.PasswordUtil;
 import util.ResetPassword;
+import java.util.regex.Pattern;
 
 @WebServlet(name = "AddUserController", urlPatterns = {"/add-user"})
 public class AddUserController extends HttpServlet {
 
-    private static final String SUCCESS_URL = "home.jsp"; // Trang hiển thị danh sách người dùng
-    private static final String ERROR_URL = "addUser.jsp"; // Trang form thêm người dùng (nếu lỗi)
-
+      private static final String SUCCESS_URL = "home.jsp";
+    private static final String ERROR_URL = "addUser.jsp";
+    
+    // Email validation pattern
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(
+        "^[A-Za-z0-9+_.-]+@([A-Za-z0-9.-]+\\.[A-Za-z]{2,})$"
+    );
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
@@ -31,7 +36,7 @@ public class AddUserController extends HttpServlet {
                 String lastName = req.getParameter("lastName");
                 String phoneNum = req.getParameter("phoneNum");
                 String address = req.getParameter("address");
-                int roleID = Integer.parseInt(req.getParameter("roleID"));
+                String roleIDStr = req.getParameter("roleID");
 
                 // Kiểm tra dữ liệu đầu vào
                 if (username == null || username.trim().isEmpty()) {
@@ -40,37 +45,82 @@ public class AddUserController extends HttpServlet {
                     return;
                 }
 
+                // Kiểm tra email hợp lệ
+                if (!EMAIL_PATTERN.matcher(username.trim()).matches()) {
+                    req.setAttribute("error", "Tên đăng nhập phải là email hợp lệ!");
+                    req.getRequestDispatcher(ERROR_URL).forward(req, resp);
+                    return;
+                }
+
+                // Kiểm tra roleID
+                if (roleIDStr == null || roleIDStr.trim().isEmpty()) {
+                    req.setAttribute("error", "Vui lòng chọn vai trò!");
+                    req.getRequestDispatcher(ERROR_URL).forward(req, resp);
+                    return;
+                }
+
+                int roleID;
+                try {
+                    roleID = Integer.parseInt(roleIDStr);
+                    if (roleID < 1 || roleID > 4) {
+                        throw new NumberFormatException("Invalid role ID");
+                    }
+                } catch (NumberFormatException e) {
+                    req.setAttribute("error", "Vai trò không hợp lệ!");
+                    req.getRequestDispatcher(ERROR_URL).forward(req, resp);
+                    return;
+                }
+
+                // Kiểm tra username đã tồn tại chưa
+                if (userDAO.isUsernameExists(username.trim())) {
+                    req.setAttribute("error", "Tên đăng nhập đã tồn tại!");
+                    req.getRequestDispatcher(ERROR_URL).forward(req, resp);
+                    return;
+                }
+
+                // Tạo mật khẩu ngẫu nhiên
                 String password = ResetPassword.generateRandomString();
                 String passwordHash = PasswordUtil.hashPassword(password);
                 
                 // Tạo đối tượng User
-                User newUser = new User(0, username, passwordHash, firstName, lastName, phoneNum, address, roleID);
+                User newUser = new User(0, username.trim(), passwordHash, 
+                    firstName != null ? firstName.trim() : "", 
+                    lastName != null ? lastName.trim() : "", 
+                    phoneNum != null ? phoneNum.trim() : "", 
+                    address != null ? address.trim() : "", 
+                    roleID);
 
                 // Thêm người dùng vào cơ sở dữ liệu
                 int newUserId = userDAO.insertUser(newUser);
                 if (newUserId != -1) {
-                    req.setAttribute("message", "Thêm người dùng thành công!");
+                    // Gửi email thông tin tài khoản
+                    try {
+                        CreateUserMail.sendEmail(username.trim(), password);
+                        req.setAttribute("message", "Thêm người dùng thành công! Email thông tin đăng nhập đã được gửi.");
+                    } catch (Exception emailEx) {
+                        System.err.println("Lỗi gửi email: " + emailEx.getMessage());
+                        req.setAttribute("message", "Thêm người dùng thành công nhưng không thể gửi email thông báo!");
+                    }
+                    
                     // Lấy lại danh sách người dùng để hiển thị
                     req.setAttribute("allUser", userDAO.getAllUsersWithRoles());
                     req.setAttribute("manageUser", "YES");
-                    CreateUserMail.sendEmail(username, password);
                     req.getRequestDispatcher(SUCCESS_URL).forward(req, resp);
                 } else {
-                    req.setAttribute("error", "Không thể thêm người dùng!");
+                    req.setAttribute("error", "Không thể thêm người dùng! Vui lòng thử lại.");
                     req.getRequestDispatcher(ERROR_URL).forward(req, resp);
                 }
-            } catch (NumberFormatException e) {
-                req.setAttribute("error", "Vai trò không hợp lệ!");
-                req.getRequestDispatcher(ERROR_URL).forward(req, resp);
+                
             } catch (Exception e) {
-                req.setAttribute("error", "Đã xảy ra lỗi: " + e.getMessage());
+                System.err.println("Error in AddUserController: " + e.getMessage());
+                e.printStackTrace();
+                req.setAttribute("error", "Đã xảy ra lỗi hệ thống: " + e.getMessage());
                 req.getRequestDispatcher(ERROR_URL).forward(req, resp);
             }
         } else {
             req.setAttribute("error", "Hành động không hợp lệ!");
             req.getRequestDispatcher(ERROR_URL).forward(req, resp);
         }
-        
     }
 
     @Override

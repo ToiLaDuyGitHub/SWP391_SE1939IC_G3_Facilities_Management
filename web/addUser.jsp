@@ -8,18 +8,17 @@
         <link rel="stylesheet" href="<%= request.getContextPath() %>/css/styles.css">
         <style>
             #dashboard {
-                display: flex; /* Sử dụng Flexbox để sắp xếp sidebar và content */
-                min-height: 100vh; /* Đảm bảo độ cao tối thiểu là toàn màn hình */
+                display: flex;
+                min-height: 100vh;
             }
 
-            /* Form container */
             .form-container {
-                max-width: 600px; /* Giới hạn chiều rộng form */
-                margin: 0 auto; /* Căn giữa form */
+                max-width: 600px;
+                margin: 0 auto;
                 padding: 30px;
-                background: #f9f9f9; /* Nền xám nhạt */
+                background: #f9f9f9;
                 border-radius: 8px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             }
 
             .form-container h2 {
@@ -32,10 +31,9 @@
 
             .form-container h2 i {
                 margin-right: 8px;
-                color: #007bff; /* Icon màu xanh dương */
+                color: #007bff;
             }
 
-            /* Form row */
             .form-row.add-user {
                 margin-bottom: 20px;
             }
@@ -66,9 +64,8 @@
                 box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
             }
 
-            /* Button */
             button[type="submit"] {
-                background-color: #007bff; /* Xanh dương */
+                background-color: #007bff;
                 color: white;
                 padding: 12px 20px;
                 border: none;
@@ -81,10 +78,9 @@
             }
 
             button[type="submit"]:hover {
-                background-color: #0056b3; /* Xanh dương đậm hơn khi hover */
+                background-color: #0056b3;
             }
 
-            /* Alert */
             .alert {
                 padding: 12px;
                 margin-bottom: 20px;
@@ -98,41 +94,35 @@
                 border: 1px solid #f5c6cb;
             }
 
-            /* Responsive */
+            .alert-success {
+                background-color: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+
+            .required {
+                color: red;
+            }
+
             @media (max-width: 768px) {
                 #dashboard {
-                    flex-direction: column; /* Chuyển thành cột trên màn hình nhỏ */
+                    flex-direction: column;
                 }
 
                 .sidebar {
-                    width: 100%; /* Sidebar chiếm toàn bộ chiều rộng */
-                    position: relative; /* Bỏ fixed */
+                    width: 100%;
+                    position: relative;
                     height: auto;
                 }
 
                 .content {
-                    margin-left: 0; /* Loại bỏ margin khi sidebar không cố định */
+                    margin-left: 0;
                     padding: 10px;
                 }
 
                 .form-container {
                     padding: 20px;
                     max-width: 100%;
-                }
-
-                .form-row.add-user label {
-                    font-size: 14px;
-                }
-
-                .form-row.add-user input,
-                .form-row.add-user select {
-                    font-size: 13px;
-                    padding: 8px;
-                }
-
-                button[type="submit"] {
-                    font-size: 14px;
-                    padding: 10px;
                 }
             }
         </style>
@@ -143,50 +133,100 @@
             <div class="content" id="contentArea">
                 <div class="form-container" id="userAdd">
                     <h2><i class="fas fa-user-plus"></i> Thêm Người Dùng Mới</h2>
+                    
                     <% String error = (String) request.getAttribute("error"); %>
                     <% if (error != null) { %>
-                    <div class="alert alert-danger"><%= error %></div>
+                        <div class="alert alert-danger"><%= error %></div>
                     <% } %>
-                    <form action="<%= request.getContextPath() %>/add-user" method="post">
+                    
+                    <% String message = (String) request.getAttribute("message"); %>
+                    <% if (message != null) { %>
+                        <div class="alert alert-success"><%= message %></div>
+                    <% } %>
+                    
+                    <form action="<%= request.getContextPath() %>/add-user" method="post" id="addUserForm">
                         <input type="hidden" name="action" value="add">
+                        
                         <div class="form-row add-user">
-                            <label for="username">Tên đăng nhập <span style="color: red;">*</span>:</label>
-                            <input type="text" id="username" name="username" value="<%= request.getParameter("username") != null ? request.getParameter("username") : "" %>" required>
+                            <label for="username">Tên đăng nhập<span class="required">*</span>:</label>
+                            <input type="text" id="username" name="username" 
+                                   value="<%= request.getParameter("username") != null ? request.getParameter("username") : "" %>" 
+                                   required placeholder="Nhập tên đăng nhập">
                         </div>
-                        <div class="form-row add-user">
-                            <label for="password">Mật khẩu <span style="color: red;">*</span>:</label>
-                            <input type="password" id="password" name="password" required>
-                        </div>
+                        
                         <div class="form-row add-user">
                             <label for="firstName">Họ:</label>
-                            <input type="text" id="firstName" name="firstName" value="<%= request.getParameter("firstName") != null ? request.getParameter("firstName") : "" %>">
+                            <input type="text" id="firstName" name="firstName" 
+                                   value="<%= request.getParameter("firstName") != null ? request.getParameter("firstName") : "" %>" 
+                                   placeholder="Nhập họ">
                         </div>
+                        
                         <div class="form-row add-user">
                             <label for="lastName">Tên:</label>
-                            <input type="text" id="lastName" name="lastName" value="<%= request.getParameter("lastName") != null ? request.getParameter("lastName") : "" %>">
+                            <input type="text" id="lastName" name="lastName" 
+                                   value="<%= request.getParameter("lastName") != null ? request.getParameter("lastName") : "" %>" 
+                                   placeholder="Nhập tên">
                         </div>
+                        
                         <div class="form-row add-user">
                             <label for="phoneNum">Số điện thoại:</label>
-                            <input type="text" id="phoneNum" name="phoneNum" value="<%= request.getParameter("phoneNum") != null ? request.getParameter("phoneNum") : "" %>">
+                            <input type="text" id="phoneNum" name="phoneNum" 
+                                   value="<%= request.getParameter("phoneNum") != null ? request.getParameter("phoneNum") : "" %>" 
+                                   placeholder="Nhập số điện thoại">
                         </div>
+                        
                         <div class="form-row add-user">
                             <label for="address">Địa chỉ:</label>
-                            <input type="text" id="address" name="address" value="<%= request.getParameter("address") != null ? request.getParameter("address") : "" %>">
+                            <input type="text" id="address" name="address" 
+                                   value="<%= request.getParameter("address") != null ? request.getParameter("address") : "" %>" 
+                                   placeholder="Nhập địa chỉ">
                         </div>
+                        
                         <div class="form-row add-user">
-                            <label for="roleID">Vai trò <span style="color: red;">*</span>:</label>
+                            <label for="roleID">Vai trò<span class="required">*</span>:</label>
                             <select id="roleID" name="roleID" required>
-                                <option value="">Chọn vai trò</option>
+                                <option value="">-- Chọn vai trò --</option>
                                 <option value="1" <%= "1".equals(request.getParameter("roleID")) ? "selected" : "" %>>Quản lý kho</option>
                                 <option value="2" <%= "2".equals(request.getParameter("roleID")) ? "selected" : "" %>>Nhân viên kho</option>
                                 <option value="3" <%= "3".equals(request.getParameter("roleID")) ? "selected" : "" %>>Giám đốc công ty</option>
                                 <option value="4" <%= "4".equals(request.getParameter("roleID")) ? "selected" : "" %>>Nhân viên công ty</option>
                             </select>
                         </div>
-                        <button type="submit">Thêm Người Dùng</button>
+                        
+                        <button type="submit">
+                            <i class="fas fa-user-plus"></i> Thêm Người Dùng
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
+
+        <script>
+            // Form validation
+            document.getElementById('addUserForm').addEventListener('submit', function(e) {
+                const username = document.getElementById('username').value.trim();
+                const roleID = document.getElementById('roleID').value;
+                
+                if (!username) {
+                    alert('Vui lòng nhập tên đăng nhập!');
+                    e.preventDefault();
+                    return;
+                }
+                
+                if (!roleID) {
+                    alert('Vui lòng chọn vai trò!');
+                    e.preventDefault();
+                    return;
+                }
+                
+                // Phone validation (if provided)
+                const phone = document.getElementById('phoneNum').value.trim();
+                if (phone && !/^0[0-9]{9,10}$/.test(phone)) {
+                    alert('Số điện thoại không hợp lệ! Phải bắt đầu bằng 0 và có 10-11 chữ số.');
+                    e.preventDefault();
+                    return;
+                }
+            });
+        </script>
     </body>
 </html>

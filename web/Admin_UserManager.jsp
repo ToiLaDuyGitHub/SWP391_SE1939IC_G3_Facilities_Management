@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="model.User" %>
@@ -272,8 +273,8 @@
                             <tr> <!-- Xóa sự kiện onclick -->
                                 <td><%= user.getUserID() %></td>
                                 <td><%= user.getUsername() %></td>
-                                <td><%= user.getFirstName() %></td>
                                 <td><%= user.getLastName() %></td>
+                                <td><%= user.getFirstName() %></td>
                                 <td><%= user.getRoleName() %></td>
                                 <td><%= user.isIsActive() ? "Hoạt động" : "Không hoạt động" %></td>
                                 <td>
