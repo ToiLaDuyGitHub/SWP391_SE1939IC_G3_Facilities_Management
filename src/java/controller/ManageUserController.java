@@ -30,7 +30,7 @@ public class ManageUserController extends HttpServlet {
                 System.out.println("Invalid page number: " + pageStr);
             }
         }
-        int pageSize = 10;
+        int pageSize = 2;
 
         String service = req.getParameter("service");
         if (service == null || service.trim().isEmpty()) {

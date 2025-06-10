@@ -101,6 +101,7 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
+
     public void updateUserProfile(String username, String firstName, String lastName, String phone, String address) throws SQLException {
         // Kiểm tra dữ liệu đầu vào
         if (firstName == null || firstName.trim().isEmpty()) {
@@ -251,25 +252,23 @@ public class UserDAO {
         System.out.println(u);
     }
 
-
     public List<User> getUserByName(String name) {
         List<User> customers = new ArrayList<>();
         String sql = "SELECT * FROM users WHERE RoleID = 1 AND (FirstName LIKE ? OR LastName LIKE ? OR CONCAT(FirstName, ' ', LastName) LIKE ?)";
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement stm = conn.prepareStatement(sql)) {
+        try (Connection conn = DBUtil.getConnection(); PreparedStatement stm = conn.prepareStatement(sql)) {
             stm.setString(1, "%" + name + "%");
             stm.setString(2, "%" + name + "%");
             stm.setString(3, "%" + name + "%");
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     User u = new User(
-                        rs.getInt("UserID"),
-                        rs.getString("Username"),
-                        rs.getString("FirstName"),
-                        rs.getString("LastName"),
-                        rs.getString("PhoneNum"),
-                        rs.getInt("RoleID"),
-                        rs.getBoolean("IsActive")
+                            rs.getInt("UserID"),
+                            rs.getString("Username"),
+                            rs.getString("FirstName"),
+                            rs.getString("LastName"),
+                            rs.getString("PhoneNum"),
+                            rs.getInt("RoleID"),
+                            rs.getBoolean("IsActive")
                     );
                     customers.add(u);
                 }
@@ -280,134 +279,147 @@ public class UserDAO {
         return customers;
     }
 
-public int insertUser(User u) {
-    String sql = "INSERT INTO users (Username, Password, FirstName, LastName, PhoneNum, Address, RoleID, IsActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    try (Connection conn = DBUtil.getConnection();
+    public int insertUser(User u) {
+    // Kiểm tra tên column chính xác trong database
+    String sql = "INSERT INTO users (Username, PasswordHash, FirstName, LastName, PhoneNum, Address, RoleID, IsActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    
+    try (Connection conn = DBUtil.getConnection(); 
          PreparedStatement stm = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        
         stm.setString(1, u.getUsername());
-        stm.setString(2, u.getPasswordHash()); // Mật khẩu đã được mã hóa
+        stm.setString(2, u.getPasswordHash()); // Đảm bảo password đã được hash
         stm.setString(3, u.getFirstName());
         stm.setString(4, u.getLastName());
         stm.setString(5, u.getPhoneNum());
         stm.setString(6, u.getAddress());
         stm.setInt(7, u.getRoleID());
-        stm.setBoolean(8, true); // Luôn đặt IsActive là true
-        stm.executeUpdate();
+        stm.setBoolean(8, true); // IsActive = true
+        
+        int affectedRows = stm.executeUpdate();
+        
+        if (affectedRows == 0) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.WARNING, "No rows affected when inserting user: " + u.getUsername());
+            return -1;
+        }
 
         try (ResultSet rs = stm.getGeneratedKeys()) {
             if (rs.next()) {
-                return rs.getInt(1); // Trả về ID được sinh tự động
+                int generatedId = rs.getInt(1);
+                Logger.getLogger(UserDAO.class.getName()).log(Level.INFO, "Successfully inserted user: " + u.getUsername() + " with ID: " + generatedId);
+                return generatedId;
             }
         }
+        
     } catch (SQLException ex) {
         Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "Error inserting user: " + u.getUsername(), ex);
+        // In ra chi tiết lỗi để debug
+        System.err.println("SQL Error Code: " + ex.getErrorCode());
+        System.err.println("SQL State: " + ex.getSQLState());
+        System.err.println("Error Message: " + ex.getMessage());
     }
     return -1;
 }
 
-
     public User getUserById(int userId) {
-    String sql = "SELECT * FROM users WHERE UserID = ?";
-    try (Connection conn = DBUtil.getConnection();
-         PreparedStatement stm = conn.prepareStatement(sql)) {
-        stm.setInt(1, userId);
-        try (ResultSet rs = stm.executeQuery()) {
-            if (rs.next()) {
-                return new User(
-                    rs.getInt("UserID"),
-                    rs.getString("Username"),
-                    rs.getString("FirstName"),
-                    rs.getString("LastName"),
-                    rs.getString("PhoneNum"),
-                    rs.getInt("RoleID"),
-                    rs.getBoolean("IsActive")
-                );
+        String sql = "SELECT * FROM users WHERE UserID = ?";
+        try (Connection conn = DBUtil.getConnection(); PreparedStatement stm = conn.prepareStatement(sql)) {
+            stm.setInt(1, userId);
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    return new User(
+                            rs.getInt("UserID"),
+                            rs.getString("Username"),
+                            rs.getString("FirstName"),
+                            rs.getString("LastName"),
+                            rs.getString("PhoneNum"),
+                            rs.getInt("RoleID"),
+                            rs.getBoolean("IsActive")
+                    );
+                }
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } catch (SQLException ex) {
-        Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        return null;
     }
-    return null;
-}
+
     public List<User> getFilteredUsers(String keywords, String roleFilter, String statusFilter) {
-    List<User> users = new ArrayList<>();
-    StringBuilder sql = new StringBuilder("SELECT * FROM users WHERE 1=1");
-    List<Object> params = new ArrayList<>();
+        List<User> users = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM users WHERE 1=1");
+        List<Object> params = new ArrayList<>();
 
-    // Thêm điều kiện tìm kiếm theo từ khóa
-    if (keywords != null && !keywords.trim().isEmpty()) {
-        sql.append(" AND (FirstName LIKE ? OR LastName LIKE ? OR CONCAT(FirstName, ' ', LastName) LIKE ?)");
-        String keywordPattern = "%" + keywords.trim() + "%";
-        params.add(keywordPattern);
-        params.add(keywordPattern);
-        params.add(keywordPattern);
-    }
-
-    // Thêm điều kiện lọc theo vai trò
-    if (roleFilter != null && !roleFilter.isEmpty()) {
-        try {
-            int roleId = Integer.parseInt(roleFilter);
-            sql.append(" AND RoleID = ?");
-            params.add(roleId);
-        } catch (NumberFormatException e) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.WARNING, "Invalid roleFilter: " + roleFilter, e);
-        }
-    }
-
-    // Thêm điều kiện lọc theo trạng thái
-    if (statusFilter != null && !statusFilter.isEmpty()) {
-        if (statusFilter.equalsIgnoreCase("true") || statusFilter.equalsIgnoreCase("false")) {
-            sql.append(" AND IsActive = ?");
-            params.add(Boolean.parseBoolean(statusFilter));
-        } else {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.WARNING, "Invalid statusFilter: " + statusFilter);
-        }
-    }
-
-    try (Connection conn = DBUtil.getConnection();
-         PreparedStatement stm = conn.prepareStatement(sql.toString())) {
-        // Gán các tham số cho PreparedStatement
-        for (int i = 0; i < params.size(); i++) {
-            stm.setObject(i + 1, params.get(i));
+        // Thêm điều kiện tìm kiếm theo từ khóa
+        if (keywords != null && !keywords.trim().isEmpty()) {
+            sql.append(" AND (FirstName LIKE ? OR LastName LIKE ? OR CONCAT(FirstName, ' ', LastName) LIKE ?)");
+            String keywordPattern = "%" + keywords.trim() + "%";
+            params.add(keywordPattern);
+            params.add(keywordPattern);
+            params.add(keywordPattern);
         }
 
-        try (ResultSet rs = stm.executeQuery()) {
-            while (rs.next()) {
-                User u = new User(
-                    rs.getInt("UserID"),
-                    rs.getString("Username"),
-                    rs.getString("FirstName"),
-                    rs.getString("LastName"),
-                    rs.getString("PhoneNum"),
-                    rs.getInt("RoleID"),
-                    rs.getBoolean("IsActive")
-                );
-                users.add(u);
+        // Thêm điều kiện lọc theo vai trò
+        if (roleFilter != null && !roleFilter.isEmpty()) {
+            try {
+                int roleId = Integer.parseInt(roleFilter);
+                sql.append(" AND RoleID = ?");
+                params.add(roleId);
+            } catch (NumberFormatException e) {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.WARNING, "Invalid roleFilter: " + roleFilter, e);
             }
         }
-    } catch (SQLException ex) {
-        Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "Error fetching filtered users", ex);
+
+        // Thêm điều kiện lọc theo trạng thái
+        if (statusFilter != null && !statusFilter.isEmpty()) {
+            if (statusFilter.equalsIgnoreCase("true") || statusFilter.equalsIgnoreCase("false")) {
+                sql.append(" AND IsActive = ?");
+                params.add(Boolean.parseBoolean(statusFilter));
+            } else {
+                Logger.getLogger(UserDAO.class.getName()).log(Level.WARNING, "Invalid statusFilter: " + statusFilter);
+            }
+        }
+
+        try (Connection conn = DBUtil.getConnection(); PreparedStatement stm = conn.prepareStatement(sql.toString())) {
+            // Gán các tham số cho PreparedStatement
+            for (int i = 0; i < params.size(); i++) {
+                stm.setObject(i + 1, params.get(i));
+            }
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    User u = new User(
+                            rs.getInt("UserID"),
+                            rs.getString("Username"),
+                            rs.getString("FirstName"),
+                            rs.getString("LastName"),
+                            rs.getString("PhoneNum"),
+                            rs.getInt("RoleID"),
+                            rs.getBoolean("IsActive")
+                    );
+                    users.add(u);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "Error fetching filtered users", ex);
+        }
+
+        return users;
     }
 
-    return users;
-}
     public List<User_Role> getAllUsersWithRoles() {
         List<User_Role> users = new ArrayList<>();
-        String sql = "SELECT u.UserID, u.Username, u.FirstName, u.LastName, u.PhoneNum, u.RoleID, r.RoleName, u.IsActive " +
-                     "FROM users u JOIN roles r ON u.RoleID = r.RoleID";
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement stm = conn.prepareStatement(sql);
-             ResultSet rs = stm.executeQuery()) {
+        String sql = "SELECT u.UserID, u.Username, u.FirstName, u.LastName, u.PhoneNum, u.RoleID, r.RoleName, u.IsActive "
+                + "FROM users u JOIN roles r ON u.RoleID = r.RoleID";
+        try (Connection conn = DBUtil.getConnection(); PreparedStatement stm = conn.prepareStatement(sql); ResultSet rs = stm.executeQuery()) {
             while (rs.next()) {
                 User_Role ur = new User_Role(
-                    rs.getInt("UserID"),
-                    rs.getString("Username"),
-                    rs.getString("FirstName"),
-                    rs.getString("LastName"),
-                    rs.getString("PhoneNum"),
-                    rs.getInt("RoleID"),
-                    rs.getString("RoleName"),
-                    rs.getBoolean("IsActive")
+                        rs.getInt("UserID"),
+                        rs.getString("Username"),
+                        rs.getString("FirstName"),
+                        rs.getString("LastName"),
+                        rs.getString("PhoneNum"),
+                        rs.getInt("RoleID"),
+                        rs.getString("RoleName"),
+                        rs.getBoolean("IsActive")
                 );
                 users.add(ur);
             }
@@ -478,34 +490,34 @@ public int insertUser(User u) {
         }
         return users;
     }
+
     public void updateUserStatus(int userId, boolean isActive) {
-    String sql = "UPDATE users SET IsActive = ? WHERE UserID = ?";
-    try (Connection conn = DBUtil.getConnection();
-         PreparedStatement stm = conn.prepareStatement(sql)) {
-        stm.setBoolean(1, isActive);
-        stm.setInt(2, userId);
-        stm.executeUpdate();
-    } catch (SQLException ex) {
-        Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        String sql = "UPDATE users SET IsActive = ? WHERE UserID = ?";
+        try (Connection conn = DBUtil.getConnection(); PreparedStatement stm = conn.prepareStatement(sql)) {
+            stm.setBoolean(1, isActive);
+            stm.setInt(2, userId);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-}
+
     public User_Role getUserByIdWithRole(int userId) {
-        String sql = "SELECT u.UserID, u.Username, u.FirstName, u.LastName, u.PhoneNum, u.Address, r.RoleName, u.IsActive " +
-                     "FROM users u JOIN roles r ON u.RoleID = r.RoleID WHERE u.UserID = ?";
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement stm = conn.prepareStatement(sql)) {
+        String sql = "SELECT u.UserID, u.Username, u.FirstName, u.LastName, u.PhoneNum, u.Address, r.RoleName, u.IsActive "
+                + "FROM users u JOIN roles r ON u.RoleID = r.RoleID WHERE u.UserID = ?";
+        try (Connection conn = DBUtil.getConnection(); PreparedStatement stm = conn.prepareStatement(sql)) {
             stm.setInt(1, userId);
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
                     return new User_Role(
-                        rs.getInt("UserID"),
-                        rs.getString("Username"),
-                        rs.getString("FirstName"),
-                        rs.getString("LastName"),
-                        rs.getString("PhoneNum"),
-                        rs.getString("Address"),
-                        rs.getString("RoleName"),
-                        rs.getBoolean("IsActive")
+                            rs.getInt("UserID"),
+                            rs.getString("Username"),
+                            rs.getString("FirstName"),
+                            rs.getString("LastName"),
+                            rs.getString("PhoneNum"),
+                            rs.getString("Address"),
+                            rs.getString("RoleName"),
+                            rs.getBoolean("IsActive")
                     );
                 }
             }
@@ -556,6 +568,20 @@ public int insertUser(User u) {
         }
         return 0;
     }
-    
+   public boolean isUsernameExists(String username) {
+    String sql = "SELECT COUNT(*) FROM users WHERE Username = ?";
+    try (Connection conn = DBUtil.getConnection(); 
+         PreparedStatement stm = conn.prepareStatement(sql)) {
+        stm.setString(1, username);
+        try (ResultSet rs = stm.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "Error checking username exists: " + username, ex);
+    }
+    return false;
 }
 
+}
