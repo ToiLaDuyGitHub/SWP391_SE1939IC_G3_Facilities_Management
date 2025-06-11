@@ -17,6 +17,10 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
         <style>
+            .content-card {
+                max-width: 1200px;
+                margin: 20px auto; 
+            }
             .success-message {
                 color: green;
                 margin-top: 10px;

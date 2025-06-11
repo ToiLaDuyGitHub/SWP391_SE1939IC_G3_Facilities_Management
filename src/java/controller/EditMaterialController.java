@@ -105,7 +105,7 @@ public class EditMaterialController extends HttpServlet {
 
             // Sau khi cập nhật thành công, lấy lại thông tin vật tư đã cập nhật để hiển thị
              request.getSession().setAttribute("successMessage", "Cập nhật vật tư thành công!");
-            response.sendRedirect(request.getContextPath() + "/MaterialList");
+            response.sendRedirect(request.getContextPath() + "/edit-material");
 
         } catch (SQLException e) {
             // Xử lý lỗi liên quan đến cơ sở dữ liệu

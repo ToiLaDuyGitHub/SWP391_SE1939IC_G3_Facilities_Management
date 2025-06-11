@@ -161,7 +161,7 @@ body::before {
     width: calc(100vw - 250px);
     box-sizing: border-box;
     min-height: calc(100vh - 80px); /* Đảm bảo chiều cao tối thiểu */
-}   
+}
 
 .header {
     background: linear-gradient(90deg, #4a90e2, #6aa8e6);
@@ -1073,7 +1073,7 @@ body::before {
     .content {
         padding: 20px;
     }
-    
+
     #userList table {
         min-width: 700px;
         font-size: 13px;
@@ -1084,33 +1084,33 @@ body::before {
     .sidebar {
         transform: translateX(-100%);
     }
-    
+
     .sidebar.active {
         transform: translateX(0);
     }
-    
+
     .content {
         margin-left: 0 !important;
         width: 100% !important;
         padding: 15px;
     }
-    
+
     .content-card#userList,
     .content-card#userDetail {
         margin: 10px 0 !important;
         padding: 15px !important;
     }
-    
+
     #userList table {
         min-width: 600px;
         font-size: 12px;
     }
-    
+
     #userList .search-form {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     #userList .search-form input[type="text"],
     #userList .search-form select,
     #userList .search-form button {
@@ -1204,11 +1204,11 @@ body::before {
     .content {
         padding: 20px;
     }
-    
+
     .content-card#materialListSection {
         padding: 20px !important;
     }
-    
+
     .material-table {
         min-width: 1000px;
         font-size: 13px;
@@ -1220,7 +1220,7 @@ body::before {
         min-width: 900px;
         font-size: 12px;
     }
-    
+
     .search-container input[type="text"] {
         width: 300px;
         max-width: 300px;
@@ -1231,53 +1231,53 @@ body::before {
     .sidebar {
         transform: translateX(-100%);
     }
-    
+
     .sidebar.active {
         transform: translateX(0);
     }
-    
+
     .content {
         margin-left: 0 !important;
         width: 100% !important;
         padding: 15px;
     }
-    
+
     .content-card#materialListSection {
         margin: 10px 0 !important;
         padding: 15px !important;
     }
-    
+
     .material-table {
         min-width: 600px;
         font-size: 11px;
     }
-    
+
     .search-container {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .search-container input[type="text"] {
         width: 100%;
         max-width: none;
         margin-bottom: 10px;
     }
-    
+
     .search-container button {
         width: 100%;
         margin-left: 0;
     }
-    
+
     .material-table th,
     .material-table td {
         padding: 8px 4px;
     }
-    
+
     .product-image {
         width: 40px;
         height: 40px;
     }
-    
+
     .edit-button {
         padding: 3px 6px;
         font-size: 12px;

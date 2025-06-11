@@ -102,7 +102,7 @@ function closeEditModal() {
 function saveChanges() {
     const form = document.querySelector('#editModal form');
     if (form) {
-        form.submit(); 
+        form.submit();
     } else {
         console.error("Không tìm thấy form trong modal");
     }
@@ -133,20 +133,22 @@ function resetForm() {
     }
 }
 
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (event.target.classList.contains('modal-overlay')) {
         closeEditModal();
     }
 };
 
 function highlightMenuItem(element) {
-    if (!element) return;
+    if (!element)
+        return;
     document.querySelectorAll('.sidebar ul li a').forEach(a => a.classList.remove('active'));
     element.classList.add('active');
     const dropdown = element.closest('.dropdown');
     if (dropdown) {
         document.querySelectorAll('.dropdown').forEach(d => {
-            if (d !== dropdown) d.classList.remove('active');
+            if (d !== dropdown)
+                d.classList.remove('active');
         });
         dropdown.classList.add('active');
     }
@@ -155,7 +157,8 @@ function highlightMenuItem(element) {
 function closeSidebarOnMobile() {
     if (window.innerWidth <= 768) {
         const sidebar = document.getElementById('sidebar');
-        if (sidebar) sidebar.classList.remove('active');
+        if (sidebar)
+            sidebar.classList.remove('active');
     }
 }
 
@@ -180,10 +183,12 @@ function logout() {
 
 function toggleDropdown(element) {
     const dropdown = element.parentElement;
-    if (!dropdown) return;
+    if (!dropdown)
+        return;
     const isActive = dropdown.classList.contains('active');
     document.querySelectorAll('.dropdown').forEach(d => {
-        if (d !== dropdown) d.classList.remove('active');
+        if (d !== dropdown)
+            d.classList.remove('active');
     });
     dropdown.classList.toggle('active', !isActive);
 }
@@ -266,4 +271,8 @@ document.addEventListener('DOMContentLoaded', setActiveMenu);
 
 // Gọi lại hàm khi URL thay đổi (cho SPA)
 window.addEventListener('popstate', setActiveMenu);
-
+function viewCart() {
+    // Add logic to navigate to cart page or show cart details
+    alert("Xem giỏ hàng (Tổng: ${sessionScope.cartCount != null ? sessionScope.cartCount : 0} sản phẩm)");
+    // Replace with actual navigation, e.g., window.location.href = '/cart';
+}

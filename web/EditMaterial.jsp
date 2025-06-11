@@ -17,9 +17,10 @@
         <link rel="stylesheet" href="<%= request.getContextPath() %>/css/styles.css">
     </head>
     <style>
-         .content-card {
-                max-width: 1250px;
-            }
+        .content-card {
+            max-width: 1200px;
+            margin: 20px auto;
+        }
         .search-container {
             display: flex;
             justify-content: center;
@@ -133,7 +134,7 @@
                             <i class="fas fa-exclamation-circle"></i> ${errorMessage}
                         </div>
                     </c:if>
-                   
+
 
                     <form action="${pageContext.request.contextPath}/search-material" method="get">
                         <div class="form-group">
@@ -216,11 +217,11 @@
                     <!-- Form xóa được tách ra ngoài form chỉnh sửa -->
                     <c:if test="${not empty material}">
                         <form action="${pageContext.request.contextPath}/delete-material" method="post" style="display: inline;">
-                           <div class="form-group form-actions">
-                            <input type="hidden" name="materialID" value="${material.materialID}">
-                            <input type="hidden" name="materialName" value="${material.materialName}">
-                            <button type="submit" class="cancel-btn"><i class="fas fa-trash"></i> Xóa vật tư</button>
-                           </div> 
+                            <div class="form-group form-actions">
+                                <input type="hidden" name="materialID" value="${material.materialID}">
+                                <input type="hidden" name="materialName" value="${material.materialName}">
+                                <button type="submit" class="cancel-btn"><i class="fas fa-trash"></i> Xóa vật tư</button>
+                            </div> 
                         </form>
                     </c:if>
                 </div>
@@ -229,16 +230,16 @@
         <script src="<%= request.getContextPath() %>/js/script.js"></script>
         <script>
             const facilities = [
-                <c:forEach var="material" items="${allMaterials}" varStatus="loop">
-                    "${material.materialName}"${loop.last ? '' : ','}
-                </c:forEach>
+            <c:forEach var="material" items="${allMaterials}" varStatus="loop">
+            "${material.materialName}"${loop.last ? '' : ','}
+            </c:forEach>
             ];
 
             document.addEventListener('DOMContentLoaded', function () {
-                const searchInput = document.getElementById('searchMaterial');
-                const suggestionsBox = document.getElementById('suggestionsBox');
+            const searchInput = document.getElementById('searchMaterial');
+                    const suggestionsBox = document.getElementById('suggestionsBox');
 
-           
+
         </script>
     </body>
 </html>
