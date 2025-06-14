@@ -213,16 +213,15 @@ function showPermissions() {
     closeSidebarOnMobile();
 }
 
-function showMaterialDetail(name, category, subcategory, supplier, quantity, newQuantity, usableQuantity, brokenQuantity, image, detail) {
-    document.getElementById('materialName').textContent = name;
-    document.getElementById('category').textContent = category;
-    document.getElementById('subcategory').textContent = subcategory;
-    document.getElementById('supplier').textContent = supplier;
-    document.getElementById('quantity').textContent = quantity;
-    document.getElementById('newQuantity').textContent = newQuantity;
-    document.getElementById('usableQuantity').textContent = usableQuantity;
-    document.getElementById('brokenQuantity').textContent = brokenQuantity;
-    document.getElementById('detail').textContent = detail;
+function showMaterialDetail(name, category, subcategory, supplier, totalQuantity, usableQuantity, brokenQuantity, image, detail) {
+            document.getElementById('materialName').textContent = name;
+            document.getElementById('category').textContent = category;
+            document.getElementById('subcategory').textContent = subcategory;
+            document.getElementById('supplier').textContent = supplier;
+            document.getElementById('quantity').textContent = totalQuantity;
+            document.getElementById('usableQuantity').textContent = usableQuantity;
+            document.getElementById('brokenQuantity').textContent = brokenQuantity;
+            document.getElementById('detail').textContent = detail;
 
     const materialImage = document.getElementById('materialImage');
     if (image && image !== 'null') {

@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import model.SubCategory;
+import model.Units;
 
 /**
  *
@@ -49,10 +50,12 @@ public class AddMaterialController extends HttpServlet {
             throws ServletException, IOException {
 
         SubCategoryDAO subCategory = new SubCategoryDAO();
+        MaterialDAO materialDAO = new MaterialDAO();
         try {
-
             List<SubCategory> subcategoryList = subCategory.getAllSubCategories();
+            List<Units> unitsList = materialDAO.getAllUnits();
             request.setAttribute("subcategoryList", subcategoryList);
+            request.setAttribute("unitsList", unitsList);
             request.getRequestDispatcher("addMaterial.jsp").forward(request, response);
         } catch (Exception e) {
         }
@@ -72,28 +75,36 @@ public class AddMaterialController extends HttpServlet {
         MaterialDAO materialDAO = new MaterialDAO();
         try {
             // Lấy thông tin từ form
-            String MaterialName = request.getParameter("MaterialName");
-            String SupplierName = request.getParameter("SupplierName");
-            String Address = request.getParameter("Address");
-            String PhoneNum = request.getParameter("PhoneNum");
+            String materialName = request.getParameter("MaterialName");
+            String supplierName = request.getParameter("SupplierName");
+            String address = request.getParameter("Address");
+            String phoneNum = request.getParameter("PhoneNum");
             String subcategoryIdStr = request.getParameter("SubcategoryID");
-            String newQuantityStr = request.getParameter("NewQuantity");
             String usableQuantityStr = request.getParameter("UsableQuantity");
+             String unitMinUnit = request.getParameter("UnitID");
+            String detail = request.getParameter("Detail");
+
 
             // Kiểm tra tham số
-            if (subcategoryIdStr == null || newQuantityStr == null || usableQuantityStr == null
-                    || subcategoryIdStr.isEmpty() || newQuantityStr.isEmpty() || usableQuantityStr.isEmpty()) {
+            if (materialName == null || supplierName == null || address == null || phoneNum == null ||
+                subcategoryIdStr == null || usableQuantityStr == null || unitMinUnit == null ||
+                materialName.isEmpty() || supplierName.isEmpty() || address.isEmpty() || phoneNum.isEmpty() ||
+                subcategoryIdStr.isEmpty() || usableQuantityStr.isEmpty() || unitMinUnit.isEmpty()) {
                 request.setAttribute("error", "Vui lòng điền đầy đủ thông tin.");
+                SubCategoryDAO subCategoryDAO = new SubCategoryDAO();
+                List<SubCategory> subcategoryList = subCategoryDAO.getAllSubCategories();
+                List<Units> unitsList = materialDAO.getAllUnits();
+                request.setAttribute("subcategoryList", subcategoryList);
+                request.setAttribute("unitsList", unitsList);
                 request.getRequestDispatcher("addMaterial.jsp").forward(request, response);
                 return;
             }
 
-            int SubcategoryID = Integer.parseInt(subcategoryIdStr);
-            int NewQuantity = Integer.parseInt(newQuantityStr);
-            int UsableQuantity = Integer.parseInt(usableQuantityStr);
+            int subcategoryId = Integer.parseInt(subcategoryIdStr);
+            int usableQuantity = Integer.parseInt(usableQuantityStr);
+            int unitId = materialDAO.getUnitIdFromMinUnit(unitMinUnit);
 
-            // Tính tổng số lượng
-            int totalQuantity = NewQuantity + UsableQuantity;
+            int totalQuantity = usableQuantity;
 
             // Xử lý upload file ảnh
             Part filePart = request.getPart("Image");
@@ -110,15 +121,15 @@ public class AddMaterialController extends HttpServlet {
             }
 
             // Thêm vật tư mới vào cơ sở dữ liệu
-            materialDAO.addMaterial(MaterialName, SubcategoryID, SupplierName,
-                    Address, PhoneNum, imagePath, totalQuantity,
-                    NewQuantity, UsableQuantity);
-
+           materialDAO.addMaterial(materialName, subcategoryId, supplierName, address,
+                   phoneNum, imagePath, detail, totalQuantity, usableQuantity, unitId);
             // Thiết lập thông báo thành công và tải lại danh sách danh mục
-            request.setAttribute("successMessage", "Vật tư đã được thêm thành công!");
-            SubCategoryDAO subCategory = new SubCategoryDAO();
-            List<SubCategory> subcategoryList = subCategory.getAllSubCategories();
+             request.setAttribute("successMessage", "Vật tư đã được thêm thành công!");
+            SubCategoryDAO subCategoryDAO = new SubCategoryDAO();
+            List<SubCategory> subcategoryList = subCategoryDAO.getAllSubCategories();
+            List<Units> unitList = materialDAO.getAllUnits();
             request.setAttribute("subcategoryList", subcategoryList);
+            request.setAttribute("unitList", unitList);
             request.getRequestDispatcher("addMaterial.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();

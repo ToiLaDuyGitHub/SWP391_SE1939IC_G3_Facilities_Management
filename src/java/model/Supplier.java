@@ -9,52 +9,52 @@ package model;
  * @author ToiLaDuyGitHub
  */
 public class Supplier {
-    private int SupplierID;
-    private String SupplierName;
-    private String Address;
-    private String PhoneNum;
+    private int supplierID;
+    private String supplierName;
+    private String address;
+    private String phoneNum;
 
     public Supplier() {
     }
 
-    public Supplier(int SupplierID, String SupplierName, String Address, String PhoneNum) {
-        this.SupplierID = SupplierID;
-        this.SupplierName = SupplierName;
-        this.Address = Address;
-        this.PhoneNum = PhoneNum;
+    public Supplier(int supplierID, String supplierName, String address, String phoneNum) {
+        this.supplierID = supplierID;
+        this.supplierName = supplierName;
+        this.address = address;
+        this.phoneNum = phoneNum;
     }
 
     public int getSupplierID() {
-        return SupplierID;
+        return supplierID;
     }
 
-    public void setSupplierID(int SupplierID) {
-        this.SupplierID = SupplierID;
+    public void setSupplierID(int supplierID) {
+        this.supplierID = supplierID;
     }
 
     public String getSupplierName() {
-        return SupplierName;
+        return supplierName;
     }
 
-    public void setSupplierName(String SupplierName) {
-        this.SupplierName = SupplierName;
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
     }
 
     public String getAddress() {
-        return Address;
+        return address;
     }
 
-    public void setAddress(String Address) {
-        this.Address = Address;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getPhoneNum() {
-        return PhoneNum;
+        return phoneNum;
     }
 
-    public void setPhoneNum(String PhoneNum) {
-        this.PhoneNum = PhoneNum;
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
 
-    
+   
 }

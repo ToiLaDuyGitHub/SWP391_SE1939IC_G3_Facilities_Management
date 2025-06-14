@@ -9,44 +9,44 @@ package model;
  * @author acer
  */
 public class Material {
-    private int MaterialID;
-    private String MaterialName;
+
+    private int materialID;
+    private String materialName;
     private Category category;
     private SubCategory subcategory;
-    private Supplier SupplierID;
-    private String Image;
-    private int Quantity;
-    private MaterialCondition condition;
-private String Detail;
+    private Supplier supplierID;
+    private String image;
+    private MaterialQuantity quantity;
+    private String detail;
+
     public Material() {
     }
 
-    public Material(int MaterialID, String MaterialName, Category category, SubCategory subcategory, Supplier SupplierID, String Image, int Quantity, MaterialCondition condition, String Detail) {
-        this.MaterialID = MaterialID;
-        this.MaterialName = MaterialName;
+    public Material(int materialID, String materialName, Category category, SubCategory subcategory, Supplier supplierID, String image, MaterialQuantity quantity, String detail) {
+        this.materialID = materialID;
+        this.materialName = materialName;
         this.category = category;
         this.subcategory = subcategory;
-        this.SupplierID = SupplierID;
-        this.Image = Image;
-        this.Quantity = Quantity;
-        this.condition = condition;
-        this.Detail = Detail;
+        this.supplierID = supplierID;
+        this.image = image;
+        this.quantity = quantity;
+        this.detail = detail;
     }
 
     public int getMaterialID() {
-        return MaterialID;
+        return materialID;
     }
 
-    public void setMaterialID(int MaterialID) {
-        this.MaterialID = MaterialID;
+    public void setMaterialID(int materialID) {
+        this.materialID = materialID;
     }
 
     public String getMaterialName() {
-        return MaterialName;
+        return materialName;
     }
 
-    public void setMaterialName(String MaterialName) {
-        this.MaterialName = MaterialName;
+    public void setMaterialName(String materialName) {
+        this.materialName = materialName;
     }
 
     public Category getCategory() {
@@ -66,48 +66,36 @@ private String Detail;
     }
 
     public Supplier getSupplierID() {
-        return SupplierID;
+        return supplierID;
     }
 
-    public void setSupplierID(Supplier SupplierID) {
-        this.SupplierID = SupplierID;
+    public void setSupplierID(Supplier supplierID) {
+        this.supplierID = supplierID;
     }
 
     public String getImage() {
-        return Image;
+        return image;
     }
 
-    public void setImage(String Image) {
-        this.Image = Image;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public int getQuantity() {
-        return Quantity;
+    public MaterialQuantity getQuantity() {
+        return quantity;
     }
 
-    public void setQuantity(int Quantity) {
-        this.Quantity = Quantity;
-    }
-
-    public MaterialCondition getCondition() {
-        return condition;
-    }
-
-    public void setCondition(MaterialCondition condition) {
-        this.condition = condition;
+    public void setQuantity(MaterialQuantity quantity) {
+        this.quantity = quantity;
     }
 
     public String getDetail() {
-        return Detail;
+        return detail;
     }
 
-    public void setDetail(String Detail) {
-        this.Detail = Detail;
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
     
-
 }
-
-   
-    
