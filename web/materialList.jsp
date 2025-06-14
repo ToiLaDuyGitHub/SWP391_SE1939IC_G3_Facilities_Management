@@ -181,7 +181,7 @@
                                     <td>${material.materialName}</td>
                                     <td>${material.category.categoryName}</td>
                                     <td>${material.supplierID.supplierName}</td>
-                                    <td>${material.quantity}</td>
+                                    <td>${material.quantity.totalQuantity}</td>
                                     <td>
                                         <c:if test="${not empty material.image}">
                                             <img src="${material.image}" alt="${material.materialName}" class="product-image">
@@ -191,13 +191,17 @@
                                         </c:if>
                                     </td>
                                     <td>
-                                        <button class="edit-button" onclick="showMaterialDetail('${material.materialName}',
-                                                        '${material.category.categoryName}', '${material.subcategory.subcategoryName}',
-                                                        '${material.supplierID.supplierName}', ${material.quantity},
-                                                ${material.condition.newQuantity}, ${material.condition.usableQuantity},
-                                                ${material.condition.brokenQuantity}, '${material.image}',
-                                                        '${material.detail}')">Chi tiết</button>
-                                        <button class="cart-button"><i class="fas fa-shopping-cart"></i></button>
+                                        <button class="edit-button" onclick="showMaterialDetail(
+                                                '${material.materialName}',
+                                                '${material.category.categoryName}',
+                                                '${material.subcategory.subcategoryName}',
+                                                '${material.supplierID.supplierName}',
+                                                ${material.quantity.totalQuantity},
+                                                ${material.quantity.usableQuantity},
+                                                ${material.quantity.brokenQuantity},
+                                                '${material.image}',
+                                                '${material.detail}')">Chi tiết</button>
+                                            <button class="cart-button"><i class="fas fa-shopping-cart"></i></button>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -207,15 +211,15 @@
                     <!-- Pagination Controls -->
                     <div class="pagination">
                         <c:if test="${page > 1}">
-                            <a href="${pageContext.request.contextPath}/MaterialList?page=${page - 1}">&laquo; Trước</a>
+                            <a href="${pageContext.request.contextPath}/manage-material?page=${page - 1}">&laquo; Trước</a>
                         </c:if>
 
                         <c:forEach var="i" begin="1" end="${totalPages}">
-                            <a href="${pageContext.request.contextPath}/MaterialList?page=${i}" class="${i == page ? 'active' : ''}">${i}</a>
+                            <a href="${pageContext.request.contextPath}/manage-material?page=${i}" class="${i == page ? 'active' : ''}">${i}</a>
                         </c:forEach>
 
                         <c:if test="${page < totalPages}">
-                            <a href="${pageContext.request.contextPath}/MaterialList?page=${page + 1}">Tiếp &raquo;</a>
+                            <a href="${pageContext.request.contextPath}/manage-material?page=${page + 1}">Tiếp &raquo;</a>
                         </c:if>
                     </div>
                 </div>
@@ -245,10 +249,7 @@
                         <label>Số lượng tổng:</label>
                         <span id="quantity"></span>
                     </div>
-                    <div class="info-row">
-                        <label>Số lượng mới:</label>
-                        <span id="newQuantity"></span>
-                    </div>
+                    
                     <div class="info-row">
                         <label>Số lượng sử dụng được:</label>
                         <span id="usableQuantity"></span>

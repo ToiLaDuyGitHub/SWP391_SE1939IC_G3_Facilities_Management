@@ -41,6 +41,22 @@
                 align-items: center;
                 gap: 8px;
             }
+            .form-group textarea {
+                width: 100%;
+                padding: 12px;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                font-size: 14px;
+                resize: vertical;
+                min-height: 100px;
+                transition: border 0.3s, box-shadow 0.3s, transform 0.2s;
+            }
+            .form-group textarea:focus {
+                border-color: #f9a825;
+                box-shadow: 0 0 8px rgba(249, 168, 37, 0.3);
+                transform: scale(1.01);
+                outline: none;
+            }
         </style>
     </head>
     <body>
@@ -98,13 +114,23 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label><i class="fas fa-box"></i> Số lượng mới:</label>
-                                    <input type="number" name="NewQuantity" required placeholder="Mới" min="0">
+                                    <label for="usableQuantity"><i class="fas fa-box"></i> Số lượng :</label>
+                                    <input type="number" id="usableQuantity" name="UsableQuantity" required placeholder="Nhập số lượng " min="0">
                                 </div>
                                 <div class="form-group">
-                                    <label><i class="fas fa-box"></i> Số lượng cũ:</label>
-                                    <input type="number" name="UsableQuantity" required placeholder="Cũ" min="0">
+                                    <label for="unit"><i class="fas fa-ruler"></i> Đơn vị:</label>
+                                    <select id="unit" name="UnitID" required>
+                                        <option value="" disabled selected>Chọn đơn vị</option>
+                                        <c:forEach var="unit" items="${unitsList}">
+                                            <option value="${unit.minUnit}">${unit.minUnit}</option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
+                                <div class="form-group">
+                                    <label for="detail"><i class="fas fa-info-circle"></i> Chi tiết vật tư:</label>
+                                    <textarea id="detail" name="Detail" placeholder="Nhập chi tiết vật tư"></textarea>
+                                </div>
+                                
                             </div>
                         </div>
                         <div class="form-group form-actions">

@@ -223,6 +223,18 @@
                         <a href="Ordering-requirements/Create-export-order.jsp" >Đơn xin xuất kho</a>
                     </div>
                 </li>
+                
+                <li class="dropdown">
+                    <div class="dropdown-toggle" onclick="toggleDropdown(this)">
+                            <span><i class="fas fa-list"></i> Danh sách các yêu cầu</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    <div class="dropdown-content">
+                        <a href="Request/Request_List.jsp">Tất cả các yêu cầu</a>
+                        <a href="#">Xem chi tiết thông tin yêu cầu</a>
+                    </div>
+                    
+                </li>
             </ul>
         </div>
         <script src="<%= request.getContextPath() %>/js/script.js"></script>
