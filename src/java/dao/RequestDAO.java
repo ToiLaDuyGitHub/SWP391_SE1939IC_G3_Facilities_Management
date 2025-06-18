@@ -17,7 +17,7 @@ import util.DBUtil;
  *
  * @author ADMIN
  */
-public class RequestDao {
+public class RequestDAO {
     // Tìm UserID của giám đốc (RoleID = 3)
     public int getDirectorUserID() throws SQLException {
         String sql = "SELECT UserID FROM users WHERE RoleID = 3 LIMIT 1";
