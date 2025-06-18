@@ -39,7 +39,6 @@ public class EditMaterialController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -69,18 +68,16 @@ public class EditMaterialController extends HttpServlet {
         MaterialDAO materialDAO = new MaterialDAO();
         try {
             // Lấy các tham số từ form trong JSP
-            int materialID = Integer.parseInt(request.getParameter("materialID")); 
-            String materialName = request.getParameter("materialName"); 
-            int subcategoryID = Integer.parseInt(request.getParameter("subcategoryID")); 
-            int quantity = Integer.parseInt(request.getParameter("quantity")); 
-            int newQuantity = Integer.parseInt(request.getParameter("statusNew")); 
-            int usableQuantity = Integer.parseInt(request.getParameter("statusOld")); 
-            int brokenQuantity = Integer.parseInt(request.getParameter("statusDamaged")); 
-            String supplierName = request.getParameter("supplier"); 
-            String supplierAddress = request.getParameter("supplierAddress"); 
-            String supplierPhone = request.getParameter("supplierPhone"); 
-            String oldImageUrl = request.getParameter("imageUrl"); 
-
+            int materialID = Integer.parseInt(request.getParameter("materialID"));
+            String materialName = request.getParameter("materialName");
+            int subcategoryID = Integer.parseInt(request.getParameter("subcategoryID"));
+            int usableQuantity = Integer.parseInt(request.getParameter("statusOld"));
+            int brokenQuantity = Integer.parseInt(request.getParameter("statusDamaged"));
+            String supplierName = request.getParameter("supplier");
+            String supplierAddress = request.getParameter("supplierAddress");
+            String supplierPhone = request.getParameter("supplierPhone");
+            String oldImageUrl = request.getParameter("imageUrl");
+            String detail = request.getParameter("detail");
             // Xử lý upload hình ảnh mới
             String imageUrl = oldImageUrl; // Mặc định giữ URL hình ảnh cũ
             Part filePart = request.getPart("image"); // Lấy file từ form
@@ -101,21 +98,19 @@ public class EditMaterialController extends HttpServlet {
             }
 
             // Gọi phương thức updateMaterial trong MaterialDAO để cập nhật thông tin vật tư vào cơ sở dữ liệu
-            materialDAO.updateMaterial(materialID, materialName, subcategoryID, supplierName, supplierAddress, supplierPhone, imageUrl, quantity, newQuantity, usableQuantity, brokenQuantity);
+           materialDAO.updateMaterial(materialID, materialName, subcategoryID, supplierName, supplierAddress, supplierPhone, imageUrl, usableQuantity, brokenQuantity, detail);
 
             // Sau khi cập nhật thành công, lấy lại thông tin vật tư đã cập nhật để hiển thị
-             request.getSession().setAttribute("successMessage", "Cập nhật vật tư thành công!");
-            response.sendRedirect(request.getContextPath() + "/edit-material");
+            request.getSession().setAttribute("successMessage", "Cập nhật vật tư thành công!");
+            response.sendRedirect(request.getContextPath() + "/manage-material");
 
         } catch (SQLException e) {
-            // Xử lý lỗi liên quan đến cơ sở dữ liệu
             e.printStackTrace();
             request.setAttribute("errorMessage", "Lỗi khi cập nhật vật tư: " + e.getMessage());
-            request.getRequestDispatcher("/EditMaterial.jsp").forward(request, response);
+            request.getRequestDispatcher("/manage-material").forward(request, response);
         } catch (NumberFormatException e) {
-            // Xử lý lỗi khi người dùng nhập sai định dạng số (ví dụ: nhập chữ vào ô số lượng)
             request.setAttribute("errorMessage", "Vui lòng nhập đúng định dạng số cho các trường số lượng!");
-            request.getRequestDispatcher("/EditMaterial.jsp").forward(request, response);
+            request.getRequestDispatcher("/manage-material").forward(request, response);
         }
     }
 
