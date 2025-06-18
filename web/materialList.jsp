@@ -17,7 +17,7 @@
                 background-color: #4CAF50;
                 color: white;
                 border: none;
-                padding: 3px 8px; 
+                padding: 3px 8px;
                 text-align: center;
                 text-decoration: none;
                 display: inline-block;
@@ -103,7 +103,111 @@
                 display: flex;
                 align-items: center;
                 gap: 8px;
-            }           
+            }
+            .cart-button {
+                background-color: #ff9800;
+                color: white;
+                border: none;
+                padding: 3px 8px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;
+                margin: 2px;
+                cursor: pointer;
+                border-radius: 3px;
+                width: 70px;
+                height: 28px;
+                line-height: 22px;
+            }
+
+            .cart-button:hover {
+                background-color: #f57c00;
+            }
+
+            .cart-button i {
+                margin-right: 3px;
+                vertical-align: middle;
+            }
+            .delete-button {
+                background-color: #f44336;
+                color: white;
+                border: none;
+                padding: 3px 8px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;
+                margin: 2px;
+                cursor: pointer;
+                border-radius: 3px;
+                width: 70px;
+                height: 28px;
+                line-height: 22px;
+            }
+            .delete-button:hover {
+                background-color: #d32f2f;
+            }
+            .delete-button i {
+                margin-right: 3px;
+                vertical-align: middle;
+            }
+            
+            .modal {
+                max-width: 600px;
+                width: 90%;
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+            .modal .form-group {
+                margin-bottom: 10px;
+            }
+            .modal .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                color: #666;
+                font-weight: 500;
+                font-size: 14px;
+            }
+            .modal .form-group input,
+            .modal .form-group select,
+            .modal .form-group textarea {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+                color: #333;
+                transition: border 0.3s;
+            }
+            .modal .form-group textarea {
+                height: 100px;
+                resize: vertical;
+            }
+            .modal .form-group input:focus,
+            .modal .form-group select:focus,
+            .modal .form-group textarea:focus {
+                border-color: #f9a825;
+                outline: none;
+            }
+            .modal .form-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .modal .form-actions {
+                display: flex;
+                gap: 10px;
+                justify-content: flex-end;
+                margin-top: 15px;
+            }
+            .modal img {
+                max-width: 100%;
+                height: auto;
+                margin-top: 10px;
+                max-height: 150px;
+            }
+            
         </style>
     </head>
     <body>
@@ -120,8 +224,13 @@
                             </div>
                         </div>
                     </form>
-
-
+                                
+                    <c:if test="${not empty sessionScope.successMessage}">
+                        <div class="success-message">
+                            <i class="fas fa-check-circle"></i> ${sessionScope.successMessage}
+                        </div>
+                        <c:remove var="successMessage" scope="session"/>
+                    </c:if>
 
                     <!-- Thông báo lỗi -->
                     <c:if test="${not empty errorMessage}">
@@ -167,15 +276,20 @@
                                     </td>
                                     <td>
                                         <button class="edit-button" onclick="showMaterialDetail(
-                                                '${material.materialName}',
-                                                '${material.category.categoryName}',
-                                                '${material.subcategory.subcategoryName}',
-                                                '${material.supplierID.supplierName}',
+                                                    ${material.materialID},
+                                                        '${material.materialName}',
+                                                        '${material.category.categoryName}',
+                                                ${material.subcategory.subcategoryID},
+                                                        '${material.supplierID.supplierName}',
+                                                        '${material.supplierID.address}',
+                                                        '${material.supplierID.phoneNum}',
                                                 ${material.quantity.totalQuantity},
                                                 ${material.quantity.usableQuantity},
                                                 ${material.quantity.brokenQuantity},
-                                                '${material.image}',
-                                                '${material.detail}')">Chi tiết</button>
+                                                        '${material.image}',
+                                                        '${material.detail}')">Chi tiết</button>
+                                       
+                                         <button class="delete-button" onclick="confirmDelete(${material.materialID})"><i class="fas fa-trash"></i></button>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -202,56 +316,80 @@
                 <div id="editModalOverlay" class="modal-overlay" onclick="closeEditModal()"></div>
                 <div id="editModal" class="modal">
                     <span class="close" onclick="closeEditModal()">×</span>
-                    <h3>Chi tiết vật tư</h3>
-                    <div class="info-row">
-                        <label>Tên vật tư:</label>
-                        <span id="materialName"></span>
-                    </div>
-                    <div class="info-row">
-                        <label>Danh mục:</label>
-                        <span id="category"></span>
-                    </div>
-                    <div class="info-row">
-                        <label>Danh mục con:</label>
-                        <span id="subcategory"></span>
-                    </div>
-                    <div class="info-row">
-                        <label>Nhà cung cấp:</label>
-                        <span id="supplier"></span>
-                    </div>
-                    <div class="info-row">
-                        <label>Số lượng tổng:</label>
-                        <span id="quantity"></span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <label>Số lượng sử dụng được:</label>
-                        <span id="usableQuantity"></span>
-                    </div>
-                    <div class="info-row">
-                        <label>Số lượng hỏng:</label>
-                        <span id="brokenQuantity"></span>
-                    </div>
-                    <div class="info-row">
-                        <label>Chi tiết:</label>
-                        <span id="detail"></span>
-                    </div>
-                    <div class="info-row">
-                        <label>Hình ảnh:</label>
-                        <span><img id="materialImage" src="" alt="Hình ảnh vật tư" style="display: none;"></span>
-                    </div>
+                    <h3>Chi tiết và sửa vật tư</h3>
+                    <form id="editMaterialForm" action="${pageContext.request.contextPath}/edit-material" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="materialID" id="materialID">
+                        <div class="form-group">
+                            <label for="materialName">Tên vật tư:</label>
+                            <input type="text" id="materialName" name="materialName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Danh mục:</label>
+                            <input type="text" id="category" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="subcategory">Danh mục con:</label>
+                            <select id="subcategory" name="subcategoryID" required>
+                                <c:forEach var="subcategory" items="${subcategoryList}">
+                                    <option value="${subcategory.subcategoryID}">${subcategory.subcategoryName}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="supplier">Nhà cung cấp:</label>
+                            <input type="text" id="supplier" name="supplier" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="supplierAddress">Địa chỉ nhà cung cấp:</label>
+                            <input type="text" id="supplierAddress" name="supplierAddress">
+                        </div>
+                        <div class="form-group">
+                            <label for="supplierPhone">Số điện thoại nhà cung cấp:</label>
+                            <input type="text" id="supplierPhone" name="supplierPhone">
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Số lượng tổng:</label>
+                            <input type="number" id="quantity" name="quantity" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="usableQuantity">Số lượng sử dụng được:</label>
+                            <input type="number" id="usableQuantity" name="statusOld" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="brokenQuantity">Số lượng hỏng:</label>
+                            <input type="number" id="brokenQuantity" name="statusDamaged" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="detail">Chi tiết:</label>
+                            <input type="text" id="detail" name="detail">
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Hình ảnh:</label>
+                            <input type="file" id="image" name="image" accept="image/*">
+                            <input type="hidden" id="imageUrl" name="imageUrl">
+                            <img id="materialImage" src="" alt="Hình ảnh vật tư" style="display: none; max-width: 100%; margin-top: 10px;">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Lưu</button>
+                            <button type="button" class="cancel-btn" onclick="closeEditModal()"><i class="fas fa-times"></i> Hủy</button>
+                        </div>
+                    </form>
+                        
                 </div>
-
             </div>
         </div>
         <script src="<%= request.getContextPath() %>/js/script.js"></script>
         <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            const profileSection = document.getElementById('materialListSection');
-                            if (profileSection) {
-                                profileSection.classList.remove('hidden');
-                            }
-                        });
+            
+            const contextPath = "<%= request.getContextPath() %>";
+        </script>
+        <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    const profileSection = document.getElementById('materialListSection');
+                                    if (profileSection) {
+                                        profileSection.classList.remove('hidden');
+                                    }
+                                });
 
 
         </script>

@@ -208,14 +208,14 @@
 
                 <li class="dropdown">
                     <div class="dropdown-toggle" onclick="toggleDropdown(this)">
-                        <span><i class="fas fa-list"></i> Danh sách các yêu cầu</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
+                            <span><i class="fas fa-list"></i> Danh sách các yêu cầu</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
                     <div class="dropdown-content">
-                        <a href="Request/Request_List.jsp">Tất cả các yêu cầu</a>
-                        <a href="#">Xem chi tiết thông tin yêu cầu</a>
+                        <a href="Request/Request_List.jsp">Các yêu cầu xuất kho đã xử lý</a>
+                        <a href="${pageContext.request.contextPath}/request-for-director">Các yêu cầu </a>
                     </div>
-
+                    
                 </li>
             </ul>
         </div>

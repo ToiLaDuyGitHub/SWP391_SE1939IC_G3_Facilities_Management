@@ -213,15 +213,18 @@ function showPermissions() {
     closeSidebarOnMobile();
 }
 
-function showMaterialDetail(name, category, subcategory, supplier, totalQuantity, usableQuantity, brokenQuantity, image, detail) {
-            document.getElementById('materialName').textContent = name;
-            document.getElementById('category').textContent = category;
-            document.getElementById('subcategory').textContent = subcategory;
-            document.getElementById('supplier').textContent = supplier;
-            document.getElementById('quantity').textContent = totalQuantity;
-            document.getElementById('usableQuantity').textContent = usableQuantity;
-            document.getElementById('brokenQuantity').textContent = brokenQuantity;
-            document.getElementById('detail').textContent = detail;
+function showMaterialDetail(materialID, name, category, subcategory, supplier, supplierAddress, supplierPhone, totalQuantity, usableQuantity, brokenQuantity, image, detail) {
+    document.getElementById('materialID').value = materialID;   
+    document.getElementById('materialName').value = name;
+    document.getElementById('category').value = category;
+    document.getElementById('subcategory').value = subcategory;
+    document.getElementById('supplier').value = supplier;
+    document.getElementById('supplierAddress').value = supplierAddress;
+    document.getElementById('supplierPhone').value = supplierPhone;
+    document.getElementById('quantity').value = totalQuantity;
+    document.getElementById('usableQuantity').value = usableQuantity;
+    document.getElementById('brokenQuantity').value = brokenQuantity;
+    document.getElementById('detail').value = detail;
 
     const materialImage = document.getElementById('materialImage');
     if (image && image !== 'null') {
@@ -232,6 +235,26 @@ function showMaterialDetail(name, category, subcategory, supplier, totalQuantity
     }
 
     openEditModal();
+}
+
+function confirmDelete(materialID) {
+    if (confirm("Bạn có chắc chắn muốn xóa vật tư này?")) {
+        // Tạo biểu mẫu động
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `${contextPath}/delete-material`; // contextPath được định nghĩa trong JSP
+
+        // Thêm input ẩn cho materialID
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'materialID';
+        input.value = materialID;
+        form.appendChild(input);
+
+        // Thêm biểu mẫu vào body và gửi
+        document.body.appendChild(form);
+        form.submit();
+    }
 }
 
 function setActiveMenu() {
@@ -274,4 +297,15 @@ function viewCart() {
     // Add logic to navigate to cart page or show cart details
     alert("Xem giỏ hàng (Tổng: ${sessionScope.cartCount != null ? sessionScope.cartCount : 0} sản phẩm)");
     // Replace with actual navigation, e.g., window.location.href = '/cart';
+}
+function showRequestDetail(requestId, requestCode, requestType, createdDate, createdByName, approvedByName, statusText) {
+    document.getElementById('requestId').value = requestId;
+    document.getElementById('requestCode').value = requestCode;
+    document.getElementById('requestType').value = requestType;
+    document.getElementById('createdDate').value = createdDate;
+    document.getElementById('createdByName').value = createdByName;
+    document.getElementById('approvedByName').value = approvedByName;
+    document.getElementById('statusText').value = statusText;
+
+    openEditModal();
 }

@@ -5,6 +5,7 @@
 package controller;
 
 import dao.MaterialDAO;
+import dao.SubCategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Material;
+import model.SubCategory;
 
 /**
  *
@@ -36,13 +38,16 @@ public class ManageMaterialController extends HttpServlet {
             throws ServletException, IOException {
 // Tạo đối tượng MaterialDAO
         MaterialDAO materialDAO = new MaterialDAO();
+        SubCategoryDAO subCategoryDAO = new SubCategoryDAO();
         List<Material> list = null;
+        List<SubCategory> list1sub = null;
 
         try {
             // Gọi phương thức getAllMaterials() để lấy toàn bộ danh sách vật tư
             list = materialDAO.getAllMaterials();
+            list1sub = subCategoryDAO.getAllSubcategories();
             request.setAttribute("materials", list);
-            
+            request.setAttribute("subcategoryList", list1sub);
              request.getRequestDispatcher("materialList.jsp").forward(request, response);
             
         } catch (Exception e) {

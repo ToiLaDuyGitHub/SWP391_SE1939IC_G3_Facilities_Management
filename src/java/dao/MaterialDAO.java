@@ -30,7 +30,7 @@ public class MaterialDAO {
         String sql = "SELECT m.MaterialID, m.MaterialName, m.Image, m.Detail, "
                 + "                     c.CategoryID, c.CategoryName, "
                 + "                     sc.SubcategoryID, sc.SubcategoryName, "
-                + "                     s.SupplierID, s.SupplierName, "
+                + "                     s.SupplierID, s.SupplierName,s.Address, s.PhoneNum, "
                 + "			mq.UsableQuantity, mq.BrokenQuantity, mq.TotalQuantity"
                 + "                     FROM materials m"
                 + "                     LEFT JOIN categories c ON m.CategoryID = c.CategoryID "
@@ -47,7 +47,7 @@ public class MaterialDAO {
                 material.setMaterialName(rs.getString("MaterialName"));
                 material.setCategory(new Category(rs.getInt("CategoryID"), rs.getString("CategoryName")));
                 material.setSubcategory(new SubCategory(rs.getInt("SubcategoryID"), rs.getInt("CategoryID"), rs.getString("SubcategoryName")));
-                material.setSupplierID(new Supplier(rs.getInt("SupplierID"), rs.getString("SupplierName"), null, null));
+                material.setSupplierID(new Supplier(rs.getInt("SupplierID"), rs.getString("SupplierName"), rs.getString("Address"), rs.getString("PhoneNum")));
                 material.setImage(rs.getString("Image"));
                 material.setDetail(rs.getString("Detail"));
 
@@ -64,6 +64,7 @@ public class MaterialDAO {
         }
         return list;
     }
+
 
     // Thêm vật tư mới
     public void addMaterial(String materialName, int subcategoryId, String supplierName,
@@ -282,8 +283,8 @@ public class MaterialDAO {
 
     // Cập nhật thông tin vật tư trong cơ sở dữ liệu
     public void updateMaterial(int materialID, String materialName, int subcategoryID, String supplierName,
-            String supplierAddress, String supplierPhone, String imageUrl, int totalQuantity,
-            int newQuantity, int usableQuantity, int brokenQuantity) throws SQLException {
+            String supplierAddress, String supplierPhone, String imageUrl,
+            int usableQuantity, int brokenQuantity, String detail) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -332,29 +333,28 @@ public class MaterialDAO {
             stmt.close();
 
             // 4. Cập nhật thông tin vật tư trong bảng materials
-            String updateMaterialSQL = "UPDATE materials SET MaterialName = ?, CategoryID = ?, SubcategoryID = ?, SupplierID = ?, Image = ?, Quantity = ? WHERE MaterialID = ?";
+            String updateMaterialSQL = "UPDATE materials SET MaterialName = ?, CategoryID = ?, SubcategoryID = ?, SupplierID = ?, Image = ?, Detail = ? WHERE MaterialID = ?";
             stmt = conn.prepareStatement(updateMaterialSQL);
             stmt.setString(1, materialName);
             stmt.setInt(2, categoryID);
             stmt.setInt(3, subcategoryID);
             stmt.setInt(4, supplierID);
             stmt.setString(5, imageUrl);
-            stmt.setInt(6, totalQuantity);
+            stmt.setString(6, detail);
             stmt.setInt(7, materialID);
             stmt.executeUpdate();
             stmt.close();
 
             // 5. Cập nhật trạng thái vật tư trong bảng materialconditions
-            String updateConditionSQL = "UPDATE materialconditions SET NewQuantity = ?, UsableQuantity = ?, BrokenQuantity = ? WHERE MaterialID = ?";
-            stmt = conn.prepareStatement(updateConditionSQL);
-            stmt.setInt(1, newQuantity);
-            stmt.setInt(2, usableQuantity);
-            stmt.setInt(3, brokenQuantity);
-            stmt.setInt(4, materialID);
+            String updateQuantitySQL = "UPDATE materialquantities SET UsableQuantity = ?, BrokenQuantity = ? WHERE MaterialID = ?";
+            stmt = conn.prepareStatement(updateQuantitySQL);
+            stmt.setInt(1, usableQuantity);
+            stmt.setInt(2, brokenQuantity);
+            stmt.setInt(3, materialID);
             stmt.executeUpdate();
             stmt.close();
 
-            conn.commit(); // Xác nhận giao dịch nếu mọi thứ thành công
+            conn.commit();
         } catch (SQLException e) {
             if (conn != null) {
                 try {
@@ -377,6 +377,7 @@ public class MaterialDAO {
             }
         }
     }
+
 
     // Xóa vật tư
     public void deleteMaterial(int materialID) throws SQLException {
