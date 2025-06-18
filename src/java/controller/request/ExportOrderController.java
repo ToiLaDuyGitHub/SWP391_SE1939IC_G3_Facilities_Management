@@ -6,7 +6,7 @@
 package controller.request;
 
 import dao.MaterialDAO;
-import dao.RequestDao;
+import dao.RequestDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -30,12 +30,12 @@ import model.dto.MaterialDTO;
 public class ExportOrderController extends HttpServlet {
    
     private MaterialDAO materialDAO;
-    private RequestDao requestDao;
+    private RequestDAO requestDao;
 
     @Override
     public void init() throws ServletException {
         materialDAO = new MaterialDAO();
-        requestDao = new RequestDao();
+        requestDao = new RequestDAO();
     }
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.

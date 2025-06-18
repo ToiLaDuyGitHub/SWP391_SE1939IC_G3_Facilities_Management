@@ -467,7 +467,7 @@ public class MaterialDAO {
     }
 
     // Lấy danh sách vật tư với SupplierName và MinUnit
-    public List<MaterialDTO> getMaterialsWithCategoryAndSupplier() throws SQLException {
+    public List<MaterialDTO> getMaterialsWithCategoryAndSupplier() {
         List<MaterialDTO> materials = new ArrayList<>();
         String sql = "SELECT m.MaterialID, m.MaterialName, s.SupplierName, u.MinUnit, u.MaxUnit " +
                      "FROM materials m " +
@@ -489,7 +489,6 @@ public class MaterialDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw e;
         }
         return materials;
     }
