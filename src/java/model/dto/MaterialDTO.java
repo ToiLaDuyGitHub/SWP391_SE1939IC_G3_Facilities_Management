@@ -1,6 +1,6 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nfs://.netbeans/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nfs://.netbeans/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model.dto;
 
@@ -15,24 +15,11 @@ import model.Supplier;
 public class MaterialDTO {
     private int materialID;
     private String materialName;
-    private Category category;
-    private SubCategory subcategory;
-    private Supplier supplierID;
-    private String image;
-    private int quantity;
-    private String condition;
+    private String supplierName;
+    private String minUnit;
+    private String maxUnit;
 
     public MaterialDTO() {
-    }
-
-   
-
-    public String getCondition() {
-        return condition;
-    }
-
-    public void setCondition(String condition) {
-        this.condition = condition;
     }
 
     public int getMaterialID() {
@@ -51,43 +38,36 @@ public class MaterialDTO {
         this.materialName = materialName;
     }
 
-    public Category getCategory() {
-        return category;
+    public String getSupplierName() {
+        return supplierName;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
     }
 
-    public SubCategory getSubcategory() {
-        return subcategory;
+    public String getMinUnit() {
+        return minUnit;
     }
 
-    public void setSubcategory(SubCategory subcategory) {
-        this.subcategory = subcategory;
+    public void setMinUnit(String minUnit) {
+        this.minUnit = minUnit;
     }
 
-    public Supplier getSupplierID() {
-        return supplierID;
+    public String getMaxUnit() {
+        return maxUnit;
     }
 
-    public void setSupplierID(Supplier supplierID) {
-        this.supplierID = supplierID;
+    public void setMaxUnit(String maxUnit) {
+        this.maxUnit = maxUnit;
     }
 
-    public String getImage() {
-        return image;
+    public MaterialDTO(int materialID, String materialName, String supplierName, String minUnit, String maxUnit) {
+        this.materialID = materialID;
+        this.materialName = materialName;
+        this.supplierName = supplierName;
+        this.minUnit = minUnit;
+        this.maxUnit = maxUnit;
     }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 }

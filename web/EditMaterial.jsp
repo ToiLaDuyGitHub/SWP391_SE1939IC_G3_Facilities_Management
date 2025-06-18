@@ -134,8 +134,6 @@
                             <i class="fas fa-exclamation-circle"></i> ${errorMessage}
                         </div>
                     </c:if>
-
-
                     <form action="${pageContext.request.contextPath}/search-material" method="get">
                         <div class="form-group">
                             <div class="search-container">

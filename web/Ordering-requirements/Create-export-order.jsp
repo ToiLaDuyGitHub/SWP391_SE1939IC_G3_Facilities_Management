@@ -12,189 +12,186 @@
         <title>Đơn Xuất Kho</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <style>
-
-            .content {
-                margin-left: 250px; 
-                margin-top: 0;
-                padding: 20px;
-            }
-
             .content-card {
                 max-width: 1200px;
-                margin: 0 auto;
-                padding: 20px;
-                background: #fff;
-                border-radius: 10px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-                display: flex;
-                flex-direction: column;
+                margin: 20px auto;
+                padding: 10px;
             }
-
-            h2 {
-                font-size: 22px;
-                color: #1a3c6d;
-                margin-bottom: 20px;
-                font-weight: 600;
-            }
-
-            .search-form {
-                display: flex;
-                align-items: center;
-                gap: 15px;
-                margin-bottom: 20px;
-                flex-wrap: wrap;
-            }
-
-            .search-form input[type="text"] {
-                padding: 8px 12px;
-                border: 1px solid #d1d5db;
-                border-radius: 6px;
-                font-size: 14px;
-                flex: 1;
-                min-width: 250px;
-                background: #fafafa;
-                transition: border-color 0.3s;
-            }
-
-            .search-form input[type="text"]:focus {
-                border-color: #0056b3;
-                outline: none;
-            }
-
-            .search-form button {
-                padding: 8px 16px;
-                background: #0056b3;
-                color: #fff;
-                border: none;
-                border-radius: 6px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                font-size: 14px;
-                font-weight: 500;
-                transition: background 0.3s;
-            }
-
-            .search-form button:hover {
-                background: #003f87;
-            }
-
             .main-content {
                 display: flex;
                 gap: 20px;
+                align-items: flex-start;
             }
-
+            .main-content form {
+                flex: 1;
+                max-width: 700px;
+            }
             table {
                 width: 100%;
                 border-collapse: collapse;
                 font-size: 14px;
                 background: #fff;
-                border-radius: 0;
-                overflow: hidden;
-                flex: 2;
             }
-
             table thead {
                 background: #f39c12;
                 color: #fff;
             }
-
             table th {
                 padding: 12px 15px;
+                min-width: 90px;
                 text-align: left;
                 font-weight: 600;
             }
-
             table td {
                 padding: 12px 15px;
                 border-bottom: 1px solid #e2e8f0;
-            }
-
-            table tbody tr:nth-child(even) {
-                background: #f8fafc;
-            }
-
-            table tbody tr:hover {
-                background: #fef9e7;
-                cursor: pointer;
-            }
-
-            .quantity-controls {
-                display: flex;
-                align-items: center;
-                gap: 5px;
-            }
-
-            .quantity-controls button {
-                padding: 2px 8px;
-                border: 1px solid #d1d5db;
-                background: #fff;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-
-            .quantity-controls input {
-                width: 40px;
-                text-align: center;
-                border: 1px solid #d1d5db;
-                border-radius: 4px;
-                padding: 2px;
-            }
-
-            .quantity-unit {
-                margin-left: 10px;
-                padding: 2px 8px;
-                border: 1px solid #d1d5db;
-                border-radius: 4px;
-                background: #fff;
-                display: inline-block;
-            }
-
-            .remove-btn {
-                background: none;
-                border: none;
-                cursor: pointer;
-                color: #dc3545;
                 font-size: 16px;
-                padding: 2px;
             }
-
-            .remove-btn:hover {
-                color: #c82333;
+            .summary {
+                flex: 0 0 200px;
+                padding: 10px;
+                background: #e9ecef;
+                border-radius: 6px;
+                text-align: left;
+                max-height: 300px;
+                overflow-y: auto;
             }
-
-            .submit-btn {
-                padding: 8px 16px;
+            .submit-btn, .add-material-btn {
+                padding: 10px 20px;
                 background: #28a745;
                 color: #fff;
                 border: none;
                 border-radius: 6px;
                 cursor: pointer;
-                font-size: 14px;
-                font-weight: 500;
-                transition: background 0.3s;
+                font-size: 16px;
+                transition: background 0.3s, transform 0.2s;
             }
-
-            .submit-btn:hover {
+            .submit-btn:hover, .add-material-btn:hover {
                 background: #218838;
+                transform: scale(1.05);
             }
-
-            .summary {
-                flex: 1;
-                padding: 10px;
-                background: #e9ecef;
+            .delete-btn {
+                padding: 8px 16px;
+                background: #dc3545;
+                color: #fff;
+                border: none;
                 border-radius: 6px;
-                min-width: 250px;
+                cursor: pointer;
+                font-size: 14px;
+                transition: background 0.3s, transform 0.2s;
+                text-decoration: none; /* Loại bỏ gạch chân mặc định của <a> */
+                display: inline-block; /* Đảm bảo định dạng như button */
             }
-
-            .summary textarea {
+            .delete-btn:hover {
+                background: #c82333;
+                transform: scale(1.05);
+            }
+            .modal {
+                display: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                z-index: 1000;
+                width: 900px;
+                max-height: 80vh;
+                overflow-y: auto;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            .modal.active {
+                display: block;
+                opacity: 1;
+            }
+            .modal-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
                 width: 100%;
-                padding: 8px;
-                border: 1px solid #d1d5db;
-                border-radius: 4px;
-                margin-top: 10px;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 999;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            .modal-overlay.active {
+                display: block;
+                opacity: 1;
+            }
+            .close {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                font-size: 24px;
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: #000;
+                padding: 0;
+            }
+            .close:hover {
+                color: #dc3545;
+            }
+            .search-container {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            .search-container input[type="text"] {
+                width: 60%;
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                font-size: 14px;
+                transition: border 0.3s, box-shadow 0.3s, transform 0.2s;
+                height: 31px;
+                box-sizing: border-box;
+            }
+            .search-container input[type="text"]:focus {
+                border-color: #f9a825;
+                box-shadow: 0 0 8px rgba(249, 168, 37, 0.3);
+                transform: scale(1.01);
+                outline: none;
+            }
+            #contentArea {
+                position: relative;
+                z-index: 1;
+            }
+            textarea {
+                width: 100%;
+                min-height: 60px;
                 resize: vertical;
+                box-sizing: border-box;
+            }
+            .add-button-container {
+                margin-top: 20px;
+                text-align: center;
+            }
+            .message {
+                margin-top: 10px;
+                padding: 10px;
+                border-radius: 5px;
+                display: ${not empty successMessage or not empty errorMessage ? 'block' : 'none'};
+            }
+            .success {
+                background-color: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+            .error {
+                background-color: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
+            .unit-dropdown {
+                width: 100px;
+                padding: 5px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
             }
         </style>
     </head>
@@ -204,82 +201,155 @@
             <div class="content" id="contentArea">
                 <div class="content-card">
                     <h2>Đơn xuất kho</h2>
-                    <form class="search-form" action="${pageContext.request.contextPath}/search-material-in-list" method="get">
-                        <input type="text" placeholder="Nhập tên vật tư để tìm kiếm">
-                        <button type="submit">Tìm kiếm</button>
-                    </form>
-
                     <div class="main-content">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Chọn</th>
-                                    <th>Tên vật tư</th>
-                                    <th>Số lượng</th>
-                                    <th>Đơn vị</th>
-                                    <th>Xóa</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td>Nháp tên vật tư</td>
-                                    <td>
-                                        <div class="quantity-controls">
-                                            <button>-</button>
-                                            <input type="number" value="1" min="0">
-                                            <button>+</button>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="quantity-unit">kg</span>
-                                    </td>
-                                    <td><button class="remove-btn"><i class="fas fa-trash"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td>Nháp tên vật tư</td>
-                                    <td>
-                                        <div class="quantity-controls">
-                                            <button>-</button>
-                                            <input type="number" value="1" min="0">
-                                            <button>+</button>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="quantity-unit">g</span>
-                                    </td>
-                                    <td><button class="remove-btn"><i class="fas fa-trash"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td>Nháp tên vật tư</td>
-                                    <td>
-                                        <div class="quantity-controls">
-                                            <button>-</button>
-                                            <input type="number" value="1" min="0">
-                                            <button>+</button>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="quantity-unit">cm</span>
-                                    </td>
-                                    <td><button class="remove-btn"><i class="fas fa-trash"></i></button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <div class="summary">
-                            <p>Đơn xuất kho</p>
-                            <p>Người nhận: giám đốc</p>
-                            <p>Số lượng vật tư: 0</p>
-                            <label for="notes">Ghi chú:</label>
-                            <textarea id="notes" rows="3" placeholder="Nhập ghi chú..."></textarea>
-                            <button type="submit" class="submit-btn">Gửi đơn</button>
-                        </div>
+                        <form action="${pageContext.request.contextPath}/create-export-order" method="post">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Tên vật tư</th>
+                                        <th class="col-soluong">Số lượng</th>
+                                        <th>Đơn vị</th>
+                                        <th>Xóa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach var="selectedMaterial" items="${selectedMaterials}">
+                                        <tr>
+                                            <td>${selectedMaterial.materialName}</td>
+                                            <td><input type="number" name="quantities[${selectedMaterial.materialID}]" value="1" min="0" style="width: 50px; text-align: center;"></td>
+                                            <td>
+                                                <select name="units[${selectedMaterial.materialID}]" class="unit-dropdown">
+                                                    <option value="${selectedMaterial.minUnit}">${selectedMaterial.minUnit}</option>
+                                                    <c:if test="${not empty selectedMaterial.maxUnit}">
+                                                        <option value="${selectedMaterial.maxUnit}">${selectedMaterial.maxUnit}</option>
+                                                    </c:if>
+                                                </select>
+                                            </td>
+                                            <td>
+                                               <a href="${pageContext.request.contextPath}/delete-select-material?materialId=${selectedMaterial.materialID}" class="delete-btn">Xóa</a>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                            <div class="summary">
+                                <p>Người nhận: giám đốc</p>
+                                <p>Số lượng vật tư: <c:out value="${selectedMaterials != null ? selectedMaterials.size() : 0}" /></p>
+                                <label for="notes">Ghi chú:</label>
+                                <textarea id="notes" name="notes" rows="3" placeholder="Nhập ghi chú..."></textarea>
+                                <button type="submit" class="submit-btn">Gửi đơn</button>
+                            </div>
+                        </form>
                     </div>
+                    <div class="add-button-container">
+                        <button id="openModalBtn" class="add-material-btn">Thêm vật tư vào đơn</button>
+                    </div>
+
+                    <!-- Hiển thị thông báo -->
+                    <div class="message ${not empty successMessage ? 'success' : (not empty errorMessage ? 'error' : '')}">
+                        <c:if test="${not empty successMessage}">
+                            ${successMessage}
+                        </c:if>
+                        <c:if test="${not empty errorMessage}">
+                            ${errorMessage}
+                        </c:if>
+                    </div>
+
+                    <!-- Modal -->
+                    <div id="addMaterialModal" class="modal">
+                        <span class="close" onclick="closeModal()">×</span>
+                        <div class="search-container">
+                            <input type="text" id="searchInput" placeholder="Nhập để tìm kiếm vật tư">
+                        </div>
+                        <form action="${pageContext.request.contextPath}/add-material-modal" method="post">
+                            <input type="hidden" name="action" value="addMaterials">
+                            <table id="materialTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tên vật tư</th>
+                                        <th>Tên nhà cung cấp</th>
+                                        <th>Đơn vị</th>
+                                        <th>Chọn</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach var="material" items="${materials}">
+                                        <c:set var="isSelected" value="false"/>
+                                        <c:forEach var="selected" items="${selectedMaterials}">
+                                            <c:if test="${selected.materialID == material.materialID}">
+                                                <c:set var="isSelected" value="true"/>
+                                            </c:if>
+                                        </c:forEach>
+                                        <c:if test="${!isSelected}">
+                                            <tr>
+                                                <td>${material.materialID}</td>
+                                                <td>${material.materialName}</td>
+                                                <td>${material.supplierName}</td>
+                                                <td>${material.minUnit}</td>
+                                                <td><input type="checkbox" name="materialIds" value="${material.materialID}"></td>
+                                            </tr>
+                                        </c:if>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                            <button type="submit" class="submit-btn">Thêm</button>
+                        </form>
+                    </div>
+                    <div id="addMaterialModalOverlay" class="modal-overlay"></div>
                 </div>
             </div>
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Lấy các phần tử
+                const openModalBtn = document.getElementById('openModalBtn');
+                const modal = document.getElementById('addMaterialModal');
+                const overlay = document.getElementById('addMaterialModalOverlay');
+                const searchInput = document.getElementById('searchInput');
+
+                // Mở modal
+                openModalBtn.onclick = function () {
+                    modal.classList.add('active');
+                    overlay.classList.add('active');
+                }
+
+                // Đóng modal
+                function closeModal() {
+                    modal.classList.remove('active');
+                    overlay.classList.remove('active');
+                    searchInput.value = ''; // Xóa ô tìm kiếm
+                    searchMaterials(); // Hiển thị lại các vật tư chưa được chọn
+                }
+
+                // Đóng modal khi nhấn nút đóng hoặc overlay
+                document.querySelectorAll('.close, #addMaterialModalOverlay').forEach(function (element) {
+                    element.onclick = closeModal;
+                });
+
+                // Hàm tìm kiếm vật tư
+                function searchMaterials() {
+                    const keyword = searchInput.value.toLowerCase(); // Lấy từ khóa
+                    const table = document.getElementById('materialTable');
+                    const rows = table.getElementsByTagName('tr');
+
+                    // Duyệt qua các hàng (bỏ hàng tiêu đề)
+                    for (var i = 1; i < rows.length; i++) {
+                        const cells = rows[i].cells;
+                        const materialName = cells[1].textContent.toLowerCase(); // Tên vật tư
+                        const supplierName = cells[2].textContent.toLowerCase(); // Nhà cung cấp
+                        // Hiển thị hàng nếu khớp
+                        if (materialName.includes(keyword) || supplierName.includes(keyword)) {
+                            rows[i].style.display = '';
+                        } else {
+                            rows[i].style.display = 'none';
+                        }
+                    }
+                }
+
+                // Tìm kiếm khi gõ
+                searchInput.onkeyup = searchMaterials;
+            });
+        </script>
     </body>
 </html>

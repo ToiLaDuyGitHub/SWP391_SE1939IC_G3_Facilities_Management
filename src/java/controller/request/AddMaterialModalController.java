@@ -1,38 +1,34 @@
-package controller;
+package controller.request;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-import dao.FeatureDAO;
-import dao.RoleDAO;
-import model.Feature;
-import model.Role;
+import dao.MaterialDAO;
+import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import model.dto.MaterialDTO;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(urlPatterns = {"/update-decentralization"})
-public class UpdateDecentralizationController extends HttpServlet {
+@WebServlet(urlPatterns = {"/add-material-modal"})
+public class AddMaterialModalController extends HttpServlet {
 
-    private FeatureDAO featureDAO;
-    private RoleDAO roleDAO;
+    private MaterialDAO materialDAO;
 
     @Override
     public void init() throws ServletException {
-        featureDAO = new FeatureDAO();
-        roleDAO = new RoleDAO();
+        materialDAO = new MaterialDAO();
     }
 
     /**
@@ -52,10 +48,10 @@ public class UpdateDecentralizationController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateDecentralizationController</title>");
+            out.println("<title>Servlet AddMaterialModalController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdateDecentralizationController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddMaterialModalController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -73,7 +69,14 @@ public class UpdateDecentralizationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        List<MaterialDTO> materials = (List<MaterialDTO>) session.getAttribute("materials");
+        // Tải materials nếu chưa có
+        if (materials == null) {
+            materials = materialDAO.getMaterialsWithCategoryAndSupplier();
+            session.setAttribute("materials", materials);
+        }
+        request.getRequestDispatcher("/Ordering-requirements/Create-export-order.jsp").forward(request, response);
     }
 
     /**
@@ -87,44 +90,44 @@ public class UpdateDecentralizationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
-            return;
-        }
-        try {
-            // Lấy danh sách chức năng và vai trò
-            List<Feature> features = featureDAO.getAllFeatures();
-            List<Role> roles = roleDAO.getRolesForDecentralization();
-            boolean hasChanges = false;
-            // Duyệt qua tất cả các tổ hợp feature và role
-            for (Feature feature : features) {
-                for (Role role : roles) {
-                    String paramName = "permission_" + feature.getUrlID() + "_" + role.getRoleID();
-                    boolean isChecked = request.getParameter(paramName) != null; // Checkbox được tích nếu param tồn tại
-                    boolean hasPermission = featureDAO.hasPermission(feature.getUrlID(), role.getRoleID());
+        HttpSession session = request.getSession();
+        String[] selectedIds = request.getParameterValues("materialIds");
+        List<MaterialDTO> materials = (List<MaterialDTO>) session.getAttribute("materials");
+        List<MaterialDTO> selectedMaterials = (List<MaterialDTO>) session.getAttribute("selectedMaterials");
 
-                    // So sánh trạng thái checkbox với dữ liệu trong DB
-                    if (isChecked != hasPermission) {
-                        hasChanges = true;
-                        if (isChecked) {//thêm quyền
-                            featureDAO.addPermission(feature.getUrlID(), role.getRoleID());
-                        } else {//xóa quyền
-                            featureDAO.removePermission(feature.getUrlID(), role.getRoleID());
+        // Tải materials nếu chưa có
+        if (materials == null) {
+            materials = materialDAO.getMaterialsWithCategoryAndSupplier();
+            session.setAttribute("materials", materials);
+        }
+
+        // Khởi tạo selectedMaterials nếu chưa có
+        if (selectedMaterials == null) {
+            selectedMaterials = new ArrayList<>();
+            session.setAttribute("selectedMaterials", selectedMaterials);
+        }
+
+        // Thêm vật tư được chọn
+        if (selectedIds != null) {
+            for (String id : selectedIds) {
+                try {
+                    int materialId = Integer.parseInt(id);
+                    for (MaterialDTO material : materials) {
+                        if (material.getMaterialID() == materialId && !selectedMaterials.contains(material)) {
+                            selectedMaterials.add(material);
+                            break;
                         }
                     }
+                } catch (NumberFormatException e) {
                 }
             }
-            if (hasChanges) {
-                session.setAttribute("successMessage", "Cập nhật phân quyền thành công!");
-            } else {
-                session.setAttribute("infoMessage", "Không có thay đổi nào được thực hiện.");
-            }
-        } catch (SQLException e) {
-            throw new ServletException("Database error: " + e.getMessage(), e);
         }
-        // Chuyển hướng về Decentralization để tải lại dữ liệu mới
-        response.sendRedirect(request.getContextPath() + "/decentralization");
+
+        // Cập nhật session
+        session.setAttribute("selectedMaterials", selectedMaterials);
+
+        // Chuyển hướng về trang Tạo đơn xuất kho
+        response.sendRedirect(request.getContextPath() + "/create-export-order");
     }
 
     /**
