@@ -16,4 +16,12 @@
         <servlet-name>AddUserController</servlet-name>
         <url-pattern>/add-user</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>DeleteMaterialController</servlet-name>
+        <servlet-class>controller.request.DeleteMaterialController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteMaterialController</servlet-name>
+        <url-pattern>/delete-select-material</url-pattern>
+    </servlet-mapping>
 </web-app>

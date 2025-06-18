@@ -76,7 +76,6 @@
                 <div class="content-card" id="decentralizationSection">
                     <h2>Phân quyền chức năng</h2>
                     <div class="profile-card">
-                        <%-- Hiển thị thông báo nếu có --%>
                         <c:if test="${not empty sessionScope.successMessage}">
                             <div class="message success-message">
                                 ${sessionScope.successMessage}

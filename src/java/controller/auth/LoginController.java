@@ -63,7 +63,6 @@ public class LoginController extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("userRole", userRole);
                 session.setAttribute("username", username);
-
                 // Lấy danh sách chức năng của vai trò và lưu vào session
                 try {
                     List<Feature> permittedFeatures = featureDAO.getFeaturesByRole(userRole.getRoleID());

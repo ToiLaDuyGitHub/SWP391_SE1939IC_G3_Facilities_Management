@@ -103,32 +103,7 @@
                 display: flex;
                 align-items: center;
                 gap: 8px;
-            }
-            .cart-button {
-                background-color: #ff9800;
-                color: white;
-                border: none;
-                padding: 3px 8px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 12px; 
-                margin: 2px;
-                cursor: pointer;
-                border-radius: 3px;
-                width: 70px; 
-                height: 28px; 
-                line-height: 22px; 
-            }
-
-            .cart-button:hover {
-                background-color: #f57c00;
-            }
-
-            .cart-button i {
-                margin-right: 3px;
-                vertical-align: middle;
-            }
+            }           
         </style>
     </head>
     <body>
@@ -201,7 +176,6 @@
                                                 ${material.quantity.brokenQuantity},
                                                 '${material.image}',
                                                 '${material.detail}')">Chi tiết</button>
-                                            <button class="cart-button"><i class="fas fa-shopping-cart"></i></button>
                                     </td>
                                 </tr>
                             </c:forEach>

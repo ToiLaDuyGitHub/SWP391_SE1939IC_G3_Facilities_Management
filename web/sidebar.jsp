@@ -17,46 +17,16 @@
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link rel="stylesheet" href="<%= request.getContextPath() %>/css/styles.css">
-        <style>
-            .cart-icon {
-                position: relative;
-                margin-left: 10px;
-                cursor: pointer;
-                font-size: 24px; 
-                color: darkslategray;
-                margin-left: 15px;
-                margin-right: 15px;
-            }
-            .cart-count {
-                position: absolute;
-                top: -4px;
-                right: -12px;
-                background: white;
-                color: red; 
-                border-radius: 50%;
-                padding: 4px 8px; 
-                font-size: 12px;
-                line-height: 1;
-                min-width: 20px;
-                text-align: center;
-            }
-        </style>
     </head>
     <body>
         <div class="header">
             <h1><i class="fas fa-hard-hat"></i> Hệ thống Quản lý Xây dựng</h1>
             <div class="actions">
                 <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-                <div class="cart-icon" onclick="viewCart()">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count" style="color: red">
-                        ${sessionScope.cartCount != null ? sessionScope.cartCount : 0}
-                    </span>
-                </div>
                 <div class="user-info">
                     <i class="fas fa-user-circle"></i>
                     <div class="tooltip">
-                        <p class="position">Quản lý</p>
+                        <p class="position">${sessionScope.userRole.roleName}</p>
                         <p>${not empty sessionScope.user ? sessionScope.user.fullName : 'Chưa đăng nhập'}</p>
                     </div>
                 </div>
@@ -214,26 +184,38 @@
                         </div>
                     </li>
                 </c:if>
-                <li class="dropdown">
-                    <div class="dropdown-toggle" onclick="toggleDropdown(this)">
-                        <span><i class="fas fa-boxes"></i>Các yêu cầu xuất kho</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="dropdown-content">
-                        <a href="Ordering-requirements/Create-export-order.jsp" >Đơn xin xuất kho</a>
-                    </div>
-                </li>
-                
-                <li class="dropdown">
-                    <div class="dropdown-toggle" onclick="toggleDropdown(this)">
-                            <span><i class="fas fa-list"></i> Danh sách các yêu cầu</span>
+                <c:set var="hasCreateExportOrder" value="false" />
+                <c:forEach var="feature" items="${sessionScope.permittedFeatures}">
+                    <c:if test="${fn:contains(feature.url, '/create-export-order')}">
+                        <c:set var="hasCreateExportOrder" value="true" />
+                    </c:if>
+                </c:forEach>
+                <c:if test="${hasCreateExportOrder}">
+                    <li class="dropdown">
+                        <div class="dropdown-toggle" onclick="toggleDropdown(this)">
+                            <span><i class="fas fa-boxes"></i>Các yêu cầu xuất kho</span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
+                        <div class="dropdown-content">
+                            <c:forEach var="feature" items="${sessionScope.permittedFeatures}">
+                                <c:if test="${feature.url == '/create-export-order'}">
+                                    <a href="${pageContext.request.contextPath}/create-export-order" >Đơn xin xuất kho</a>
+                                </c:if>
+                            </c:forEach>                  
+                        </div>
+                    </li>
+                </c:if>
+
+                <li class="dropdown">
+                    <div class="dropdown-toggle" onclick="toggleDropdown(this)">
+                        <span><i class="fas fa-list"></i> Danh sách các yêu cầu</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
                     <div class="dropdown-content">
                         <a href="Request/Request_List.jsp">Tất cả các yêu cầu</a>
                         <a href="#">Xem chi tiết thông tin yêu cầu</a>
                     </div>
-                    
+
                 </li>
             </ul>
         </div>

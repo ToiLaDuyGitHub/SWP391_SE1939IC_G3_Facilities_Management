@@ -17,6 +17,7 @@ import model.MaterialQuantity;
 import model.SubCategory;
 import model.Supplier;
 import model.Units;
+import model.dto.MaterialDTO;
 
 /**
  *
@@ -463,5 +464,33 @@ public class MaterialDAO {
                 conn.close();
             }
         }
+    }
+
+    // Lấy danh sách vật tư với SupplierName và MinUnit
+    public List<MaterialDTO> getMaterialsWithCategoryAndSupplier() throws SQLException {
+        List<MaterialDTO> materials = new ArrayList<>();
+        String sql = "SELECT m.MaterialID, m.MaterialName, s.SupplierName, u.MinUnit, u.MaxUnit " +
+                     "FROM materials m " +
+                     "LEFT JOIN suppliers s ON m.SupplierID = s.SupplierID " +
+                     "LEFT JOIN units u ON m.MaterialID = u.MaterialID";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                MaterialDTO material = new MaterialDTO();
+                material.setMaterialID(rs.getInt("MaterialID"));
+                material.setMaterialName(rs.getString("MaterialName"));
+                material.setSupplierName(rs.getString("SupplierName"));
+                material.setMinUnit(rs.getString("MinUnit"));
+                material.setMaxUnit(rs.getString("MaxUnit"));
+                materials.add(material);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+        return materials;
     }
 }

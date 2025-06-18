@@ -22,7 +22,7 @@ public class User_Role {
     private int userID;
     private boolean isActive;
 
-    public User_Role(String username, String firstName, String lastName, String phoneNum, String address, String roleName, int roleID, boolean isActive) {
+    public User_Role(String username, String firstName, String lastName, String phoneNum, String address, String roleName, int roleID, int userID, boolean isActive) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,9 +30,10 @@ public class User_Role {
         this.address = address;
         this.roleName = roleName;
         this.roleID = roleID;
+        this.userID = userID;
         this.isActive = isActive;
-        
     }
+
     public User_Role(int userID, String username, String firstName, String lastName, String phoneNum, int roleID, String roleName, boolean isActive) {
         this.userID = userID;
         this.username = username;
